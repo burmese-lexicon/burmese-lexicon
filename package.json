@@ -17,8 +17,10 @@
   "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^22.2.0",
+    "@types/jquery": "^3.3.1",
     "@types/lodash": "^4.14.105",
     "@types/node": "^9.4.7",
+    "@types/semantic-ui": "^2.2.6",
     "@types/webpack": "^4.1.1",
     "aurelia-cli": "^0.33.0",
     "aurelia-loader-nodejs": "^1.0.1",
@@ -30,6 +32,7 @@
     "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "del": "^3.0.0",
+    "eslint-plugin-typescript": "^0.11.0",
     "expose-loader": "^0.7.5",
     "extract-text-webpack-plugin": "next",
     "file-loader": "^1.1.11",
@@ -49,12 +52,14 @@
     "opn": "^5.3.0",
     "protractor": "^5.3.0",
     "sass-loader": "^6.0.7",
+    "standard": "^11.0.1",
     "style-loader": "^0.20.3",
     "through2": "^2.0.3",
     "ts-jest": "^22.4.1",
     "ts-loader": "^4.0.1",
     "ts-node": "^5.0.1",
     "typescript": "^2.7.2",
+    "typescript-eslint-parser": "^14.0.0",
     "uglify-js": "^3.3.15",
     "url-loader": "^1.0.1",
     "vinyl-fs": "^3.0.2",
@@ -63,6 +68,12 @@
     "webpack-bundle-analyzer": "latest",
     "webpack-cli": "^2.0.12",
     "webpack-dev-server": "^3.1.1"
+  },
+  "standard": {
+    "parser": "typescript-eslint-parser",
+    "plugins": [
+      "typescript"
+    ]
   },
   "jest": {
     "modulePaths": [

@@ -96,7 +96,9 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
   plugins: [
     new AureliaPlugin(),
     new ProvidePlugin({
-      'Promise': 'bluebird'
+      'Promise': 'bluebird',
+      'window.jQuery': 'jquery',
+      'jQuery': 'jquery'
     }),
     new ModuleDependenciesPlugin({
       'aurelia-testing': [ './compile-spy', './view-spy' ]
