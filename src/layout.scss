@@ -1,0 +1,14 @@
+@import './_theme.scss';
+
+body {
+  height: calc(100vh - #{$menu-bar-height});
+}
+
+.app-body {
+  &.ui.grid {
+    margin-top: $menu-bar-height;
+  }
+  &.page {
+    height: 100%;
+  }
+}

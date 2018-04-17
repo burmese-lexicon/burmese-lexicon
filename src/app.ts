@@ -10,9 +10,30 @@ export class App {
     this.router = router
     config.title = 'Aurelia';
     config.map([
-      { route: ['', 'home'], name: 'home', moduleId: PLATFORM.moduleName('./resources/elements/word-search'), nav: true, title: 'Burmese Lexicon' },
-      { route: 'words', name: 'words', moduleId: PLATFORM.moduleName('./resources/elements/word-search'), nav: true, title: 'Words' },
-      { route: 'contributors', name: 'contributors', moduleId: PLATFORM.moduleName('./resources/elements/word-search'), nav: true, title: 'Top Contributors' },
+      {
+        route: [
+          '',
+          'home'
+        ],
+        name: 'home',
+        moduleId: PLATFORM.moduleName('./resources/elements/home-page'),
+        nav: true,
+        title: 'Burmese Lexicon'
+      },
+      {
+        route: 'words',
+        name: 'words',
+        moduleId: PLATFORM.moduleName('./resources/elements/words-page'),
+        nav: true,
+        title: 'Words'
+      },
+      {
+        route: 'contributors',
+        name: 'contributors',
+        moduleId: PLATFORM.moduleName('./resources/elements/contributors-page'),
+        nav: true,
+        title: 'Top Contributors'
+      },
     ]);
   }
 }

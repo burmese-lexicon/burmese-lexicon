@@ -1,10 +1,7 @@
 <template>
   <require from='semantic-ui-css/semantic.min.css'></require>
   <require from='./resources/elements/menu-bar'></require>
-  <require from='./resources/elements/app-body'></require>
 
   <menu-bar router.bind='router'></menu-bar>
-  <app-body>
-    <router-view></router-view>
-  </app-body>
+  <router-view layout-view='layout.html' layout-view-model='layout'></router-view>
 </template>

@@ -6,19 +6,13 @@
       ${nav.title}
     </a>
 
-    <!-- <a class="active item">
-      Burmese Lexicon
-    </a>
-    <a class="item">
-      Word list
-    </a>
-    <a class="item">
-      Top contributors
-    </a> -->
     <div class="right menu">
-      <word-search></word-search>
+      <word-search if.bind='router.currentInstruction.config.name !== "home"'></word-search>
       <a class="ui item">
-        Logout
+        <div class='ui primary button'>Log in</div>
+      </a>
+      <a class="ui item">
+        <div class='ui primary button'>Sign up</div>
       </a>
     </div>
   </div>
