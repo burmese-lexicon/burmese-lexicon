@@ -1,13 +1,19 @@
 <template>
+  <require from='./menu-bar.scss'></require>
   <require from='./word-search'></require>
 
-  <div class="ui fixed inverted menu">
+  <div class='ui fixed inverted menu bars'>
+    <div class='sidebar-toggle item' click.delegate='toggleSidebar()'>
+      <i class='bars icon'></i> Burmese Lexicon
+    </div>
+  </div>
+  <div class="ui fixed stackable container inverted menu main">
     <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'>
       <i class='${nav.settings.icon} icon' css='color: ${nav.settings.iconColor}'></i> ${nav.title}
     </a>
 
     <div class="right menu">
-      <word-search if.bind='router.currentInstruction.config.name !== "home"'></word-search>
+      <word-search show.bind='router.currentInstruction.config.name !== "home"'></word-search>
       <a class="ui item">
         <div class='ui primary button'>Log in</div>
       </a>

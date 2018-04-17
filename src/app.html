@@ -1,7 +1,25 @@
 <template>
   <require from='semantic-ui-css/semantic.min.css'></require>
   <require from='./resources/elements/menu-bar'></require>
+  <require from='./resources/elements/word-search'></require>
 
-  <menu-bar router.bind='router'></menu-bar>
-  <router-view layout-view='layout.html' layout-view-model='layout'></router-view>
+  <!-- sidebar https://semantic-ui.com/modules/sidebar.html#/usage -->
+  <div class='ui left vertical inverted menu sidebar'>
+    <div class='ui item'>
+      <word-search></word-search>
+    </div>
+    <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'>
+      <i class='${nav.settings.icon} icon' css='color: ${nav.settings.iconColor}'></i> ${nav.title}
+    </a>
+    <a class="ui item">
+      <div class='ui primary button'>Log in</div>
+    </a>
+    <a class="ui item">
+      <div class='ui primary button'>Sign up</div>
+    </a>
+  </div>
+  <div class='pusher'>
+    <menu-bar router.bind='router'></menu-bar>
+    <router-view layout-view='layout.html' layout-view-model='layout'></router-view>
+  </div>
 </template>

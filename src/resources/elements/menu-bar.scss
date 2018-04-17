@@ -1,0 +1,17 @@
+menu-bar {
+  .menu.bars {
+    display: none;
+  }
+  @media only screen and (max-width: 767px) {
+    .menu.main {
+      display: none;
+    }
+    .menu.bars {
+      display: flex;
+      width: 100vw;
+    }
+    .sidebar-toggle {
+      display: block;
+    }
+  }
+}

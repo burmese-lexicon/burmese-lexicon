@@ -1,7 +1,9 @@
 @import './_theme.scss';
 
+$body-height: calc(100vh - #{$menu-bar-height});
+
 body {
-  height: calc(100vh - #{$menu-bar-height});
+  height: $body-height;
 }
 
 .app-body {
@@ -9,6 +11,16 @@ body {
     margin-top: $menu-bar-height;
   }
   &.page {
-    height: 100%;
+    height: $body-height;
+  }
+
+  .sidebar a {
+    display: flex;
+    justify-content: center;
   }
 }
+
+.sidebar.menu a.ui.item {
+    display: flex;
+    justify-content: center;
+  }

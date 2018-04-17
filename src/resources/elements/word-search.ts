@@ -1,4 +1,9 @@
+import { autoinject } from 'aurelia-framework';
+
+@autoinject
 export class WordSearch {
+  constructor(private element: Element) {}
+
   attached() {
     const
       content = [
@@ -12,7 +17,7 @@ export class WordSearch {
         }
       ]
       ;
-    jQuery('.ui.search')
+    jQuery(this.element).find('.ui.search')
       .search({
         source: content,
         searchFields: [
