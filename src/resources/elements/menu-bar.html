@@ -3,7 +3,7 @@
 
   <div class="ui fixed inverted menu">
     <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'>
-      ${nav.title}
+      <i class='${nav.settings.icon} icon' css='color: ${nav.settings.iconColor}'></i> ${nav.title}
     </a>
 
     <div class="right menu">

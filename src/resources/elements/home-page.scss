@@ -1,7 +1,12 @@
 .home-page.page {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  h1 {
+    font-size: 2em;
+  }
 
   word-search input {
     width: 20em;
