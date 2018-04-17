@@ -1,0 +1,25 @@
+<template>
+  <require from='./word-search'></require>
+
+  <div class="ui fixed inverted menu">
+    <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'>
+      ${nav.title}
+    </a>
+
+    <!-- <a class="active item">
+      Burmese Lexicon
+    </a>
+    <a class="item">
+      Word list
+    </a>
+    <a class="item">
+      Top contributors
+    </a> -->
+    <div class="right menu">
+      <word-search></word-search>
+      <a class="ui item">
+        Logout
+      </a>
+    </div>
+  </div>
+</template>

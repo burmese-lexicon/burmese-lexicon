@@ -1,6 +1,10 @@
 <template>
   <require from='semantic-ui-css/semantic.min.css'></require>
-  <require from='./resources/elements/word-search'></require>
+  <require from='./resources/elements/menu-bar'></require>
+  <require from='./resources/elements/app-body'></require>
 
-  <word-search></word-search>
+  <menu-bar router.bind='router'></menu-bar>
+  <app-body>
+    <router-view></router-view>
+  </app-body>
 </template>
