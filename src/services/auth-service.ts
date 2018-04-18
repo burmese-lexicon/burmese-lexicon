@@ -48,14 +48,6 @@ export class AuthService {
     // })
     firebase.auth().onAuthStateChanged((user: User) => {
       if (user) {
-        // User is signed in.
-        var displayName = user.displayName
-        var email = user.email
-        var emailVerified = user.emailVerified
-        var photoURL = user.photoURL
-        var uid = user.uid
-        var phoneNumber = user.phoneNumber
-        var providerData = user.providerData
         this._user = user
       } else {
         this._user = null
@@ -74,7 +66,7 @@ export class AuthService {
         signInOptions: [
           // Leave the lines as is for the providers you want to offer your users.
           // firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          // firebase.auth.FacebookAuthProvider.PROVIDER_ID,
+          firebase.auth.FacebookAuthProvider.PROVIDER_ID,
           // firebase.auth.TwitterAuthProvider.PROVIDER_ID,
           // firebase.auth.GithubAuthProvider.PROVIDER_ID,
           firebase.auth.EmailAuthProvider.PROVIDER_ID
