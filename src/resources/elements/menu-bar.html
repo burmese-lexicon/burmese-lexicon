@@ -14,11 +14,12 @@
 
     <div class="right menu">
       <word-search show.bind='router.currentInstruction.config.name !== "home"'></word-search>
-      <a class="ui item">
-        <div class='ui primary button'>Log in</div>
+      <a class="ui item" if.bind="!authService.user">
+        <div class='ui primary button' click.delegate="router.navigateToRoute('login')">Sign in</div>
       </a>
-      <a class="ui item">
-        <div class='ui primary button'>Sign up</div>
+      <a class="ui item" else>
+        <span class='username'>${authService.user.displayName}</span>
+        <div class='ui primary button' click.delegate="authService.signOut()">Sign out</div>
       </a>
     </div>
   </div>

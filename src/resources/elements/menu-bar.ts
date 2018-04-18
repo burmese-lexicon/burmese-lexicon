@@ -1,3 +1,4 @@
+import { AuthService } from 'services/auth-service'
 import { bindable, autoinject } from 'aurelia-framework'
 import { Router } from 'aurelia-router'
 
@@ -5,7 +6,7 @@ import { Router } from 'aurelia-router'
 export class MenuBar {
   @bindable router: Router
 
-  constructor (private element: Element) {}
+  constructor (private element: Element, private authService: AuthService) {}
 
   toggleSidebar () {
     // just reach out to outer element ~_~

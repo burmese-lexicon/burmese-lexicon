@@ -3,6 +3,7 @@ import { autoinject } from 'aurelia-dependency-injection';
 import { PLATFORM } from 'aurelia-pal';
 import {Router, RouterConfiguration} from 'aurelia-router';
 import { viewResources } from "aurelia-framework";
+import { AuthorizeStep } from './resources/steps/authorize-step'
 
 @autoinject
 @viewResources(PLATFORM.moduleName('semantic-ui-css/semantic.min'))
@@ -17,7 +18,8 @@ export class App {
 
   configureRouter(config: RouterConfiguration, router: Router): void {
     this.router = router
-    config.title = 'Aurelia';
+    config.title = 'Burmese Lexicon';
+    config.addAuthorizeStep(AuthorizeStep)
     config.map([
       {
         route: [
@@ -55,6 +57,12 @@ export class App {
           iconColor: 'gold'
         }
       },
+      {
+        route: 'login',
+        name: 'login',
+        moduleId: PLATFORM.moduleName('./resources/elements/auth-container'),
+        title: 'Login'
+      }
     ]);
   }
 }
