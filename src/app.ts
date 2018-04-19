@@ -58,6 +58,11 @@ export class App {
         }
       },
       {
+        route: 'words/:id',
+        name: 'word',
+        moduleId: PLATFORM.moduleName('./resources/elements/word-page')
+      },
+      {
         route: 'login',
         name: 'login',
         moduleId: PLATFORM.moduleName('./resources/elements/auth-container'),

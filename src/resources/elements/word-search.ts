@@ -5,18 +5,19 @@ export class WordSearch {
   constructor(private element: Element) {}
 
   attached() {
-    const
-      content = [
-        {
-          title: 'ကျောင်း',
-          description: 'စာသင်သည့် နေရာ',
-        },
-        {
-          title: 'ကံ',
-          description: 'ကိုယ်တုိင် အားထုတ်မှု မပါဘဲ ဖြစ်နုိင်ခြေ',
-        }
-      ]
-      ;
+    const content = [
+      {
+        title: 'ကျောင်း',
+        description: 'စာသင်သည့် နေရာ',
+      },
+      {
+        title: 'ကံ',
+        description: 'ကိုယ်တုိင် အားထုတ်မှု မပါဘဲ ဖြစ်နုိင်ခြေ',
+      }
+    ].map(word => ({
+      ...word,
+      url: `/#/words/${word.title}`
+    }))
     jQuery(this.element).find('.ui.search')
       .search({
         source: content,
@@ -24,5 +25,9 @@ export class WordSearch {
           'title'
         ]
       })
+  }
+
+  detached () {
+    jQuery(this.element).find('.ui.search').search('destroy')
   }
 }
