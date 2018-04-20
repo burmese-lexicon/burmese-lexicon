@@ -1,0 +1,25 @@
+<template>
+  <require from='./new-word-page.scss'></require>
+
+  <div class='centered wide column'>
+    <form class="ui form">
+      <h1 class='ui header'>Add new word</h1>
+      <div class="required field">
+        <label>Word</label>
+        <input type="text" name="word" placeholder="စကားလုံး">
+      </div>
+      <div class="required field">
+        <label>Definition</label>
+        <em>Definitions can have maximum 300 characters.</em>
+        <textarea name="definition" rows='3' maxlength='300' placeholder="အနက်ဖွင့်ဆုိချက်"></textarea>
+      </div>
+      <div class="required field">
+        <div class="ui checkbox">
+          <input type="checkbox" tabindex="0" class="hidden">
+          <label>I agree to the Terms and Conditions</label>
+        </div>
+      </div>
+      <button class="ui button" type="submit">Submit</button>
+    </form>
+  </div>
+</template>

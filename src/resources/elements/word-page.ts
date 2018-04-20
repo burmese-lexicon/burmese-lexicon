@@ -4,4 +4,8 @@ export class WordPage {
   activate (params) {
     this.id = params.id
   }
+
+  attached () {
+    document.title = `${this.id} | ${document.title}`
+  }
 }

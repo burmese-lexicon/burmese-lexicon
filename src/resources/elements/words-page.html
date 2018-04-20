@@ -1,5 +1,17 @@
 <template>
-  <h1>
-     List of words
-  </h1>
+  <require from='./words-page.scss'></require>
+
+  <div class='ui centered fifteen wide column word-list-segment'>
+    <div class="right ui internal attached rail">
+      <div class="ui sticky" style="width: 272px !important; height: 262.531px !important; left: 1357.5px;">
+        <h3 class="ui header">Want to contribute?</h3>
+        <img>
+        <button class='ui button' click.delegate='router.navigateToRoute("new-word")'>Add new word</button>
+      </div>
+    </div>
+    <h1>Words</h1>
+    <ul>
+
+    </ul>
+  </div>
 </template>

@@ -7,11 +7,11 @@ body {
 }
 
 .app-body {
+  padding: 1em;
   &.ui.grid {
     margin-top: $menu-bar-height;
-  }
-  &.page {
     height: $body-height;
+    padding: 1em;
   }
 
   .sidebar a {
