@@ -1,5 +1,8 @@
+import { Router } from 'aurelia-router'
+import { AuthService } from 'services/auth-service'
 import { autoinject } from 'aurelia-framework'
 import { ValidationControllerFactory, ValidationRules, ValidationController, ValidateEvent, validateTrigger, Validator} from 'aurelia-validation'
+import { WordsApi } from 'api/words-api'
 
 @autoinject
 export class NewWordPage {
@@ -10,8 +13,15 @@ export class NewWordPage {
   private readonly MAX_WORD_LENGTH: number = 20
   private controller: ValidationController
   private isFormValid: boolean = false
+  private formState: string
 
-  constructor (private validationControllerFactory: ValidationControllerFactory, private validator: Validator) {
+  constructor (
+    private validationControllerFactory: ValidationControllerFactory,
+    private validator: Validator,
+    private wordApi: WordsApi,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.controller = validationControllerFactory.createForCurrentScope(validator)
     this.controller.validateTrigger = validateTrigger.changeOrBlur
     this.controller.subscribe(this.updateIsFormValid.bind(this))
@@ -34,5 +44,19 @@ export class NewWordPage {
       .then(results => {
         this.isFormValid = results.every(result => result.valid)
       })
+    this.formState = ''
+  }
+
+  submit () {
+    this.formState = 'loading'
+    this.wordApi.addWord(this.word, this.definition, this.authService.user.uid,
+      () => {
+        this.formState = 'success'
+        window.setTimeout(() => this.router.navigateToRoute('home'), 3000)
+      },
+      () => {
+        this.formState = 'error'
+      }
+    )
   }
 }

@@ -91,4 +91,8 @@ export class AuthService {
   get user () {
     return this._user
   }
+
+  get isSigningIn () {
+    return !this.ui || (this.ui && this.ui.isPendingRedirect())
+  }
 }

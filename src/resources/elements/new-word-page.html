@@ -2,16 +2,23 @@
   <require from='./new-word-page.scss'></require>
 
   <div class='centered wide column'>
-    <form class="ui form ${controller.errors.length ? 'error' : ''}">
+    <form
+      class="ui form ${controller.errors.length ? 'error' : ''} ${formState}" submit.delegate='submit()'>
       <h1 class='ui header'>Add new word</h1>
-      <ul if.bind="controller.errors" class='ui error message'>
+      <ul if.bind="formState !== 'error' && controller.errors" class='ui error message'>
         <li repeat.for="error of controller.errors">
           ${error.message}
         </li>
       </ul>
+      <div class='ui success message'>
+        The word ${word} has been added successfully.
+      </div>
+      <div class='ui error message' if.bind='formState === "error"'>
+        There was an error adding the word. Please try again later.
+      </div>
       <div class="required field">
         <label>Word</label>
-        <input type="text" name="word" placeholder="စကားလုံး" value.bind='word & validate'>
+        <input type="text" name="word" placeholder="စကားလုံး" value.bind='word & validate' required>
       </div>
       <div class="required field">
         <label>Definition</label>
@@ -22,11 +29,11 @@
       </div>
       <div class="required field">
         <div class="ui checkbox">
-          <input id='tos-checkbox' type="checkbox" tabindex="0" class="hidden" checked.bind="agreedTOS & validate">
+          <input id='tos-checkbox' type="checkbox" tabindex="0" class="hidden" checked.bind="agreedTOS & validate" required>
           <label for='tos-checkbox'>I agree to the Terms and Conditions</label>
         </div>
       </div>
-      <button class="ui button ${!isFormValid ? 'disabled' : ''}" type="submit" submit.delegate='handleSubmit()'>Submit</button>
+      <button class="ui button ${!isFormValid ? 'disabled' : ''}" type="submit">Submit</button>
     </form>
   </div>
 </template>

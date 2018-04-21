@@ -9,15 +9,34 @@ export class DbService {
     this.db = firebase.firestore()
   }
 
-  add (collectionName: string, document: DocumentData, successCallback: Function = () => {}, errorCallback: Function = () => {}) {
-    this.db.collection(collectionName).add(document)
-      .then(successCallback)
-      .catch(errorCallback)
+  add (collectionName: string, document: DocumentData, successCallback: Function, errorCallback: Function) {
+    return this.db.collection(collectionName).add(document)
+      .then(() => {
+        if (typeof successCallback === 'function') {
+          successCallback()
+        }
+      })
+      .catch(error => {
+        console.log(error)
+        if (typeof errorCallback === 'function') {
+          errorCallback(error)
+        }
+      })
   }
 
-  set (collectionName: string, documentId: string, document: DocumentData, successCallback: Function = () => { }, errorCallback: Function = () => { }) {
-    this.db.collection(collectionName).doc(documentId).set(document)
-      .then(successCallback)
-      .catch(errorCallback)
+  set (collectionName: string, documentId: string, document: DocumentData, successCallback: Function, errorCallback: Function) {
+    return this.db.collection(collectionName).doc(documentId).set(document)
+      .then(() => {
+        if (typeof successCallback === 'function') {
+          successCallback()
+        }
+      })
+      .catch(error => {
+        console.error('Failed setting', collectionName, documentId, document)
+        console.error(error)
+        if (typeof errorCallback === 'function') {
+          errorCallback(error)
+        }
+      })
   }
 }

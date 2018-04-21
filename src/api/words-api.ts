@@ -6,7 +6,25 @@ import { autoinject } from 'aurelia-dependency-injection'
 export class WordsApi {
   constructor (private dbService: DbService) {}
 
-  addWord (id, word) {
-    this.dbService.set(COLLECTIONS.WORDS, id, word)
+  async addWord (word, definition, user, successCallback, errorCallback) {
+    return this.dbService.set(COLLECTIONS.WORDS, word,
+      {
+        user,
+        createdAt: Date.now()
+      },
+      () => {
+        this.dbService.set(COLLECTIONS.DEFINITIONS, `${user}-${word}`,
+          {
+            user,
+            word,
+            definition,
+            createdAt: Date.now()
+          },
+          successCallback,
+          errorCallback
+        )
+      },
+      errorCallback
+    )
   }
 }
