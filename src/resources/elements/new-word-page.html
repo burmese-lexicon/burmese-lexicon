@@ -2,24 +2,31 @@
   <require from='./new-word-page.scss'></require>
 
   <div class='centered wide column'>
-    <form class="ui form">
+    <form class="ui form ${controller.errors.length ? 'error' : ''}">
       <h1 class='ui header'>Add new word</h1>
+      <ul if.bind="controller.errors" class='ui error message'>
+        <li repeat.for="error of controller.errors">
+          ${error.message}
+        </li>
+      </ul>
       <div class="required field">
         <label>Word</label>
-        <input type="text" name="word" placeholder="စကားလုံး">
+        <input type="text" name="word" placeholder="စကားလုံး" value.bind='word & validate'>
       </div>
       <div class="required field">
         <label>Definition</label>
-        <em>Definitions can have maximum 300 characters.</em>
-        <textarea name="definition" rows='3' maxlength='300' placeholder="အနက်ဖွင့်ဆုိချက်"></textarea>
+        <em>Definitions can have maximum ${MAX_DEFFINITION_LENGTH} characters.</em>
+        <textarea
+          name="definition" rows='3' maxlength.one-time='MAX_DEFFINITION_LENGTH'
+          value.bind='definition & validate' placeholder="အနက်ဖွင့်ဆုိချက်"></textarea>
       </div>
       <div class="required field">
         <div class="ui checkbox">
-          <input type="checkbox" tabindex="0" class="hidden">
-          <label>I agree to the Terms and Conditions</label>
+          <input id='tos-checkbox' type="checkbox" tabindex="0" class="hidden" checked.bind="agreedTOS & validate">
+          <label for='tos-checkbox'>I agree to the Terms and Conditions</label>
         </div>
       </div>
-      <button class="ui button" type="submit">Submit</button>
+      <button class="ui button ${!isFormValid ? 'disabled' : ''}" type="submit" submit.delegate='handleSubmit()'>Submit</button>
     </form>
   </div>
 </template>

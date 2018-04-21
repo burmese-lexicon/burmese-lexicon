@@ -1,1 +1,38 @@
-export class NewWordPage {}
+import { autoinject } from 'aurelia-framework'
+import { ValidationControllerFactory, ValidationRules, ValidationController, ValidateEvent, validateTrigger, Validator} from 'aurelia-validation'
+
+@autoinject
+export class NewWordPage {
+  private word: string
+  private definition: string
+  private agreedTOS: boolean
+  private readonly MAX_DEFFINITION_LENGTH: number = 500
+  private readonly MAX_WORD_LENGTH: number = 20
+  private controller: ValidationController
+  private isFormValid: boolean = false
+
+  constructor (private validationControllerFactory: ValidationControllerFactory, private validator: Validator) {
+    this.controller = validationControllerFactory.createForCurrentScope(validator)
+    this.controller.validateTrigger = validateTrigger.changeOrBlur
+    this.controller.subscribe(this.updateIsFormValid.bind(this))
+    ValidationRules
+      .ensure((page: NewWordPage) => page.word)
+      .matches(/^[\u1000-\u109F]*$/).withMessage(`\${$displayName} can only have Burmese letters and no spaces.`)
+      .maxLength(this.MAX_WORD_LENGTH)
+      .required()
+      .ensure((page: NewWordPage) => page.definition)
+      .maxLength(this.MAX_DEFFINITION_LENGTH)
+      .required()
+      .ensure((page: NewWordPage) => page.agreedTOS)
+      .equals(true).withMessage(`\${$displayName} is required.`)
+      .required()
+      .on(this)
+  }
+
+  private updateIsFormValid (event: ValidateEvent) {
+    this.validator.validateObject(this)
+      .then(results => {
+        this.isFormValid = results.every(result => result.valid)
+      })
+  }
+}
