@@ -32,7 +32,7 @@ export class WordsApi {
   }
 
   vote (user, author, word, definition, vote) {
-    return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(author, word),
+    return this.dbService.merge(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(author, word),
       {
         votes: {
           [user]: vote > 0 ? 1 : -1

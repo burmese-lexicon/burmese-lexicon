@@ -12,6 +12,21 @@ service cloud.firestore {
     function isLoggedIn() {
     	return request.auth.uid != null
     }
+    
+    function isOwner() {
+    	return isLoggedIn() && request.auth.id == request.resource.data.user
+    }
+    
+    function onlyUpdateVoting(oldDef, definition) {
+    	return definition.data.keys().hasAll(['text', 'createdAt', 'user', 'word', 'votes'])
+      	&& definition.data.size() == 5
+        && (defintion.data['votes.' + request.auth.uid] == 1
+          	|| definition.data['votes.' + request.auth.uid] == -1
+          )
+        && oldDef.data.text == definition.data.text
+        && oldDef.data.user == definition.data.user
+        && oldDef.data.word == definition.data.word
+    }
  
     match /words/{word} {
     	allow create: if isAdmin()
@@ -28,13 +43,35 @@ service cloud.firestore {
     match /definitions/{definition} {
     	allow create: if isAdmin()
       	|| (isLoggedIn()
-          && request.resource.data.definition.matches("^[.]{2, 1000}$")
+          && request.resource.data.text != null && request.resource.data.text.size() < 500
           && request.resource.data.user == request.auth.uid
           && request.resource.data.createdAt is int
           && request.resource.data.size() == 4
           && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
       	)
       allow list: if true
+      allow delete: if isAdmin() || isOwner()
+      allow update: if isAdmin()
+      	|| (isOwner()
+        	&& request.resource.text != null && request.resource.data.text.size() < 500
+          && request.resource.data.createdAt is int
+          && request.resource.data.votes == null
+          && request.resource.data.size() == 4
+          && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
+        )
+        // only allow voting on others' defs
+        || (resource.data.user != request.auth.uid
+        	&& onlyUpdateVoting(resource, getAfter(/databases/$(database)/documents/definitions/$(request.resource.id)))
+        )
+    }
+    
+    match /public-users/{user} {
+    	allow read: if true
+      allow write: if isAdmin()
+      	|| (isLoggedIn()
+        	&& request.resource.id == request.auth.id
+          && request.resource.data.name.matches(".{1,20}")
+        )
     }
   }
 }

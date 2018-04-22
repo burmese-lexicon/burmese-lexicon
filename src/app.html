@@ -21,6 +21,9 @@
   </div>
   <div class='pusher'>
     <menu-bar router.bind='router'></menu-bar>
+    <div show.bind='router.isNavigating' class="ui active dimmer">
+      <div class="ui loader"></div>
+    </div>
     <router-view layout-view='layout.html' layout-view-model='layout'></router-view>
   </div>
   <auth-modal></auth-modal>

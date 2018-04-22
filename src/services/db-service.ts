@@ -26,6 +26,14 @@ export class DbService {
     }
   }
 
+  async merge (collectionName: string, documentId: string, document: DocumentData): Promise<any> {
+    try {
+      return await this.db.collection(collectionName).doc(documentId).set(document, {merge: true})
+    } catch (e) {
+      this.logError(e, 'merge', collectionName, documentId, document)
+    }
+  }
+
   async get (collectionName: string, docId: string): Promise<any> {
     try {
       return await this.db.collection(collectionName).doc(docId).get()

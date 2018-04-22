@@ -25,7 +25,10 @@ export class WordPage {
         const userSnapshot = await this.usersApi.getPublicUserInfo(data.user)
         const userData = userSnapshot.data()
         definitions.push({
-          ...data,
+          word: data.word,
+          votes: data.votes ? Object.keys(data.votes).length : 0,
+          text: data.text,
+          createdAt: data.createdAt,
           author: {
             ...userData,
             uid: data.user
