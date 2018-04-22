@@ -22,19 +22,19 @@ service cloud.firestore {
           && request.resource.data.size() == 2
           && !exists(/databases/$(database)/documents/words/$(request.resource.id))
       	)
+      allow list: if true
     }
     
     match /definitions/{definition} {
     	allow create: if isAdmin()
       	|| (isLoggedIn()
-          && request.resource.id == request.auth.uid + '-' + request.resource.data.word
-          && request.resource.data.definition.matches("^.{2, 1000}$")
+          && request.resource.data.definition.matches("^[.]{2, 1000}$")
           && request.resource.data.user == request.auth.uid
           && request.resource.data.createdAt is int
           && request.resource.data.size() == 4
           && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
-          && !exists(/databases/$(database)/documents/definitions/$(request.auth.id + '-' + request.resource.data.word))
       	)
+      allow list: if true
     }
   }
 }

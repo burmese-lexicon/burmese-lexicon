@@ -47,16 +47,15 @@ export class NewWordPage {
     this.formState = ''
   }
 
-  submit () {
+  async submit () {
     this.formState = 'loading'
-    this.wordApi.addWord(this.word, this.definition, this.authService.user.uid,
-      () => {
-        this.formState = 'success'
-        window.setTimeout(() => this.router.navigateToRoute('home'), 3000)
-      },
-      () => {
-        this.formState = 'error'
-      }
-    )
+    try {
+      await this.wordApi.addWord(this.word, this.definition, this.authService.user.uid)
+      this.formState = 'success'
+      window.setTimeout(() => this.router.navigateToRoute('home'), 3000)
+    } catch (e) {
+      console.log(e)
+      this.formState = 'error'
+    }
   }
 }

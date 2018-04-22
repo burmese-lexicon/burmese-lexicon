@@ -1,6 +1,9 @@
 <template>
   <require from='./words-page.scss'></require>
 
+  <div if.bind='loading' class="ui active dimmer">
+    <div class="ui loader"></div>
+  </div>
   <div class='ui centered fifteen wide column word-list-segment'>
     <div class="right ui internal attached rail">
       <div class="ui sticky" style="width: 272px !important; height: 262.531px !important; left: 1357.5px;">
@@ -10,8 +13,13 @@
       </div>
     </div>
     <h1>Words</h1>
+    <div if.bind='error' class='ui error message'>
+      ${error}
+    </div>
     <ul>
-
+      <li repeat.for='word of words'>
+        <a href='${router.generate("words")}/${word.id}'>${word.id}</a>
+      </li>
     </ul>
   </div>
 </template>

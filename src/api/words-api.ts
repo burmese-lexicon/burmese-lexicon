@@ -6,25 +6,42 @@ import { autoinject } from 'aurelia-dependency-injection'
 export class WordsApi {
   constructor (private dbService: DbService) {}
 
-  async addWord (word, definition, user, successCallback, errorCallback) {
-    return this.dbService.set(COLLECTIONS.WORDS, word,
+  async addWord (word, definition, user) {
+    await this.dbService.set(COLLECTIONS.WORDS, word,
       {
         user,
         createdAt: Date.now()
-      },
-      () => {
-        this.dbService.set(COLLECTIONS.DEFINITIONS, `${user}-${word}`,
-          {
-            user,
-            word,
-            definition,
-            createdAt: Date.now()
-          },
-          successCallback,
-          errorCallback
-        )
-      },
-      errorCallback
+      }
     )
+    await this.dbService.set(COLLECTIONS.DEFINITIONS, `${user}-${word}`,
+      {
+        user,
+        word,
+        text: definition,
+        createdAt: Date.now()
+      }
+    )
+  }
+
+  getWords () {
+    return this.dbService.getAll(COLLECTIONS.WORDS)
+  }
+
+  getDefinitionsForWord (word: string) {
+    return this.dbService.getWhere(COLLECTIONS.DEFINITIONS, ['word', '==', word])
+  }
+
+  vote (user, word, definition, vote) {
+    return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word),
+      {
+        votes: {
+          [user]: vote > 0 ? 1 : -1
+        }
+      }
+    )
+  }
+
+  generateDefinitionId (user, word) {
+    return `${user}-${word}`
   }
 }

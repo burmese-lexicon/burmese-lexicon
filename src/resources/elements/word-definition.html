@@ -1,0 +1,27 @@
+<template>
+  <require from='../value-converters/date-format'></require>
+
+  <div class="comment" css='opacity: ${votes <= -3 ? 0.2 : 1}'>
+    <div class="content">
+      <div class="text">
+        ${text}
+      </div>
+      <div class='attribution'>
+        <div class="actions">
+          <a class="reply" click.delegate='vote(1)'><i class="caret up icon"></i></a>
+          <span>${votes}</span>
+          <a class="reply" click.delegate='vote(-1)'><i class="caret down icon"></i></a>
+        </div>
+        <div class="metadata">
+          <span class="date" textcontent.bind='createdAt | dateFormat'></span>
+        </div>
+        <div class='author-info'>
+          <a class="avatar" if.bind='author.profileURL'>
+            <img src='${author.profileURL}'>
+          </a>
+          <a class="author">${author.name}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

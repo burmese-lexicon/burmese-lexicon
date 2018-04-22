@@ -1,18 +1,34 @@
-.word-page.page {
+.word-page {
   .word-container {
     padding: 1em;
-  }
-  .attribution {
-    display: flex;
-    justify-content: space-between;
-  }
-  .author-info {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .comments {
+    width: 100%;
+    margin-top: 3em;
 
-    .avatar img {
-      height: 35px;
+    .text {
+      text-align: left;
+      font-size: 1.2em;
+    }
+
+    .attribution {
+      display: flex;
+      justify-content: space-between;
+      .actions .reply {
+        margin: 0;
+      }
+    }
+    .author-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .avatar img {
+        height: 35px;
+      }
     }
   }
 }
