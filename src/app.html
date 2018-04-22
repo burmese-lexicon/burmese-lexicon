@@ -2,6 +2,7 @@
   <require from='semantic-ui-css/semantic.min.css'></require>
   <require from='./resources/elements/menu-bar'></require>
   <require from='./resources/elements/word-search'></require>
+  <require from='./resources/elements/auth-modal'></require>
 
   <!-- sidebar https://semantic-ui.com/modules/sidebar.html#/usage -->
   <div class='ui left vertical inverted menu sidebar'>
@@ -22,4 +23,5 @@
     <menu-bar router.bind='router'></menu-bar>
     <router-view layout-view='layout.html' layout-view-model='layout'></router-view>
   </div>
+  <auth-modal></auth-modal>
 </template>

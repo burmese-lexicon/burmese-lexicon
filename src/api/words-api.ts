@@ -31,8 +31,8 @@ export class WordsApi {
     return this.dbService.getWhere(COLLECTIONS.DEFINITIONS, ['word', '==', word])
   }
 
-  vote (user, word, definition, vote) {
-    return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word),
+  vote (user, author, word, definition, vote) {
+    return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(author, word),
       {
         votes: {
           [user]: vote > 0 ? 1 : -1

@@ -29,8 +29,6 @@ export class AuthService {
         if (loginRedirectURL) {
           this.router.navigate(loginRedirectURL)
           this.clearCachedLoginRedirectURL()
-        } else {
-          this.router.navigateToRoute('home')
         }
       } else {
         this._user = null
@@ -54,7 +52,7 @@ export class AuthService {
     window.localStorage.removeItem('loginRedirectURL')
   }
 
-  async renderProvidersToContainer (container: Element) {
+  async renderProvidersToContainer (container: Element, successCallback: Function) {
     if (this.ui) {
       await this.ui.delete()
     }
@@ -69,7 +67,19 @@ export class AuthService {
       ],
       // Terms of service url.
       tosUrl: '<your-tos-url>',
-      credentialHelper: firebaseui.auth.CredentialHelper.NONE
+      credentialHelper: firebaseui.auth.CredentialHelper.NONE,
+      callbacks: {
+        signInSuccessWithAuthResult: () => false
+      }
+    }
+
+    if (successCallback) {
+      uiConfig.callbacks = {
+        signInSuccessWithAuthResult: () => {
+          successCallback()
+          return false
+        }
+      }
     }
 
     // Initialize the FirebaseUI Widget using Firebase.
@@ -90,6 +100,10 @@ export class AuthService {
 
   get user () {
     return this._user
+  }
+
+  get userId () {
+    return this._user ? this.user.uid : null
   }
 
   get isSigningIn () {

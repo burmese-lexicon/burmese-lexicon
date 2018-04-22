@@ -1,3 +1,6 @@
+import { AuthRequestedMessage } from './auth-modal'
+import { EventAggregator } from 'aurelia-event-aggregator'
+import { AuthService } from './../../services/auth-service'
 import { WordsApi } from 'api/words-api'
 import { autoinject, bindable } from 'aurelia-framework'
 
@@ -9,9 +12,13 @@ export class WordDefinition {
   @bindable author: any
   @bindable word: string
 
-  constructor (private wordsApi: WordsApi) {}
+  constructor (private wordsApi: WordsApi, private authService: AuthService, private ea: EventAggregator) {}
 
   vote (num: number) {
-    this.wordsApi.vote(this.author.uid, this.word, this.text, num)
+    if (!this.authService.user) {
+      this.ea.publish(new AuthRequestedMessage())
+    } else {
+      this.wordsApi.vote(this.author.uid, this.authService.userId, this.word, this.text, num)
+    }
   }
 }

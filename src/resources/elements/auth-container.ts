@@ -6,6 +6,6 @@ export class AuthContainer {
   constructor (private element: Element, private authService: AuthService) {}
 
   attached () {
-    this.authService.renderProvidersToContainer(this.element.querySelector('.auth-container'))
+    this.authService.renderProvidersToContainer(this.element.querySelector('.auth-container'), null)
   }
 }
