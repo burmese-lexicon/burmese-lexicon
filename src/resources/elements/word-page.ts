@@ -73,6 +73,7 @@ export class WordPage {
     try {
       await this.wordsApi.deleteDefinition(`${this.authService.userId}-${this.word}`)
       this.definitions.splice(this.definitionIndexToDelete, 1)
+      this.hasUserDefinition = false
     } catch (e) {
       console.error('deleting definition failed')
     }
