@@ -8,15 +8,22 @@ export class WordPage {
   private definitions: any[]
   private error: string
   private loading: boolean = true
+  private doesWordExist: boolean
 
   constructor (private wordsApi: WordsApi, private usersApi: UsersApi) {}
 
-  activate (params) {
+  async activate (params) {
     this.word = params.id
   }
 
   async created () {
     try {
+      const wordSnapshot = await this.wordsApi.getWord(this.word)
+      this.doesWordExist = wordSnapshot.exists
+      if (!this.doesWordExist) {
+        this.loading = false
+        return
+      }
       const definitionsQuerySnapshot = await this.wordsApi.getDefinitionsForWord(this.word)
       const definitions = []
       definitionsQuerySnapshot.forEach(async def => {

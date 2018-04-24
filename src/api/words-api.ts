@@ -23,6 +23,10 @@ export class WordsApi {
     )
   }
 
+  async getWord (word) {
+    return this.dbService.get(COLLECTIONS.WORDS, word)
+  }
+
   getWords () {
     return this.dbService.getAll(COLLECTIONS.WORDS)
   }

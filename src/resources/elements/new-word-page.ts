@@ -39,6 +39,10 @@ export class NewWordPage {
       .on(this)
   }
 
+  activate (params) {
+    this.word = params.word
+  }
+
   private updateIsFormValid (event: ValidateEvent) {
     this.validator.validateObject(this)
       .then(results => {
