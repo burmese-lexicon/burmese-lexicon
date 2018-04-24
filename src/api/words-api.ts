@@ -13,7 +13,7 @@ export class WordsApi {
         createdAt: Date.now()
       }
     )
-    await this.dbService.set(COLLECTIONS.DEFINITIONS, `${user}-${word}`,
+    await this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word),
       {
         user,
         word,
@@ -23,12 +23,21 @@ export class WordsApi {
     )
   }
 
-  async getWord (word) {
+  getWord (word) {
     return this.dbService.get(COLLECTIONS.WORDS, word)
   }
 
-  async deleteDefinition (definition) {
+  deleteDefinition (definition) {
     return this.dbService.delete(COLLECTIONS.DEFINITIONS, definition)
+  }
+
+  addDefinition (word, definition, user) {
+    return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word), {
+      user,
+      text: definition,
+      createdAt: Date.now(),
+      word
+    })
   }
 
   getWords () {

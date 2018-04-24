@@ -1,5 +1,7 @@
 .word-page {
   .word-container {
+    width: 100vw;
+    max-width: 50em;
     padding: 1em;
     display: flex;
     flex-direction: column;

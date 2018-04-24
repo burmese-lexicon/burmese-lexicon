@@ -3,7 +3,7 @@
   <require from='./word-definition'></require>
   <require from='./modal-dialog'></require>
 
-  <div class='ui container word-container'>
+  <div class='word-container'>
     <h1 class='ui header'>${word}</h1>
     <div if.bind='loading' class="ui active dimmer">
       <div class="ui loader"></div>
@@ -29,13 +29,13 @@
         delete.bind='showDefinitionDelete'
       >
       </word-definition>
-      <form class="ui reply form">
-        <div class="field">
-          <textarea></textarea>
+      <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='!hasUserDefinition'>
+        <div class="field required">
+          <textarea value.bind="newDefinition">New definition</textarea>
         </div>
-        <div class="ui blue labeled submit icon button">
+        <button type='submit' class="ui blue labeled submit icon ${addingNewDef ? 'loading' : ''} button">
           <i class="icon edit"></i> Add definition
-        </div>
+        </button>
       </form>
     </div>
   </div>
