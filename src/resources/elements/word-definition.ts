@@ -11,8 +11,18 @@ export class WordDefinition {
   @bindable private createdAt: number
   @bindable private author: any
   @bindable private word: string
+  @bindable private delete: Function
+  private index: number
 
   constructor (private wordsApi: WordsApi, private authService: AuthService, private ea: EventAggregator) {}
+
+  bind (bindingContext: any, overrideContext: any) {
+    this.index = overrideContext.$index
+  }
+
+  handleDelete () {
+    this.delete(this.index)
+  }
 
   async vote (num: number) {
     if (!this.authService.user) {

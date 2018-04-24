@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth-service'
 import { UsersApi } from 'api/users-api'
 import { WordsApi } from 'api/words-api'
 import { autoinject } from 'aurelia-dependency-injection'
@@ -5,12 +6,14 @@ import { autoinject } from 'aurelia-dependency-injection'
 @autoinject
 export class WordPage {
   private word: string
-  private definitions: any[]
+  private definitions: any[] = []
   private error: string
   private loading: boolean = true
   private doesWordExist: boolean
+  private deleteDialogVM: any
+  private definitionIndexToDelete: number
 
-  constructor (private wordsApi: WordsApi, private usersApi: UsersApi) {}
+  constructor (private wordsApi: WordsApi, private usersApi: UsersApi, private authService: AuthService) {}
 
   async activate (params) {
     this.word = params.id
@@ -52,5 +55,19 @@ export class WordPage {
 
   attached () {
     document.title = `${this.word} | ${document.title}`
+  }
+
+  showDefinitionDelete = (index: number) => {
+    this.deleteDialogVM.show()
+    this.definitionIndexToDelete = index
+  }
+
+  async handleDefinitionDelete () {
+    try {
+      await this.wordsApi.deleteDefinition(`${this.authService.userId}-${this.word}`)
+      this.definitions.splice(this.definitionIndexToDelete, 1)
+    } catch (e) {
+      console.error('deleting definition failed')
+    }
   }
 }

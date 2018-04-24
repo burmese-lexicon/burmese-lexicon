@@ -42,6 +42,14 @@ export class DbService {
     }
   }
 
+  async delete (collectionName: string, docId: string): Promise<any> {
+    try {
+      return await this.db.collection(collectionName).doc(docId).delete()
+    } catch (e) {
+      this.logError(e, 'delete', collectionName, docId, null)
+    }
+  }
+
   async getAll (collectionName: string): Promise<any> {
     try {
       return await this.db.collection(collectionName).get()

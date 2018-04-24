@@ -56,7 +56,7 @@ export class NewWordPage {
     try {
       await this.wordApi.addWord(this.word, this.definition, this.authService.user.uid)
       this.formState = 'success'
-      window.setTimeout(() => this.router.navigateToRoute('home'), 3000)
+      window.setTimeout(() => this.router.navigate(`/words/${this.word}`), 3000)
     } catch (e) {
       console.log(e)
       this.formState = 'error'

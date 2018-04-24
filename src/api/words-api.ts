@@ -27,6 +27,10 @@ export class WordsApi {
     return this.dbService.get(COLLECTIONS.WORDS, word)
   }
 
+  async deleteDefinition (definition) {
+    return this.dbService.delete(COLLECTIONS.DEFINITIONS, definition)
+  }
+
   getWords () {
     return this.dbService.getAll(COLLECTIONS.WORDS)
   }

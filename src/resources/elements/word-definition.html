@@ -11,6 +11,7 @@
           <a class="reply" click.delegate='vote(1)'><i class="caret up icon"></i></a>
           <span>${votes}</span>
           <a class="reply" click.delegate='vote(-1)'><i class="caret down icon"></i></a>
+          <a if.bind='authService.userId === author.uid' class='reply' click.delegate='handleDelete()'><i class="trash icon"></i></a>
         </div>
         <div class="metadata">
           <span class="date" textcontent.bind='createdAt | dateFormat'></span>

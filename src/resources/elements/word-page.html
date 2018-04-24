@@ -1,13 +1,14 @@
 <template>
   <require from='./word-page.scss'></require>
   <require from='./word-definition'></require>
+  <require from='./modal-dialog'></require>
 
   <div class='ui container word-container'>
     <h1 class='ui header'>${word}</h1>
     <div if.bind='loading' class="ui active dimmer">
       <div class="ui loader"></div>
     </div>
-    <div if.bind="!doesWordExist">
+    <div if.bind="!loading && !doesWordExist">
       This word does not exist yet. Would you like to <a href='/#/words/new?word=${word}'>contribute</a>?
     </div>
     <div class="ui comments" else>
@@ -15,7 +16,7 @@
       <div if.bind='error' class='ui error message'>
         ${error}
       </div>
-      <div if.bind='definitions.length === 0'>
+      <div if.bind='!loading && definitions.length === 0'>
         There are no definitions for this word yet. Would you like to add one?
       </div>
       <word-definition
@@ -25,6 +26,7 @@
         text.bind='definition.text'
         created-at.bind='definition.createdAt'
         author.bind='definition.author'
+        delete.bind='showDefinitionDelete'
       >
       </word-definition>
       <form class="ui reply form">
@@ -37,4 +39,18 @@
       </form>
     </div>
   </div>
+
+  <modal-dialog view-model.ref='deleteDialogVM'>
+    <div class="ui icon header">
+      <i class="trash icon"></i>
+      Confirm delete?
+    </div>
+    <div class="actions">
+      <div class="ui red basic cancel inverted button">
+        <i class="remove icon"></i>Cancel
+      </div>
+      <div class="ui green ok inverted button" click.delegate='handleDefinitionDelete()'>
+        <i class="checkmark icon"></i>Delete
+      </div>
+  </modal-dialog>
 </template>
