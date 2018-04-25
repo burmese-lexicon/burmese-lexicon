@@ -2,10 +2,11 @@
   <require from='firebaseui/dist/firebaseui.css'></require>
   <require from='./auth-container.scss'></require>
 
-  <div class='auth-container'></div>
-  <div if.bind='authService.isSigningIn' class="ui segment">
-    <div class="ui active inverted dimmer">
-      <div class="ui large text loader">Loading</div>
-    </div>
+  <div class="ui active inverted dimmer" if.bind='authService.isSigningIn'>
+    <div class="ui large text loader">Loading</div>
+  </div>
+  <div class='auth-container' else></div>
+  <div if.bind='authService.user'>
+    You're logged in. Go <a href='/'>home</a>
   </div>
 </template>
