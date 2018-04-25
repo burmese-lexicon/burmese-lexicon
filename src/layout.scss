@@ -21,6 +21,12 @@ body {
 }
 
 .sidebar.menu a.ui.item {
-    display: flex;
-    justify-content: center;
-  }
+  display: flex;
+  justify-content: center;
+}
+
+.sidebar.menu.vertical .sidebar-logout.ui.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
