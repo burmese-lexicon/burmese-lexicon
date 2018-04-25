@@ -8,7 +8,7 @@ export class ContributorsPage {
 
   constructor (private contributionsApi: ContributionsApi) {}
 
-  async activate () {
+  async created () {
     try {
       this.contributions = await this.contributionsApi.getTopContributions()
     } catch (e) {
