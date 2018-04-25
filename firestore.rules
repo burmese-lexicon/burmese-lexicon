@@ -14,7 +14,7 @@ service cloud.firestore {
     }
     
     function isOwner() {
-    	return isLoggedIn() && request.auth.id == request.resource.data.user
+    	return isLoggedIn() && request.auth.uid == resource.data.user
     }
     
     function onlyUpdateVoting(oldDef, definition) {
@@ -23,9 +23,9 @@ service cloud.firestore {
         && (defintion.data['votes.' + request.auth.uid] == 1
           	|| definition.data['votes.' + request.auth.uid] == -1
           )
-        && oldDef.data.text == definition.data.text
+        // && oldDef.data.text == definition.data.text
         && oldDef.data.user == definition.data.user
-        && oldDef.data.word == definition.data.word
+        // && oldDef.data.word == definition.data.word
     }
  
     match /words/{word} {
@@ -37,7 +37,7 @@ service cloud.firestore {
           && request.resource.data.size() == 2
           && !exists(/databases/$(database)/documents/words/$(request.resource.id))
       	)
-      allow list: if true
+      allow read: if true
     }
     
     match /definitions/{definition} {
