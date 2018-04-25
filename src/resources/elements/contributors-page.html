@@ -1,3 +1,11 @@
 <template>
+  <div if.bind='loading' class="ui active dimmer">
+    <div class="ui loader"></div>
+  </div>
   <h1>List of contributors</h1>
+  <ol>
+    <li repeat.for='contribution of contributions'>
+      ${contribution.user} ${contribution.score} ${contribution.definitions}
+    </li>
+  </ol>
 </template>

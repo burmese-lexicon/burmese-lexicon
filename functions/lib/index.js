@@ -3,6 +3,9 @@
 //
 const functions = require('firebase-functions');
 const admin = require('firebase-admin');
+const express = require('express');
+const cors = require('cors')({ origin: true });
+const app = express();
 admin.initializeApp(functions.config().firebase);
 const COLLECTIONS = {
     CONTRIBUTIONS: 'contributions',
@@ -43,15 +46,18 @@ exports.incrementDefContribution = functions.firestore.document('/definitions/{d
         }
     });
 });
-exports.getTopContributions = functions.https.onRequest((req, res) => {
-    return adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
+app.use(cors);
+app.get('/getTopContributions', (req, res) => {
+    adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
         .orderBy('score', 'desc')
         .limit(100)
         .get()
         .then(snapshot => {
         const contributions = [];
         snapshot.forEach(doc => contributions.push(doc.data()));
-        res.send(contributions);
+        res.set('Cache-Control', 'max-age=100')
+            .send(contributions);
     });
 });
+exports.api = functions.https.onRequest(app);
 //# sourceMappingURL=index.js.map

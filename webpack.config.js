@@ -1,36 +1,36 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const project = require('./aurelia_project/aurelia.json');
-const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin');
-const { ProvidePlugin } = require('webpack');
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const project = require('./aurelia_project/aurelia.json')
+const { AureliaPlugin, ModuleDependenciesPlugin } = require('aurelia-webpack-plugin')
+const { ProvidePlugin } = require('webpack')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 
 // config helpers:
-const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || [];
+const ensureArray = (config) => config && (Array.isArray(config) ? config : [config]) || []
 const when = (condition, config, negativeConfig) =>
-  condition ? ensureArray(config) : ensureArray(negativeConfig);
+  condition ? ensureArray(config) : ensureArray(negativeConfig)
 
 // primary config:
-const title = 'Burmese Lexicon';
-const outDir = path.resolve(__dirname, project.platform.output);
-const srcDir = path.resolve(__dirname, 'src');
-const nodeModulesDir = path.resolve(__dirname, 'node_modules');
-const baseUrl = '/';
+const title = 'Burmese Lexicon'
+const outDir = path.resolve(__dirname, project.platform.output)
+const srcDir = path.resolve(__dirname, 'src')
+const nodeModulesDir = path.resolve(__dirname, 'node_modules')
+const baseUrl = '/'
 
 const cssRules = [
-  { loader: 'css-loader' },
-];
+  { loader: 'css-loader' }
+]
 
 module.exports = ({production, server, extractCss, coverage, analyze} = {}) => ({
   resolve: {
     extensions: ['.ts', '.js'],
-    modules: [srcDir, 'node_modules'],
+    modules: [srcDir, 'node_modules']
   },
   entry: {
     app: ['aurelia-bootstrapper'],
-    vendor: ['bluebird'],
+    vendor: ['bluebird']
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -47,6 +47,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
     historyApiFallback: true
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
+  node: {
+    dns: 'mock',
+    net: 'mock'
+  },
   module: {
     rules: [
       // CSS required in JS/TS files should use the style-loader that auto-injects it into the website
@@ -57,7 +61,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         use: extractCss ? ExtractTextPlugin.extract({
           fallback: 'style-loader',
           use: cssRules
-        }) : ['style-loader', ...cssRules],
+        }) : ['style-loader', ...cssRules]
       },
       {
         test: /\.css$/i,
@@ -77,7 +81,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         issuer: /\.html?$/i
       },
       { test: /\.html$/i, loader: 'html-loader' },
-      { test: /\.tsx?$/, loader: "ts-loader" },
+      { test: /\.tsx?$/, loader: 'ts-loader' },
       // use Bluebird as the global Promise implementation:
       { test: /[\/\\]node_modules[\/\\]bluebird[\/\\].+\.js$/, loader: 'expose-loader?Promise' },
       // embed small images and fonts as Data Urls and larger ones as files:
@@ -87,9 +91,12 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       // load these fonts normally, as files:
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
       ...when(coverage, {
-        test: /\.[jt]s$/i, loader: 'istanbul-instrumenter-loader',
-        include: srcDir, exclude: [/\.{spec,test}\.[jt]s$/i],
-        enforce: 'post', options: { esModules: true },
+        test: /\.[jt]s$/i,
+loader: 'istanbul-instrumenter-loader',
+        include: srcDir,
+exclude: [/\.{spec,test}\.[jt]s$/i],
+        enforce: 'post',
+options: { esModules: true }
       })
     ]
   },
@@ -130,4 +137,4 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       { from: 'static/favicon.ico', to: 'favicon.ico' }])),
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
-});
+})
