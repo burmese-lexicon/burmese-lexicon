@@ -10,6 +10,7 @@ export class WordsApi {
     await this.dbService.set(COLLECTIONS.WORDS, word,
       {
         user,
+        text: word,
         createdAt: Date.now()
       }
     )
@@ -23,15 +24,15 @@ export class WordsApi {
     )
   }
 
-  getWord (word) {
+  getWord (word: string) {
     return this.dbService.get(COLLECTIONS.WORDS, word)
   }
 
-  deleteDefinition (definition) {
+  deleteDefinition (definition: string) {
     return this.dbService.delete(COLLECTIONS.DEFINITIONS, definition)
   }
 
-  addDefinition (word, definition, user) {
+  addDefinition (word: string, definition: string, user: string) {
     return this.dbService.set(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word), {
       user,
       text: definition,
@@ -42,6 +43,13 @@ export class WordsApi {
 
   getWords () {
     return this.dbService.getAll(COLLECTIONS.WORDS)
+  }
+
+  async searchSimilarWords (word: string) {
+    const snapshot = await this.dbService.searchText(COLLECTIONS.WORDS, word)
+    const words = []
+    snapshot.forEach(doc => words.push(doc.id))
+    return words
   }
 
   getDefinitionsForWord (word: string) {

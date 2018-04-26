@@ -1,29 +1,24 @@
-import { autoinject } from 'aurelia-framework';
+import { WordsApi } from 'api/words-api'
+import { autoinject } from 'aurelia-framework'
 
 @autoinject
 export class WordSearch {
-  constructor(private element: Element) {}
+  constructor (private element: Element, private wordsApi: WordsApi) {}
 
-  attached() {
-    const content = [
-      {
-        title: 'ကျောင်း',
-        description: 'စာသင်သည့် နေရာ',
-      },
-      {
-        title: 'ကံ',
-        description: 'ကိုယ်တုိင် အားထုတ်မှု မပါဘဲ ဖြစ်နုိင်ခြေ',
-      }
-    ].map(word => ({
-      ...word,
-      url: `/#/words/${word.title}`
-    }))
+  attached () {
     jQuery(this.element).find('.ui.search')
       .search({
-        source: content,
-        searchFields: [
-          'title'
-        ]
+        apiSettings: {
+          responseAsync: async (settings, callback) => {
+            let words = await this.wordsApi.searchSimilarWords(settings.urlData.query)
+            words = words.map(word => ({title: word}))
+            const response = {
+              results: words
+            }
+            callback(response)
+          },
+          onError: error => console.error(error)
+        }
       })
   }
 

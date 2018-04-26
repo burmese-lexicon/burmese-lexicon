@@ -42,6 +42,16 @@ export class DbService {
     }
   }
 
+  async searchText (collectionName: string, text: string): Promise<any> {
+    try {
+      return await this.db.collection(collectionName)
+        .where('text', '==', text)
+        .get()
+    } catch (e) {
+      this.logError(e, 'searchText', collectionName, text)
+    }
+  }
+
   async delete (collectionName: string, docId: string): Promise<any> {
     try {
       return await this.db.collection(collectionName).doc(docId).delete()
