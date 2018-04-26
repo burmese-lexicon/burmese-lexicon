@@ -60,9 +60,16 @@ export class DbService {
     }
   }
 
-  async getAll (collectionName: string): Promise<any> {
+  async getAll (collectionName: string, orderBy: string = '', limit: number = -1): Promise<any> {
     try {
-      return await this.db.collection(collectionName).get()
+      let ref = this.db.collection(collectionName)
+      if (orderBy) {
+        ref = ref.orderBy(orderBy)
+      }
+      if (limit !== -1) {
+        ref = ref.limit(limit)
+      }
+      return await ref.get()
     } catch (e) {
       this.logError(e, 'getAll', collectionName, null, null)
     }

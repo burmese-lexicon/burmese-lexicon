@@ -42,7 +42,7 @@ export class WordsApi {
   }
 
   getWords () {
-    return this.dbService.getAll(COLLECTIONS.WORDS)
+    return this.dbService.getAll(COLLECTIONS.WORDS, 'text', 100)
   }
 
   async searchSimilarWords (word: string) {
