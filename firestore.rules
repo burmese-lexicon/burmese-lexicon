@@ -20,12 +20,12 @@ service cloud.firestore {
     function onlyUpdateVoting(oldDef, definition) {
     	return definition.data.keys().hasAll(['text', 'createdAt', 'user', 'word', 'votes'])
       	&& definition.data.size() == 5
-        && (defintion.data['votes.' + request.auth.uid] == 1
-          	|| definition.data['votes.' + request.auth.uid] == -1
-          )
-        // && oldDef.data.text == definition.data.text
+        && (definition.data.votes[request.auth.uid] == 1
+        			|| definition.data.votes[request.auth.uid] == -1
+        		)
+        && oldDef.data.text == definition.data.text
         && oldDef.data.user == definition.data.user
-        // && oldDef.data.word == definition.data.word
+        && oldDef.data.word == definition.data.word
     }
  
     match /words/{word} {
@@ -34,7 +34,8 @@ service cloud.firestore {
           && request.resource.id is string && request.resource.id.matches("^[\u1000-\u109F]{1,30}$")
           && request.resource.data.user == request.auth.uid
           && request.resource.data.createdAt is int
-          && request.resource.data.size() == 2
+          && request.resource.data.text == request.resource.id
+          && request.resource.data.size() == 3
           && !exists(/databases/$(database)/documents/words/$(request.resource.id))
       	)
       allow read: if true
@@ -60,7 +61,7 @@ service cloud.firestore {
           && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
         )
         // only allow voting on others' defs
-        || (resource.data.user != request.auth.uid
+        || (isLoggedIn() && resource.data.user != request.auth.uid
         	&& onlyUpdateVoting(resource, getAfter(/databases/$(database)/documents/definitions/$(request.resource.id)))
         )
     }

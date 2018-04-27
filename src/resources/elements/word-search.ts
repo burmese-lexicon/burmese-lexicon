@@ -11,7 +11,10 @@ export class WordSearch {
         apiSettings: {
           responseAsync: async (settings, callback) => {
             let words = await this.wordsApi.searchSimilarWords(settings.urlData.query)
-            words = words.map(word => ({title: word}))
+            words = words.map(word => ({
+              title: word,
+              url: `/#/words/${word}`
+            }))
             const response = {
               results: words
             }

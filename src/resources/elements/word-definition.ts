@@ -2,11 +2,11 @@ import { AuthRequestedMessage } from './auth-modal'
 import { EventAggregator } from 'aurelia-event-aggregator'
 import { AuthService } from './../../services/auth-service'
 import { WordsApi } from 'api/words-api'
-import { autoinject, bindable } from 'aurelia-framework'
+import { autoinject, bindable, computedFrom } from 'aurelia-framework'
 
 @autoinject
 export class WordDefinition {
-  @bindable private votes: number
+  @bindable private votes: object
   @bindable private text: string
   @bindable private createdAt: number
   @bindable private author: any
@@ -24,16 +24,43 @@ export class WordDefinition {
     this.delete(this.index)
   }
 
-  async vote (num: number) {
+  async vote (type: 'up' | 'down') {
     if (!this.authService.user) {
       this.ea.publish(new AuthRequestedMessage())
     } else {
+      let vote = this.authService.userId in this.votes ? this.votes[this.authService.userId] : 0
+      vote = type === 'up' ? ++vote : --vote
+      if (vote > 1) {
+        vote = 1
+      } else if (vote < -1) {
+        vote = -1
+      }
       try {
-        await this.wordsApi.vote(this.authService.userId, this.author.uid, this.word, this.text, num)
-        this.votes++
+        await this.wordsApi.vote(this.authService.userId, this.author.uid, this.word, this.text, vote)
+        this.votes = {
+          ...this.votes,
+          [this.authService.userId]: vote
+        }
       } catch (e) {
         console.error('Voting failed.')
       }
+    }
+  }
+
+  @computedFrom('votes')
+  get voteCount () {
+    return Object.values(this.votes).reduce((sum, vote) => sum + vote, 0)
+  }
+
+  @computedFrom('votes')
+  get userVotedUpOrDown () {
+    const vote = this.votes[this.authService.userId]
+    if (vote > 0) {
+      return 'up'
+    } else if (vote < 0) {
+      return 'down'
+    } else {
+      return ''
     }
   }
 }

@@ -42,7 +42,7 @@ export class WordPage {
         }
         definitions.push({
           word: data.word,
-          votes: data.votes ? Object.keys(data.votes).length : 0,
+          votes: data.votes,
           text: data.text,
           createdAt: data.createdAt,
           author: {

@@ -1,4 +1,5 @@
 <template>
+  <require from='./word-definition.scss'></require>
   <require from='../value-converters/date-format'></require>
 
   <div class="comment" css='opacity: ${votes <= -3 ? 0.2 : 1}'>
@@ -8,9 +9,9 @@
       </div>
       <div class='attribution'>
         <div class="actions">
-          <a class="reply" click.delegate='vote(1)'><i class="caret up icon"></i></a>
-          <span>${votes}</span>
-          <a class="reply" click.delegate='vote(-1)'><i class="caret down icon"></i></a>
+          <a if.bind='authService.userId !== author.uid' class="reply ${userVotedUpOrDown === 'up' ? 'up' : ''}" click.delegate='vote("up")'><i class="caret up icon"></i></a>
+          <span>${voteCount}</span>
+          <a if.bind='authService.userId !== author.uid' class="reply ${userVotedUpOrDown === 'down' ? 'down' : ''}" click.delegate='vote("down")'><i class="caret down icon"></i></a>
           <a if.bind='authService.userId === author.uid' class='reply' click.delegate='handleDelete()'><i class="trash icon"></i></a>
         </div>
         <div class="metadata">
