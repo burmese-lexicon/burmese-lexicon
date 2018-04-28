@@ -12,6 +12,7 @@
           <a if.bind='authService.userId !== author.uid' class="reply ${userVotedUpOrDown === 'up' ? 'up' : ''}" click.delegate='vote("up")'><i class="caret up icon"></i></a>
           <span>${voteCount}</span>
           <a if.bind='authService.userId !== author.uid' class="reply ${userVotedUpOrDown === 'down' ? 'down' : ''}" click.delegate='vote("down")'><i class="caret down icon"></i></a>
+          <a if.bind='authService.userId === author.uid' class='reply' click.delegate="handleEdit()"><i class="edit icon"></i></a>
           <a if.bind='authService.userId === author.uid' class='reply' click.delegate='handleDelete()'><i class="trash icon"></i></a>
         </div>
         <div class="metadata">

@@ -1,5 +1,11 @@
 word-definition {
   .comment {
+    .actions {
+      width: 8em;
+      display: flex;
+      justify-content: space-between;
+    }
+
     .actions a.up.reply {
       color: green;
     }
@@ -23,7 +29,7 @@ word-definition {
       display: flex;
       flex-direction: column;
       align-items: center;
-
+      flex-basis: 5em;
       .avatar img {
         height: 35px;
       }

@@ -13,15 +13,15 @@ service cloud.firestore {
     	return request.auth.uid != null
     }
     
-    function isOwner() {
-    	return isLoggedIn() && request.auth.uid == resource.data.user
+    function isOwner(doc) {
+    	return isLoggedIn() && request.auth.uid == doc.data.user
     }
     
     function onlyUpdateVoting(oldDef, definition) {
     	return definition.data.keys().hasAll(['text', 'createdAt', 'user', 'word', 'votes'])
       	&& definition.data.size() == 5
-        && (definition.data.votes[request.auth.uid] == 1
-        			|| definition.data.votes[request.auth.uid] == -1
+        && (definition.data.votes[request.auth.uid] >= -1
+        			&& definition.data.votes[request.auth.uid] <= 1
         		)
         && oldDef.data.text == definition.data.text
         && oldDef.data.user == definition.data.user
@@ -51,14 +51,16 @@ service cloud.firestore {
           && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
       	)
       allow list: if true
-      allow delete: if isAdmin() || isOwner()
+      allow delete: if isAdmin() || isOwner(resource)
       allow update: if isAdmin()
-      	|| (isOwner()
-        	&& request.resource.text != null && request.resource.data.text.size() < 500
-          && request.resource.data.createdAt is int
-          && request.resource.data.votes == null
-          && request.resource.data.size() == 4
-          && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
+      	|| (isOwner(resource)
+        	&& request.resource.data.text is string && request.resource.data.text.size() < 500
+        	&& request.resource.data.createdAt is int
+        	&& request.resource.data.word == resource.data.word
+          && (
+          	(request.resource.data.votes == null && request.resource.data.size() == 4)
+          	|| (request.resource.data.votes != null && request.resource.data.size() == 5)
+          )
         )
         // only allow voting on others' defs
         || (isLoggedIn() && resource.data.user != request.auth.uid

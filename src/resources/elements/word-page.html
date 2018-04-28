@@ -28,6 +28,7 @@
         created-at.bind='definition.createdAt'
         author.bind='definition.author'
         delete.bind='showDefinitionDelete'
+        edit.bind='enableDefEditMode'
       >
       </word-definition>
       <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='!hasUserDefinition'>
@@ -37,6 +38,18 @@
         <button type='submit' class="ui blue labeled submit icon ${addingNewDef ? 'loading' : ''} button">
           <i class="icon edit"></i> Add definition
         </button>
+      </form>
+      <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='defEditMode'>
+        <div class="field required">
+          <textarea value.bind="defToEdit.text"></textarea>
+        </div>
+        <button
+          type='submit' class="ui blue labeled submit icon ${updatingDef ? 'loading' : ''} button"
+          click.delegate="updateDefinition()"
+        >
+          <i class="icon edit"></i> Update definition
+        </button>
+        <button class='ui button' click.delegate='disableDefEditMode()'>Cancel</button>
       </form>
     </div>
   </div>

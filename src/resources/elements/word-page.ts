@@ -15,6 +15,10 @@ export class WordPage {
   private newDefinition: string
   private hasUserDefinition: boolean = false
   private addingNewDef: boolean = false
+  private defEditMode: boolean = false
+  private defToEdit: any
+  private defToEditOriginalText: string
+  private updatingDef: boolean = false
 
   constructor (private wordsApi: WordsApi, private usersApi: UsersApi, private authService: AuthService) {}
 
@@ -98,6 +102,28 @@ export class WordPage {
       this.addingNewDef = false
     } catch (e) {
       console.error('adding definition failed')
+    }
+  }
+
+  enableDefEditMode = (index: number) => {
+    this.defToEdit = this.definitions[index]
+    this.defToEditOriginalText = this.defToEdit.text
+    this.defEditMode = true
+  }
+
+  disableDefEditMode () {
+    this.defEditMode = false
+    this.defToEdit.text = this.defToEditOriginalText
+  }
+
+  async updateDefinition () {
+    this.updatingDef = true
+    try {
+      await this.wordsApi.updateDefinition(this.word, this.defToEdit.text, this.authService.userId)
+      this.updatingDef = false
+      this.defEditMode = false
+    } catch (e) {
+      console.error('updating definition failed')
     }
   }
 }

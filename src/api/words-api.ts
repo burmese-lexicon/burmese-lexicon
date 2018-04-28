@@ -41,6 +41,15 @@ export class WordsApi {
     })
   }
 
+  updateDefinition (word: string, definition: string, user: string) {
+    return this.dbService.merge(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(user, word), {
+      user,
+      text: definition,
+      createdAt: Date.now(),
+      word
+    })
+  }
+
   getWords () {
     return this.dbService.getAll(COLLECTIONS.WORDS, 'text', 100)
   }
@@ -60,7 +69,7 @@ export class WordsApi {
     return this.dbService.merge(COLLECTIONS.DEFINITIONS, this.generateDefinitionId(author, word),
       {
         votes: {
-          [user]: vote > 0 ? 1 : -1
+          [user]: vote
         }
       }
     )
