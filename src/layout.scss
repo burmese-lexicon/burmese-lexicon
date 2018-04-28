@@ -7,6 +7,7 @@ body {
 }
 
 .app-body {
+  position: relative;
   padding: 1em;
   &.ui.grid {
     margin-top: $menu-bar-height;
@@ -18,6 +19,7 @@ body {
     display: flex;
     justify-content: center;
   }
+  width: 100vw;
 }
 
 .sidebar.menu a.ui.item {

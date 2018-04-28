@@ -1,13 +1,12 @@
 <template>
   <require from='./contributors-page.scss'></require>
 
-  <div if.bind='loading' class="ui active dimmer">
-    <div class="ui loader"></div>
-  </div>
-  <div class='ui wide column centered' else>
+  <div class='ui eight wide column centered'>
     <h1>Top contributors</h1>
-
-    <table class="ui fixed inverted table">
+    <div if.bind='loading' class="ui active inverted dimmer">
+      <div class="ui loader"></div>
+    </div>
+    <table class="ui fixed inverted table" else>
       <thead>
         <tr>
           <th>Contributor</th>

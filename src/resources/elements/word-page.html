@@ -3,13 +3,14 @@
   <require from='./word-definition'></require>
   <require from='./modal-dialog'></require>
 
-  <div class='word-container'>
+  <div class='ui centered fifteen wide column word-container'>
     <h1 class='ui header'>${word}</h1>
-    <div if.bind='loading' class="ui active dimmer">
+    <div if.bind='loading' class="ui active inverted dimmer">
       <div class="ui loader"></div>
     </div>
     <div if.bind="!loading && !doesWordExist">
-      This word does not exist yet. Would you like to <a href='/#/words/new?word=${word}'>contribute</a>?
+      This word does not exist yet. Would you like to
+      <a href='/#/words/new?word=${word}'>contribute</a>?
     </div>
     <div class="ui comments" else>
       <h3 class="ui dividing header">Definitions</h3>
