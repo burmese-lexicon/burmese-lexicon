@@ -102,6 +102,30 @@ exports.incrementDefContributionOnDefVote = functions.firestore.document('/defin
         });
     }
 });
+exports.resetContributionScoreOnDefDelete = functions.firestore.document('/definitions/{definition}')
+    .onDelete((change, context) => {
+    const data = change.data();
+    let voteScores = 0;
+    if (data.votes) {
+        for (let user in data.votes) {
+            // reverse the score
+            voteScores += -1 * data.votes[user];
+        }
+    }
+    const contributionsRef = adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS);
+    return contributionsRef.doc(data.user).get()
+        .then(contriSnap => {
+        const stats = contriSnap.data();
+        const definitions = stats.definitions - 1;
+        const votes = stats.votes ? stats.votes - Object.keys(data.votes).length : 0;
+        const score = stats.score - DEFINITION_SCORE + (VOTE_SCORE * voteScores);
+        contributionsRef.doc(data.user).set({
+            score,
+            votes,
+            definitions
+        }, { merge: true });
+    });
+});
 app.use(cors);
 app.get('/getTopContributions', (req, res) => {
     adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
