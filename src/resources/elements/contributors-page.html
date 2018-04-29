@@ -10,8 +10,9 @@
       <thead>
         <tr>
           <th>Contributor</th>
-          <th>Score</th>
+          <th>Points</th>
           <th># Definitions</th>
+          <th># Votes</th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,9 @@
           <td>
             ${contribution.definitions}
           </td>  
+          <td>
+            ${contribution.votes || 0}
+          </td>
         </tr>
       </tbody>
     </table>

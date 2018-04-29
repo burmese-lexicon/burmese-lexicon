@@ -18,7 +18,30 @@ const VOTE_SCORE = 1
 // TODO: rewrite these with await
 
 const adminFirestore = admin.firestore()
-exports.incrementDefContribution = functions.firestore.document('/definitions/{definition}')
+
+exports.createPublicUserInfo = functions.auth.user().onCreate(user => {
+  console.log('Setting public user info on user creation')
+  // yea firebase doesn't include displayName for email signup, so you need to make a call to the db
+  return admin.auth().getUser(user.uid)
+    .then(fetchedUser => {
+      console.log(fetchedUser)
+      adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).doc(user.uid).set({
+        name: fetchedUser.displayName,
+        photoURL: fetchedUser.photoURL || null
+      })
+    })
+})
+
+exports.anonymizePublicUserinfo = functions.auth.user().onDelete(user => {
+  console.log('Annoymizing user on delete')
+  console.log(user)
+  return adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).doc(user.uid).set({
+    name: `user${user.uid.substring(user.uid.length - 5, user.uid.length)}`,
+    photoURL: null
+  })
+})
+
+exports.incrementDefContributionOnDefCreate = functions.firestore.document('/definitions/{definition}')
   .onCreate((snap, context) => {
     const user = snap.data().user
     const contributionsRef = adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
@@ -47,6 +70,43 @@ exports.incrementDefContribution = functions.firestore.document('/definitions/{d
           })
         }
       })
+  })
+
+exports.incrementDefContributionOnDefVote = functions.firestore.document('/definitions/{definition}')
+  .onUpdate((change, context) => {
+    const newData = change.after.data()
+    const oldData = change.before.data()
+    const newVotes = newData.votes
+    const oldVotes = oldData.votes
+    let isNewlyCreatedVote = true
+    if (newVotes) {
+      let newVote = 0
+      if (oldVotes) {
+        for (let user in newVotes) {
+          if (user in oldVotes) {
+            // we need the diff to offset the existing score
+            newVote = newVotes[user] - oldVotes[user]
+            isNewlyCreatedVote = false
+            break
+          }
+        }
+      } else {
+        newVote = newVotes[Object.keys(newVotes)[0]]
+      }
+
+      const user = newData.user
+      const contributionsRef = adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
+      return contributionsRef.doc(user).get()
+        .then(contriSnap => {
+          const stats = contriSnap.data()
+          const votes = stats.votes ? stats.votes + (isNewlyCreatedVote ? 1 : 0) : 1
+          const score = stats.score + (VOTE_SCORE * newVote)
+          contributionsRef.doc(user).set({
+            score,
+            votes
+          }, {merge: true})
+        })
+    }
   })
 
 app.use(cors)
