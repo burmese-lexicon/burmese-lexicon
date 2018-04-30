@@ -81,5 +81,13 @@ service cloud.firestore {
           && request.resource.data.size() <= 2
         )
     }
+    
+    match /word-list/{list} {
+    	allow read: if true
+    }
+    
+    match /stats/{stats} {
+    	allow read: if true
+    }
   }
 }

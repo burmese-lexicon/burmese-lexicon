@@ -1,3 +1,5 @@
+import { COLLECTIONS } from './collections'
+import { DbService } from './../services/db-service'
 import { UsersApi } from 'api/users-api'
 import { autoinject } from 'aurelia-dependency-injection'
 import {HttpClient} from 'aurelia-fetch-client'
@@ -5,7 +7,7 @@ import APIS from './apis'
 
 @autoinject
 export class ContributionsApi {
-  constructor (private httpClient: HttpClient, private usersApi: UsersApi) {}
+  constructor (private httpClient: HttpClient, private usersApi: UsersApi, private dbService: DbService) {}
 
   async getTopContributions () {
     const response = await this.httpClient.fetch(APIS.GET_TOP_CONTRIBUTIONS)
@@ -26,5 +28,10 @@ export class ContributionsApi {
       })
     }
     return contributors
+  }
+
+  async getStats () {
+    const snap = await this.dbService.get(COLLECTIONS.STATS, 'stats')
+    return snap.data()
   }
 }

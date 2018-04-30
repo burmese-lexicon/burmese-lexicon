@@ -30,7 +30,7 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
   },
   entry: {
     app: ['aurelia-bootstrapper'],
-    vendor: ['bluebird']
+    vendor: ['bluebird', 'jquery', 'firebase', 'firebaseui']
   },
   mode: production ? 'production' : 'development',
   output: {
@@ -92,11 +92,11 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       { test: /\.(ttf|eot|svg|otf)(\?v=[0-9]\.[0-9]\.[0-9])?$/i, loader: 'file-loader' },
       ...when(coverage, {
         test: /\.[jt]s$/i,
-loader: 'istanbul-instrumenter-loader',
+        loader: 'istanbul-instrumenter-loader',
         include: srcDir,
-exclude: [/\.{spec,test}\.[jt]s$/i],
+        exclude: [/\.{spec,test}\.[jt]s$/i],
         enforce: 'post',
-options: { esModules: true }
+        options: { esModules: true }
       })
     ]
   },

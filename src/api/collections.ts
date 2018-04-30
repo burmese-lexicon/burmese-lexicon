@@ -3,5 +3,6 @@ export const COLLECTIONS = {
   PUBLIC_USERS: 'public-users',
   WORDS: 'words',
   DEFINITIONS: 'definitions',
-  WORD_LIST: 'word-list'
+  WORD_LIST: 'word-list',
+  STATS: 'stats'
 }

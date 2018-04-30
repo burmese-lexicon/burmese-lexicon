@@ -5,9 +5,15 @@
   <h1>Burmese Lexicon</h1>
   <word-search></word-search>
   <div class="ui statistics">
-    <div class="statistic">
+    <div if.bind='loading' class="ui active inverted dimmer">
+      <div class="ui loader"></div>
+    </div>
+    <div class="ui negative message" if.bind='error'>
+      There was an error loading the stats.
+    </div>
+    <div class="statistic" else>
       <div class="value">
-        <i class='language icon'></i>10,000
+        <i class='language icon'></i>${stats.words}
       </div>
       <div class="label">
         Words
@@ -15,15 +21,15 @@
     </div>
     <div class="statistic">
       <div class="value">
-        <i class='pencil alternate icon'></i>100,000
+        <i class='pencil alternate icon'></i>${stats.definitions}
       </div>
       <div class="label">
-        Translations
+        Definitions
       </div>
     </div>
     <div class="statistic">
       <div class="value">
-        <i class='users icon'></i>1,000
+        <i class='users icon'></i>${stats.contributors}
       </div>
       <div class="label">
         Contributors

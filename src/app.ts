@@ -38,7 +38,7 @@ export class App {
           'home'
         ],
         name: 'home',
-        moduleId: PLATFORM.moduleName('./resources/elements/home-page'),
+        moduleId: PLATFORM.moduleName('./resources/elements/home-page', 'home'),
         nav: true,
         title: 'Burmese Lexicon',
         settings: {
@@ -49,7 +49,7 @@ export class App {
       {
         route: 'words',
         name: 'words',
-        moduleId: PLATFORM.moduleName('./resources/elements/words-page'),
+        moduleId: PLATFORM.moduleName('./resources/elements/words-page', 'words'),
         nav: true,
         title: 'Words',
         settings: {
@@ -60,7 +60,7 @@ export class App {
       {
         route: 'words/new',
         name: 'new-word',
-        moduleId: PLATFORM.moduleName('./resources/elements/new-word-page'),
+        moduleId: PLATFORM.moduleName('./resources/elements/new-word-page', 'words-new'),
         title: 'Add new word',
         settings: {
           auth: true
@@ -69,7 +69,7 @@ export class App {
       {
         route: 'contributors',
         name: 'contributors',
-        moduleId: PLATFORM.moduleName('./resources/elements/contributors-page'),
+        moduleId: PLATFORM.moduleName('./resources/elements/contributors-page', 'contributors'),
         nav: true,
         title: 'Top Contributors',
         settings: {
@@ -86,7 +86,7 @@ export class App {
         route: 'profile',
         name: 'profile',
         title: 'Profile',
-        moduleId: PLATFORM.moduleName('./resources/elements/profile-page'),
+        moduleId: PLATFORM.moduleName('./resources/elements/profile-page', 'profile'),
         settings: {
           auth: true
         }

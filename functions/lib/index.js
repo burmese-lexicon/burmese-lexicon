@@ -1,3 +1,5 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 // // Start writing Firebase Functions
 // // https://firebase.google.com/docs/functions/typescript
 //
@@ -10,12 +12,32 @@ admin.initializeApp(functions.config().firebase);
 const COLLECTIONS = {
     CONTRIBUTIONS: 'contributions',
     PUBLIC_USERS: 'public-users',
-    WORD_LIST: 'word-list'
+    WORD_LIST: 'word-list',
+    STATS: 'stats'
 };
 const DEFINITION_SCORE = 3;
 const VOTE_SCORE = 1;
 // TODO: rewrite these with await
 const adminFirestore = admin.firestore();
+exports.updateStatsOnContributionsWrite = functions.firestore.document('/contributions/{contribution}').onWrite((snap, context) => {
+    return adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS).get()
+        .then(contriSnap => {
+        let words = 0;
+        let contributors = 0;
+        let definitions = 0;
+        contriSnap.forEach(cSnap => {
+            const data = cSnap.data();
+            words += data.words;
+            definitions += data.definitions;
+            contributors++;
+        });
+        adminFirestore.collection(COLLECTIONS.STATS).doc('stats').set({
+            words,
+            contributors,
+            definitions
+        });
+    });
+});
 exports.updateWordListOnWordCreate = functions.firestore.document('/words/{word}').onCreate((snap, context) => {
     const word = snap.data().text;
     return adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').get()
@@ -52,15 +74,18 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
     const user = snap.data().user;
     const contributionsRef = adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS);
     let definitions = 1;
+    let words = 1;
     let score = DEFINITION_SCORE;
     return contributionsRef.doc(user).get()
         .then(contriSnap => {
         if (contriSnap.exists) {
             const contributionData = contriSnap.data();
+            words = contributionData.words + 1;
             definitions = contributionData.definitions + 1;
             score = contributionData.score + DEFINITION_SCORE;
             console.log(`incrementing def contribution for user ${user} to ${score}`);
             contributionsRef.doc(user).set({
+                words,
                 definitions,
                 score
             }, { merge: true });
@@ -68,6 +93,7 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
         else {
             console.log(`incrementing def contribution for user ${user} to ${score}`);
             contributionsRef.doc(user).set({
+                words,
                 definitions,
                 score,
                 user
@@ -126,9 +152,11 @@ exports.resetContributionScoreOnDefDelete = functions.firestore.document('/defin
         .then(contriSnap => {
         const stats = contriSnap.data();
         const definitions = stats.definitions - 1;
+        const words = stats.words - 1;
         const votes = stats.votes ? stats.votes - Object.keys(data.votes).length : 0;
         const score = stats.score - DEFINITION_SCORE + (VOTE_SCORE * voteScores);
         contributionsRef.doc(data.user).set({
+            words,
             score,
             votes,
             definitions
