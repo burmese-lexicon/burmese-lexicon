@@ -70,10 +70,15 @@ service cloud.firestore {
     
     match /public-users/{user} {
     	allow read: if true
-      allow write: if isAdmin()
-      	|| (isLoggedIn()
-        	&& request.resource.id == request.auth.id
+      allow update: if isAdmin()
+      	|| (request.resource.id == request.auth.uid
           && request.resource.data.name.matches(".{1,20}")
+          && (request.resource.data.photoURL == null
+          	|| (request.resource.data.photoURL is string
+            	&& request.resource.data.photoURL.size() <= 2083
+            )
+          )
+          && request.resource.data.size() <= 2
         )
     }
   }

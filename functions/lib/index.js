@@ -54,14 +54,11 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
             }, { merge: true });
         }
         else {
-            adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).doc(user).get().then(snapshot => {
-                const username = snapshot.data().name;
-                console.log(`incrementing def contribution for user ${user} to ${score}`);
-                contributionsRef.doc(user).set({
-                    definitions,
-                    score,
-                    user: username
-                });
+            console.log(`incrementing def contribution for user ${user} to ${score}`);
+            contributionsRef.doc(user).set({
+                definitions,
+                score,
+                user
             });
         }
     });

@@ -12,6 +12,7 @@ export class ContributorsPage {
     try {
       this.contributions = await this.contributionsApi.getTopContributions()
     } catch (e) {
+      console.error(e)
       console.error('loading contributions failed')
     } finally {
       this.loading = false
