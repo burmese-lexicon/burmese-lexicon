@@ -1,10 +1,15 @@
+import { AuthService } from 'services/auth-service'
 import firebase from '@firebase/app'
 import '@firebase/firestore'
 import { DocumentData } from '@firebase/firestore-types'
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants'
+import { autoinject } from 'aurelia-framework'
 
+@autoinject
 export class DbService {
   private db: any
+
+  constructor (private authService: AuthService) {}
 
   configure () {
     this.db = firebase.firestore()
@@ -84,7 +89,7 @@ export class DbService {
   }
 
   private logError (error, operation, collectionName, documentId?, document?) {
-    console.error('db operation failed for', operation, collectionName, documentId, document)
+    console.error('db operation failed for', this.authService.userId, operation, collectionName, documentId, document)
     console.error(error)
     throw error
   }

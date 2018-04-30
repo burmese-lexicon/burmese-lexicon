@@ -51,7 +51,7 @@ export class WordPage {
           createdAt: data.createdAt,
           author: {
             name: userData.name ? userData.name : `user${data.user.substring(data.user.length - 5, data.user.length)}`,
-            profileURL: userData.profileURL,
+            photoURL: userData.photoURL,
             uid: data.user
           }
         })

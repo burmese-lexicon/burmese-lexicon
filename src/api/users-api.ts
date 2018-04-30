@@ -9,4 +9,8 @@ export class UsersApi {
   getPublicUserInfo (userId: string) {
     return this.dbService.get(COLLECTIONS.PUBLIC_USERS, userId)
   }
+
+  setPublicUserInfo (userId: string, user: any) {
+    return this.dbService.merge(COLLECTIONS.PUBLIC_USERS, userId, user)
+  }
 }

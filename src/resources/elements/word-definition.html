@@ -19,8 +19,8 @@
           <span class="date" textcontent.bind='createdAt | dateFormat'></span>
         </div>
         <div class='author-info'>
-          <a class="avatar" if.bind='author.profileURL'>
-            <img src='${author.profileURL}'>
+          <a if.bind='author.photoURL'>
+            <img src='${author.photoURL}' class="ui avatar image">
           </a>
           <a class="author">${author.name}</a>
         </div>

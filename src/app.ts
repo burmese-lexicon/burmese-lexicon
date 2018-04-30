@@ -83,6 +83,15 @@ export class App {
         moduleId: PLATFORM.moduleName('./resources/elements/word-page')
       },
       {
+        route: 'profile',
+        name: 'profile',
+        title: 'Profile',
+        moduleId: PLATFORM.moduleName('./resources/elements/profile-page'),
+        settings: {
+          auth: true
+        }
+      },
+      {
         route: 'login',
         name: 'login',
         moduleId: PLATFORM.moduleName('./resources/elements/auth-container'),

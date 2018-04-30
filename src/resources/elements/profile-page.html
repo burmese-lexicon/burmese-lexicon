@@ -1,0 +1,37 @@
+<template>
+  <require from='./profile-page.scss'></require>
+
+  <div if.bind='loading' class="ui active inverted dimmer">
+    <div class="ui loader"></div>
+  </div>
+  <form class="ui form ${controller.errors.length ? 'error' : ''} ${formState}" submit.delegate='submit()'>
+    <div class="field required disabled">
+      <label>Email</label>
+      <input type="email" name="email" value.bind='user.email' placeholder="myemail@domain.com">
+    </div>
+    <div class='ui divider'></div>
+    <h1>Public Info</h1>
+    <ul if.bind="formState !== 'error' && controller.errors" class='ui error message'>
+      <li repeat.for="error of controller.errors">
+        ${error.message}
+      </li>
+    </ul>
+    <div class='ui success message'>
+      Your profile has been updated successfully.
+    </div>
+    <div class='ui error message' if.bind='formState === "error"'>
+      There was an error updating your profile. Please try again later.
+    </div>
+    <em>Info under this section is publicly visible on your contributions.</em>
+    <div class="field required">
+      <label>Display Name</label>
+      <input type="text" name="name" value.bind='publicName & debounce & validate' placeholder="name">
+    </div>
+    <div class="field">
+      <label>Photo Url</label>
+      <input type="url" name="photoURL" value.bind='publicPhotoURL & debounce & validate' placeholder="https://myprofilepic.jpg">
+      <img show.bind='!imageError' class="ui circular image" src.bind="publicPhotoURL" error.trigger='handleImageError()' load.trigger='handleImageLoad()'>
+    </div>
+    <button class="ui button" type="submit">Submit</button>
+  </form>
+</template>

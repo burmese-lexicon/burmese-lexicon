@@ -15,11 +15,11 @@
     <div class="right menu">
       <word-search show.bind='router.currentInstruction.config.name !== "home"'></word-search>
       <a class="ui item" if.bind="!authService.user">
-        <div class='ui primary button' click.delegate="router.navigateToRoute('login')">Sign in</div>
+        <div class='ui primary button ${authService.isSigningIn ? "loading" : ""' click.delegate="router.navigateToRoute('login')">Sign in</div>
       </a>
       <a class="ui item" else>
         <img class="ui avatar image" src='${authService.user.photoURL}' if.bind='authService.user.photoURL' />
-        <span class='username'>${authService.user.displayName}</span>
+        <span class='username' click.delegate="router.navigateToRoute('profile')">${authService.user.displayName}</span>
         <div class='ui primary button' click.delegate="authService.signOut()">Sign out</div>
       </a>
     </div>

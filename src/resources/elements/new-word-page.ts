@@ -58,7 +58,7 @@ export class NewWordPage {
       this.formState = 'success'
       window.setTimeout(() => this.router.navigate(`/words/${this.word}`), 3000)
     } catch (e) {
-      console.log(e)
+      console.error(e)
       this.formState = 'error'
     }
   }
