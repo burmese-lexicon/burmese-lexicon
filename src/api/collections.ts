@@ -2,5 +2,6 @@ export const COLLECTIONS = {
   USERS: 'users',
   PUBLIC_USERS: 'public-users',
   WORDS: 'words',
-  DEFINITIONS: 'definitions'
+  DEFINITIONS: 'definitions',
+  WORD_LIST: 'word-list'
 }

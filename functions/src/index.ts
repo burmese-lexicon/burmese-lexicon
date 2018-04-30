@@ -10,7 +10,8 @@ admin.initializeApp(functions.config().firebase)
 
 const COLLECTIONS = {
   CONTRIBUTIONS: 'contributions',
-  PUBLIC_USERS: 'public-users'
+  PUBLIC_USERS: 'public-users',
+  WORD_LIST: 'word-list'
 }
 const DEFINITION_SCORE = 3
 const VOTE_SCORE = 1
@@ -18,6 +19,18 @@ const VOTE_SCORE = 1
 // TODO: rewrite these with await
 
 const adminFirestore = admin.firestore()
+
+exports.updateWordListOnWordCreate = functions.firestore.document('/words/{word}').onCreate((snap, context) => {
+  const word = snap.data().text
+  return adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').get()
+    .then(listSnap => {
+      const words = listSnap.data().words
+      words.push(word)
+      adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').update({
+        words
+      })
+    })
+})
 
 exports.createPublicUserInfo = functions.auth.user().onCreate(user => {
   console.log('Setting public user info on user creation')

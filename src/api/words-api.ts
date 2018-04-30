@@ -61,6 +61,18 @@ export class WordsApi {
     return words
   }
 
+  async getWordList () {
+    /*
+      TODO:
+      save money on full text search by just storing all words in a list
+      and return that list for client-side fuzzy search since it'll be less than 1 MB
+      for a long time.
+      The list is updated via cloud function trigger on word creation
+    */
+    const snapshot = await this.dbService.get(COLLECTIONS.WORD_LIST, 'static')
+    return snapshot.data().words
+  }
+
   getDefinitionsForWord (word: string) {
     return this.dbService.getWhere(COLLECTIONS.DEFINITIONS, ['word', '==', word])
   }
