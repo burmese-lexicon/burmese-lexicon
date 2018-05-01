@@ -1,3 +1,4 @@
+import { AuthRequestedMessage } from './../events/auth-events'
 import { AuthService } from 'services/auth-service'
 import { autoinject } from 'aurelia-dependency-injection'
 import { EventAggregator } from 'aurelia-event-aggregator'
@@ -14,5 +15,3 @@ export class AuthModal {
     this.authService.renderProvidersToContainer(this.modalRef, () => jQuery(this.modalRef).modal('hide'))
   }
 }
-
-export class AuthRequestedMessage {}

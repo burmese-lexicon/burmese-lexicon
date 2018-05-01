@@ -1,3 +1,5 @@
+import { AuthStateChanged } from './../resources/events/auth-events'
+import { EventAggregator } from 'aurelia-event-aggregator'
 import { Router, NavigationInstruction } from 'aurelia-router'
 import { autoinject } from 'aurelia-framework'
 import firebase from '@firebase/app'
@@ -12,7 +14,7 @@ export class AuthService {
   private ui: any
   private _loginRedirectURL: string
 
-  constructor (private router: Router) {}
+  constructor (private router: Router, private ea: EventAggregator) {}
 
   configure () {
     // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
@@ -33,6 +35,7 @@ export class AuthService {
       } else {
         this._user = null
       }
+      this.ea.publish(new AuthStateChanged())
     }, function (error) {
       console.error(error)
     })

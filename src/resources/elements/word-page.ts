@@ -1,3 +1,5 @@
+import { AuthRequestedMessage, AuthStateChanged } from './../events/auth-events'
+import { EventAggregator } from 'aurelia-event-aggregator'
 import { AuthService } from './../../services/auth-service'
 import { UsersApi } from 'api/users-api'
 import { WordsApi } from 'api/words-api'
@@ -20,7 +22,14 @@ export class WordPage {
   private defToEditOriginalText: string
   private updatingDef: boolean = false
 
-  constructor (private wordsApi: WordsApi, private usersApi: UsersApi, private authService: AuthService) {}
+  constructor (
+    private wordsApi: WordsApi,
+    private usersApi: UsersApi,
+    private authService: AuthService,
+    private ea: EventAggregator
+  ) {
+    this.ea.subscribe(AuthStateChanged, this.handleAuthStateChange)
+  }
 
   async activate (params) {
     this.word = params.id
@@ -68,6 +77,10 @@ export class WordPage {
     document.title = `${this.word} | ${document.title}`
   }
 
+  handleAuthStateChange () {
+    this.hasUserDefinition = this.definitions.some(def => def.author.uid === this.authService.userId)
+  }
+
   showDefinitionDelete = (index: number) => {
     this.deleteDialogVM.show()
     this.definitionIndexToDelete = index
@@ -84,6 +97,13 @@ export class WordPage {
   }
 
   async handleAddDefinition () {
+    if (!this.authService.user) {
+      this.ea.publish(new AuthRequestedMessage())
+      return
+    }
+    if (!this.newDefinition) {
+      return
+    }
     this.addingNewDef = true
     try {
       await this.wordsApi.addDefinition(this.word, this.newDefinition, this.authService.userId)

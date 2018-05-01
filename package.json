@@ -124,7 +124,10 @@
   },
   "scripts": {
     "start": "nps",
-    "test": "nps test"
+    "test": "nps test",
+    "build": "yarn start build",
+    "serve": "yarn start serve",
+    "deploy": "yarn firebase deploy"
   },
   "main": "dist/app.bundle.js"
 }

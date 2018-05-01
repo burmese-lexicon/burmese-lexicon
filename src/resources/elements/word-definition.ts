@@ -1,4 +1,4 @@
-import { AuthRequestedMessage } from './auth-modal'
+import { AuthRequestedMessage } from './../events/auth-events'
 import { EventAggregator } from 'aurelia-event-aggregator'
 import { AuthService } from './../../services/auth-service'
 import { WordsApi } from 'api/words-api'
