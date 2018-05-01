@@ -28,9 +28,13 @@ export class AuthService {
       if (user) {
         this._user = user
         const loginRedirectURL = this.getCachedLoginRedirectURL()
-        if (loginRedirectURL) {
-          this.router.navigate(loginRedirectURL)
-          this.clearCachedLoginRedirectURL()
+        if (this.router.currentInstruction.config.name === 'login') {
+          if (loginRedirectURL) {
+            this.router.navigate(loginRedirectURL)
+            this.clearCachedLoginRedirectURL()
+          } else {
+            this.router.navigateToRoute('home')
+          }
         }
       } else {
         this._user = null
