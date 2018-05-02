@@ -44,7 +44,8 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
   devServer: {
     contentBase: outDir,
     // serve index.html for all 404 (required for push-state)
-    historyApiFallback: true
+    historyApiFallback: true,
+    https: true
   },
   devtool: production ? 'nosources-source-map' : 'cheap-module-eval-source-map',
   node: {
@@ -133,8 +134,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       filename: production ? '[md5:contenthash:hex:20].css' : '[id].css',
       allChunks: true
     })),
-    ...when(production, new CopyWebpackPlugin([
-      { from: 'static/favicon.ico', to: 'favicon.ico' }])),
+    new CopyWebpackPlugin([
+      { from: 'static/favicon.ico', to: 'favicon.ico' },
+      {from: 'static/images', to: 'images'}
+    ]),
     ...when(analyze, new BundleAnalyzerPlugin())
   ]
 })
