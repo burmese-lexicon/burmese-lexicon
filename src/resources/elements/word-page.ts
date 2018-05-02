@@ -56,6 +56,7 @@ export class WordPage {
         definitions.push({
           word: data.word,
           votes: data.votes,
+          totalVotes: data.votes ? Object.values(data.votes).reduce((sum: number, vote: number) => sum + vote, 0) : 0,
           text: data.text,
           createdAt: data.createdAt,
           author: {
@@ -65,7 +66,7 @@ export class WordPage {
           }
         })
       })
-      this.definitions = definitions
+      this.definitions = definitions.sort((a, b) => b.totalVotes - a.totalVotes)
       this.loading = false
     } catch (e) {
       console.error(e)
