@@ -29,6 +29,7 @@ node_modules
 
 # Compiled files
 scripts
+dist
 
 # logs
 *.log
