@@ -7,6 +7,7 @@ export default {
     databaseURL: 'https://burmese-lexicon.firebaseio.com',
     projectId: 'burmese-lexicon',
     storageBucket: '',
-    messagingSenderId: '194765477370'
+    messagingSenderId: '194765477370',
+    apiRootURL: 'https://us-central1-burmese-lexicon.cloudfunctions.net'
   }
 }

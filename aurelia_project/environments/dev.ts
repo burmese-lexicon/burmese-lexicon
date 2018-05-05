@@ -6,6 +6,7 @@ export default {
     authDomain: 'burmese-lexicon-dev.firebaseapp.com',
     databaseURL: 'https://burmese-lexicon-dev.firebaseio.com',
     projectId: 'burmese-lexicon-dev',
-    storageBucket: ''
+    storageBucket: '',
+    apiRootURL: 'https://us-central1-burmese-lexicon-dev.cloudfunctions.net'
   }
 }
