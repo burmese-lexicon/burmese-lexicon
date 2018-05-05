@@ -9,11 +9,12 @@ export class NewWordPage {
   private word: string
   private definition: string
   private agreedTOS: boolean
-  private readonly MAX_DEFFINITION_LENGTH: number = 500
+  private readonly MAX_DEFFINITION_LENGTH: number =3000
   private readonly MAX_WORD_LENGTH: number = 20
   private controller: ValidationController
   private isFormValid: boolean = false
   private formState: string
+  private defPlaceholder: string = '[မြန်မာ][English]'
 
   constructor (
     private validationControllerFactory: ValidationControllerFactory,

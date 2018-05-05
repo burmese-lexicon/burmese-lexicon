@@ -22,7 +22,8 @@
     "bluebird": "^3.5.1",
     "fetch": "^1.1.0",
     "firebaseui": "^2.7.0",
-    "semantic-ui-css": "^2.3.1"
+    "semantic-ui-css": "^2.3.1",
+    "trumbowyg": "^2.10.0"
   },
   "peerDependencies": {},
   "devDependencies": {

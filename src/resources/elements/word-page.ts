@@ -4,6 +4,7 @@ import { AuthService } from './../../services/auth-service'
 import { UsersApi } from 'api/users-api'
 import { WordsApi } from 'api/words-api'
 import { autoinject } from 'aurelia-dependency-injection'
+import 'trumbowyg'
 
 @autoinject
 export class WordPage {

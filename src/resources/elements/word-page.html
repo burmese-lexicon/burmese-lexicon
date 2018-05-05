@@ -2,6 +2,8 @@
   <require from='./word-page.scss'></require>
   <require from='./word-definition'></require>
   <require from='./modal-dialog'></require>
+  <require from='trumbowyg/dist/ui/trumbowyg.min.css'></require>
+  <require from='./text-editor'></require>
 
   <div class='ui centered fifteen wide column word-container'>
     <h1 class='ui header'>${word}</h1>
@@ -20,20 +22,22 @@
       <div if.bind='!loading && definitions.length === 0'>
         There are no definitions for this word yet. Would you like to add one?
       </div>
-      <word-definition
-        repeat.for='definition of definitions'
-        word.bind='word'
-        votes.bind='definition.votes'
-        text.bind='definition.text'
-        created-at.bind='definition.createdAt'
-        author.bind='definition.author'
-        delete.bind='showDefinitionDelete'
-        edit.bind='enableDefEditMode'
-      >
-      </word-definition>
-      <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='!hasUserDefinition'>
+      <div class='ui items'>
+        <word-definition
+          repeat.for='definition of definitions'
+          word.bind='word'
+          votes.bind='definition.votes'
+          text.bind='definition.text'
+          created-at.bind='definition.createdAt'
+          author.bind='definition.author'
+          delete.bind='showDefinitionDelete'
+          edit.bind='enableDefEditMode'
+        >
+        </word-definition>
+      </div>
+      <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='!loading && !hasUserDefinition'>
         <div class="field required">
-          <textarea value.bind="newDefinition">New definition</textarea>
+          <text-editor text.bind='newDefinition'>New definition</text-editor>
         </div>
         <button type='submit' class="ui blue labeled submit icon ${addingNewDef ? 'loading' : ''} button">
           <i class="icon edit"></i> Add definition
@@ -41,7 +45,7 @@
       </form>
       <form class="ui reply form" submit.delegate='handleAddDefinition()' if.bind='defEditMode'>
         <div class="field required">
-          <textarea value.bind="defToEdit.text"></textarea>
+          <text-editor text.bind='defToEdit.text'></text-editor>
         </div>
         <button
           type='submit' class="ui blue labeled submit icon ${updatingDef ? 'loading' : ''} button"

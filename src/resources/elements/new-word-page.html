@@ -1,5 +1,6 @@
 <template>
   <require from='./new-word-page.scss'></require>
+  <require from='./text-editor'></require>
 
   <div class='centered wide column'>
     <form
@@ -24,9 +25,12 @@
       <div class="required field">
         <label>Definition</label>
         <em>Definitions can have maximum ${MAX_DEFFINITION_LENGTH} characters.</em>
-        <textarea
-          name="definition" rows='3' maxlength.one-time='MAX_DEFFINITION_LENGTH'
-          value.bind='definition & validate' placeholder="အနက်ဖွင့်ဆုိချက်"></textarea>
+        <text-editor
+          text.bind='definition & validate'
+          placeholder.bind='defPlaceholder'
+          maxlength.bind='MAX_DEFINITION_LENGTH'
+        >
+        </text-editor>
       </div>
       <div class="required field">
         <div class="ui checkbox">

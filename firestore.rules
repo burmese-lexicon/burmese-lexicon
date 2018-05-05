@@ -44,7 +44,7 @@ service cloud.firestore {
     match /definitions/{definition} {
     	allow create: if isAdmin()
       	|| (isLoggedIn()
-          && request.resource.data.text != null && request.resource.data.text.size() < 500
+          && request.resource.data.text != null && request.resource.data.text.size() < 3000
           && request.resource.data.user == request.auth.uid
           && request.resource.data.createdAt is int
           && request.resource.data.size() == 4
@@ -52,14 +52,14 @@ service cloud.firestore {
       	)
       allow list: if true
       allow delete: if isAdmin() || isOwner(resource)
-      allow update: if isAdmin()
+      allow update: if isAdmin() 
       	|| (isOwner(resource)
-        	&& request.resource.data.text is string && request.resource.data.text.size() < 500
-        	&& request.resource.data.createdAt is int
-        	&& request.resource.data.word == resource.data.word
+      	&& request.resource.data.text is string && request.resource.data.text.size() < 3000
+      	&& request.resource.data.createdAt is int
+      	&& request.resource.data.word == resource.data.word
           && (
-          	(request.resource.data.votes == null && request.resource.data.size() == 4)
-          	|| (request.resource.data.votes != null && request.resource.data.size() == 5)
+          	(!(request.resource.data.keys().hasAll(['votes'])) && request.resource.data.size() == 4)
+          	|| (request.resource.data.keys().hasAll(['votes']) && request.resource.data.size() == 5)
           )
         )
         // only allow voting on others' defs

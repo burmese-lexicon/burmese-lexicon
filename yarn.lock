@@ -10756,6 +10756,10 @@ trim-right@^1.0.1:
   dependencies:
     glob "^6.0.4"
 
+trumbowyg@^2.10.0:
+  version "2.10.0"
+  resolved "https://registry.yarnpkg.com/trumbowyg/-/trumbowyg-2.10.0.tgz#e74682528b07c36c78bcc341ea57bebffd565727"
+
 tryer@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/tryer/-/tryer-1.0.0.tgz#027b69fa823225e551cace3ef03b11f6ab37c1d7"

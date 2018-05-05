@@ -2,11 +2,9 @@
   <require from='./word-definition.scss'></require>
   <require from='../value-converters/date-format'></require>
 
-  <div class="comment" css='opacity: ${votes <= -3 ? 0.2 : 1}'>
+  <div class="comment ui item" css='opacity: ${votes <= -3 ? 0.2 : 1}'>
     <div class="content">
-      <div class="text">
-        ${text}
-      </div>
+      <div class="text" innerhtml.bind='text | sanitizeHTML'></div>
       <div class='attribution'>
         <div class="actions">
           <a if.bind='authService.userId !== author.uid' class="reply ${userVotedUpOrDown === 'up' ? 'up' : ''}" click.delegate='vote("up")'><i class="caret up icon"></i></a>

@@ -9,6 +9,8 @@ body {
 .app-body {
   position: relative;
   padding: 1em;
+  overflow-y: auto;
+  padding-bottom: 3em;
   &.ui.grid {
     margin: 0;
     margin-top: $menu-bar-height;
