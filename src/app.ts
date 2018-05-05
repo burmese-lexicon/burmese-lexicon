@@ -15,14 +15,6 @@ export class App {
   constructor (private authService: AuthService, private dbService: DbService) {}
 
   created () {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyA_qY1nFkpjA_osvlR4bJj8q3qIIGUs1Jo',
-      authDomain: 'burmese-lexicon.firebaseapp.com',
-      databaseURL: 'https://burmese-lexicon.firebaseio.com',
-      projectId: 'burmese-lexicon',
-      storageBucket: '',
-      messagingSenderId: '194765477370'
-    })
     this.authService.configure()
     this.dbService.configure()
   }

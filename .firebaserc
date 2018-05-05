@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "burmese-lexicon"
+    "default": "burmese-lexicon-dev",
+    "dev": "burmese-lexicon-dev",
+    "prod": "burmese-lexicon"
   }
 }

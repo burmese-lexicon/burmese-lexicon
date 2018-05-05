@@ -5,6 +5,7 @@ import environment from './environment'
 import {PLATFORM} from 'aurelia-pal'
 import * as Bluebird from 'bluebird'
 import 'fetch'
+import firebase from '@firebase/app'
 
 // remove out if you don't want a Promise polyfill (remove also from webpack.config.js)
 Bluebird.config({ warnings: { wForgottenReturn: false } })
@@ -29,6 +30,8 @@ export function configure (aurelia: Aurelia) {
   if (environment.testing) {
     aurelia.use.plugin(PLATFORM.moduleName('aurelia-testing'))
   }
+
+  firebase.initializeApp(environment.firebase)
 
   // give time for the loading icon to loop at least a couple times
   setTimeout(

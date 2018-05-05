@@ -123,9 +123,9 @@
     "node": ">= 6.0.0"
   },
   "scripts": {
-    "start": "nps",
+    "start": "au run --watch",
     "test": "nps test",
-    "build": "yarn start build",
+    "build": "au build --env prod",
     "serve": "yarn start serve",
     "deploy": "yarn firebase deploy"
   },
