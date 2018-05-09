@@ -141,7 +141,7 @@ export class WordPage {
   async updateDefinition () {
     this.updatingDef = true
     try {
-      await this.wordsApi.updateDefinition(this.word, this.defToEdit.text, this.authService.userId)
+      await this.wordsApi.updateDefinition(this.word, this.defToEdit.text, this.defToEdit.author.uid)
       this.updatingDef = false
       this.defEditMode = false
     } catch (e) {

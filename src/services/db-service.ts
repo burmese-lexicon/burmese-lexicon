@@ -9,8 +9,6 @@ import { autoinject } from 'aurelia-framework'
 export class DbService {
   private db: any
 
-  constructor (private authService: AuthService) {}
-
   configure () {
     this.db = firebase.firestore()
   }
@@ -89,7 +87,7 @@ export class DbService {
   }
 
   private logError (error, operation, collectionName, documentId?, document?) {
-    console.error('db operation failed for', this.authService.userId, operation, collectionName, documentId, document)
+    console.error('db operation failed for', operation, collectionName, documentId, document)
     console.error(error)
     throw error
   }

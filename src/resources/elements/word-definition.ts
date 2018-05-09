@@ -76,4 +76,10 @@ export class WordDefinition {
       return ''
     }
   }
+
+  @computedFrom('authService.userId', 'author.uid', 'authService.userRoles')
+  get canEdit () {
+    return this.authService.userId === this.author.uid ||
+      this.authService.userRoles.some(r => r === 'admin' || r === 'mod')
+  }
 }

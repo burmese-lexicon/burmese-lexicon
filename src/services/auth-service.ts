@@ -1,3 +1,4 @@
+import { UsersApi } from './../api/users-api'
 import { AuthStateChanged } from './../resources/events/auth-events'
 import { EventAggregator } from 'aurelia-event-aggregator'
 import { Router, NavigationInstruction } from 'aurelia-router'
@@ -6,15 +7,17 @@ import firebase from '@firebase/app'
 import '@firebase/auth'
 import firebaseui from 'firebaseui'
 import { User } from '@firebase/auth-types'
+import { ROLES } from 'api/roles'
 
 @autoinject
 export class AuthService {
   // private recaptchaVerifier: any
   private _user: User
+  private _userRoles: string[] = []
   private ui: any
   private _loginRedirectURL: string
 
-  constructor (private router: Router, private ea: EventAggregator) {}
+  constructor (private router: Router, private ea: EventAggregator, private usersApi: UsersApi) {}
 
   configure () {
     // this.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
@@ -28,6 +31,7 @@ export class AuthService {
       if (user) {
         this._user = user
         const loginRedirectURL = this.getCachedLoginRedirectURL()
+        this.usersApi.getUserRoles(user.uid).then(roles => { this._userRoles = roles })
         if (this.router.currentInstruction.config.name === 'login') {
           if (loginRedirectURL) {
             this.router.navigate(loginRedirectURL)
@@ -111,6 +115,10 @@ export class AuthService {
 
   get userId () {
     return this._user ? this.user.uid : null
+  }
+
+  get userRoles (): string[] {
+    return this._userRoles
   }
 
   get isSigningIn () {

@@ -9,6 +9,11 @@ service cloud.firestore {
         && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles.hasAny(['admin']);
     }
     
+    function isMod() {
+    	return isLoggedIn()
+      	&& get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles.hasAny(['mod']);
+    }
+    
     function isLoggedIn() {
     	return request.auth.uid != null
     }
@@ -28,6 +33,10 @@ service cloud.firestore {
         && oldDef.data.word == definition.data.word
     }
  
+ 		match /users/{user} {
+    	allow read: if isAdmin() || resource.id == request.auth.uid
+    }
+
     match /words/{word} {
     	allow create: if isAdmin()
       	|| (isLoggedIn()
@@ -39,6 +48,7 @@ service cloud.firestore {
           && !exists(/databases/$(database)/documents/words/$(request.resource.id))
       	)
       allow read: if true
+      allow update, delete: if isAdmin() || isMod()
     }
     
     match /definitions/{definition} {
@@ -51,8 +61,8 @@ service cloud.firestore {
           && exists(/databases/$(database)/documents/words/$(request.resource.data.word))
       	)
       allow list: if true
-      allow delete: if isAdmin() || isOwner(resource)
-      allow update: if isAdmin() 
+      allow delete: if isAdmin() || isMod() || isOwner(resource)
+      allow update: if isAdmin() || isMod()
       	|| (isOwner(resource)
       	&& request.resource.data.text is string && request.resource.data.text.size() < 3000
       	&& request.resource.data.createdAt is int

@@ -13,4 +13,10 @@ export class UsersApi {
   setPublicUserInfo (userId: string, user: any) {
     return this.dbService.merge(COLLECTIONS.PUBLIC_USERS, userId, user)
   }
+
+  async getUserRoles (userId: string) {
+    const userSnap = await this.dbService.get(COLLECTIONS.USERS, userId)
+    const userData = userSnap.data()
+    return userData.roles ? userData.roles : []
+  }
 }
