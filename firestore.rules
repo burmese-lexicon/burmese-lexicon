@@ -98,6 +98,7 @@ service cloud.firestore {
           && request.resource.id is string && request.resource.id.matches("^[\u1000-\u109F]{1,30}$")
           && request.resource.data.user == request.auth.uid
           && !exists(/databases/$(database)/documents/requested-words/$(request.resource.id))
+          && !exists(/databases/$(database)/documents/words/$(request.resource.id))
           && request.resource.data.size() == 1
       allow update, delete: if isAdmin() || isMod()
     }
