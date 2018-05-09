@@ -36,12 +36,6 @@ const routes = [
     }
   },
   {
-    route: 'requested-words',
-    name: 'requested-words',
-    moduleId: PLATFORM.moduleName('./resources/elements/requested-words-page', 'requested-words'),
-    title: 'Most requested words'
-  },
-  {
     route: 'request-word',
     name: 'request-word',
     moduleId: PLATFORM.moduleName('./resources/elements/request-word-page', 'request-word'),
@@ -56,6 +50,17 @@ const routes = [
     settings: {
       icon: 'trophy',
       iconColor: 'gold'
+    }
+  },
+  {
+    route: 'requested-words',
+    name: 'requested-words',
+    moduleId: PLATFORM.moduleName('./resources/elements/requested-words-page', 'requested-words'),
+    title: 'Requested words',
+    nav: true,
+    settings: {
+      icon: 'paperclip',
+      iconColor: 'darkcyan'
     }
   },
   {

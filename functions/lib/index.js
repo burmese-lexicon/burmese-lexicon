@@ -13,7 +13,8 @@ const COLLECTIONS = {
     CONTRIBUTIONS: 'contributions',
     PUBLIC_USERS: 'public-users',
     WORD_LIST: 'word-list',
-    STATS: 'stats'
+    STATS: 'stats',
+    REQUESTED_WORDS: 'requested-words'
 };
 const DEFINITION_SCORE = 3;
 const VOTE_SCORE = 1;
@@ -38,7 +39,7 @@ exports.updateStatsOnContributionsWrite = functions.firestore.document('/contrib
         });
     });
 });
-exports.updateWordListOnWordCreate = functions.firestore.document('/words/{word}').onCreate((snap, context) => {
+exports.onWordsCreate = functions.firestore.document('/words/{word}').onCreate((snap, context) => {
     const word = snap.data().text;
     return adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').get()
         .then(listSnap => {
@@ -47,6 +48,9 @@ exports.updateWordListOnWordCreate = functions.firestore.document('/words/{word}
         adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').update({
             words
         });
+        console.log(`Updated words list on word create: ${word}`);
+        adminFirestore.collection(COLLECTIONS.REQUESTED_WORDS).doc(word).delete()
+            .then(() => console.log(`Deleted requested word on word create: ${word}`));
     });
 });
 exports.createPublicUserInfo = functions.auth.user().onCreate(user => {

@@ -1,4 +1,19 @@
 <template>
-  <div class='ui centered fifteen wide column'>
+  <div if.bind='loading' class="ui active inverted dimmer">
+    <div class="ui loader"></div>
+  </div>
+  <div class='ui centered fifteen wide column word-list-segment'>
+    <div class="ui message">
+      <p>Know what the word means? Click it to add the definition.</p>
+    </div>
+    <h1>Requested Words</h1>
+    <div if.bind='error' class='ui error message'>
+      ${error}
+    </div>
+    <ul>
+      <li repeat.for='word of words'>
+        <a href='${router.generate("new-word")}?word=${word}'>${word}</a>
+      </li>
+    </ul>
   </div>
 </template>
