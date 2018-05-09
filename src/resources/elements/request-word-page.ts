@@ -1,3 +1,5 @@
+import { AuthRequestedMessage } from './../events/auth-events'
+import { EventAggregator } from 'aurelia-event-aggregator'
 import { Router } from 'aurelia-router'
 import { AuthService } from './../../services/auth-service'
 import { WordsApi } from './../../api/words-api'
@@ -15,7 +17,8 @@ export class RequestWordPage {
     private validationControllerFactory: ValidationControllerFactory,
     private wordsApi: WordsApi,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private ea: EventAggregator
   ) {
     this.controller = validationControllerFactory.createForCurrentScope()
     this.controller.validateTrigger = validateTrigger.changeOrBlur
@@ -28,6 +31,10 @@ export class RequestWordPage {
   }
 
   async submit () {
+    if (!this.authService.user) {
+      this.ea.publish(new AuthRequestedMessage())
+      return
+    }
     this.formState = 'loading'
     try {
       await this.wordsApi.requestWord(this.word, this.authService.userId)

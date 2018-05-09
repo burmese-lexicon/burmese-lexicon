@@ -128,7 +128,7 @@
     "test": "nps test",
     "build": "au build --env prod",
     "serve": "yarn start serve",
-    "deploy": "yarn firebase deploy"
+    "deploy": "firebase deploy -P prod"
   },
   "main": "dist/app.bundle.js"
 }
