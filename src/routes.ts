@@ -64,6 +64,17 @@ const routes = [
     }
   },
   {
+    route: 'about',
+    name: 'about',
+    moduleId: PLATFORM.moduleName('./resources/elements/about-page', 'about'),
+    title: 'About',
+    nav: true,
+    settings: {
+      icon: 'info',
+      iconColor: 'silver'
+    }
+  },
+  {
     route: 'words/:id',
     name: 'word',
     moduleId: PLATFORM.moduleName('./resources/elements/word-page')
