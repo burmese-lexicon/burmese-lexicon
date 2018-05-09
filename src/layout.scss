@@ -1,9 +1,11 @@
 @import './_theme.scss';
+@import '~semantic-ui-css/semantic.min.css';
 
 $body-height: calc(100vh - #{$menu-bar-height});
 
 body {
   height: $body-height;
+  font-family: 'Padauk', sans-serif;
 }
 
 .app-body {
@@ -34,4 +36,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.ui.form input[type='text'] {
+  line-height: 1em;
 }

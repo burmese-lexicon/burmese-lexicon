@@ -29,12 +29,4 @@ export class WordsPage {
       this.error = 'There was an error fetching the words. Please try again later.'
     }
   }
-
-  attached () {
-    const id = `word-list-${Date.now()}`
-    this.element.querySelector('.word-list-segment').id = id
-    jQuery(this.element).find('.ui.sticky').sticky({
-      context: `#${id}`
-    })
-  }
 }
