@@ -30,6 +30,7 @@ node_modules
 # Compiled files
 scripts
 dist
+functions/lib/
 
 # logs
 *.log
