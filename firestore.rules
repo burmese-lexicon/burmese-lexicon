@@ -92,6 +92,16 @@ service cloud.firestore {
         )
     }
     
+    match /requested-words/{word} {
+    	allow read: if true
+      allow create: if isLoggedIn()
+          && request.resource.id is string && request.resource.id.matches("^[\u1000-\u109F]{1,30}$")
+          && request.resource.data.user == request.auth.uid
+          && !exists(/databases/$(database)/documents/requested-words/$(request.resource.id))
+          && request.resource.data.size() == 1
+      allow update, delete: if isAdmin() || isMod()
+    }
+  
     match /word-list/{list} {
     	allow read: if true
     }

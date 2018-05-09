@@ -73,6 +73,12 @@ export class WordsApi {
     return snapshot.data().words
   }
 
+  requestWord (word: string, user: string) {
+    return this.dbService.set(COLLECTIONS.REQUESTED_WORDS, word, {
+      user
+    })
+  }
+
   getDefinitionsForWord (word: string) {
     return this.dbService.getWhere(COLLECTIONS.DEFINITIONS, ['word', '==', word])
   }

@@ -5,12 +5,11 @@
     <div class="ui loader"></div>
   </div>
   <div class='ui centered fifteen wide column word-list-segment'>
-    <div class="right ui internal attached rail">
-      <div class="ui sticky" style="width: 272px !important; height: 262.531px !important; left: 1357.5px;">
-        <h3 class="ui header">Want to contribute?</h3>
-        <img>
-        <button class='ui button' click.delegate='router.navigateToRoute("new-word")'>Add new word</button>
-      </div>
+    <div class="ui message">
+      <p>Not found what you're looking for? Request the word <a href.bind='router.generate("request-word")'>here</a>.</p>
+    </div>
+    <div class="ui message">
+      <p>Want to contribute? Add new word <a href.bind='router.generate("new-word")'>here</a>.</p>
     </div>
     <h1>Words</h1>
     <div if.bind='error' class='ui error message'>

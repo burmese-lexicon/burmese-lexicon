@@ -4,5 +4,6 @@ export const COLLECTIONS = {
   WORDS: 'words',
   DEFINITIONS: 'definitions',
   WORD_LIST: 'word-list',
-  STATS: 'stats'
+  STATS: 'stats',
+  REQUESTED_WORDS: 'requested-words'
 }
