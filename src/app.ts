@@ -26,4 +26,9 @@ export class App {
     config.addAuthorizeStep(AuthorizeStep)
     config.map(routes)
   }
+
+  handleNavClick = () => {
+    jQuery('.sidebar').sidebar('hide')
+    return true
+  }
 }

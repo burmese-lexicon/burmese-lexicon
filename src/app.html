@@ -9,7 +9,9 @@
     <div class='ui item'>
       <word-search></word-search>
     </div>
-    <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'>
+    <a repeat.for='nav of router.navigation' class="item ${nav.isActive ? 'active' : ''}" href.bind='nav.href'
+      click.delegate="handleNavClick()"
+    >
       <i class='${nav.settings.icon} icon' css='color: ${nav.settings.iconColor}'></i> ${nav.title}
     </a>
     <a class="ui item" if.bind="!authService.user">
