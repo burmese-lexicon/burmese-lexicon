@@ -1,5 +1,12 @@
 .about-page {
-  p {
+  p, ul {
     text-align: left;
+  }
+  .handwriting-images {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  section {
+    margin-bottom: 2em;
   }
 }

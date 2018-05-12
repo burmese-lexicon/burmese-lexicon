@@ -2,6 +2,10 @@
   <require from='./home-page.scss'></require>
   <require from='./word-search'></require>
 
+  <div class="ui info message" if.bind='!notiService.shownFirstTimeDialog'>
+    <i class="close icon" click.delegate='notiService.shownFirstTimeDialog = true'></i>
+    <p>First time on Burmese Lexicon? Check <a href='/#/about/'>here</a> for tips.</p>
+  </div>
   <h1>Burmese Lexicon</h1>
   <word-search></word-search>
   <div class="ui statistics">

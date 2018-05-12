@@ -1,5 +1,6 @@
 import { ContributionsApi } from './../../api/contributions-api'
 import { autoinject } from 'aurelia-framework'
+import { NotiService } from 'services/noti-service'
 
 @autoinject
 export class HomePage {
@@ -7,7 +8,7 @@ export class HomePage {
   private error: boolean
   private stats: object
 
-  constructor (private contributionsApi: ContributionsApi) {}
+  constructor (private contributionsApi: ContributionsApi, private notiService: NotiService) {}
 
   async created () {
     try {
