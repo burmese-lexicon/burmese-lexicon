@@ -3,7 +3,7 @@ export default {
   testing: false,
   firebase: {
     apiKey: 'AIzaSyA_qY1nFkpjA_osvlR4bJj8q3qIIGUs1Jo',
-    authDomain: 'burmese-lexicon.firebaseapp.com',
+    authDomain: 'burmese-lexicon.com',
     databaseURL: 'https://burmese-lexicon.firebaseio.com',
     projectId: 'burmese-lexicon',
     storageBucket: '',
