@@ -12,6 +12,7 @@ admin.initializeApp(functions.config().firebase)
 const COLLECTIONS = {
   CONTRIBUTIONS: 'contributions',
   PUBLIC_USERS: 'public-users',
+  USERS: 'users',
   WORD_LIST: 'word-list',
   STATS: 'stats',
   REQUESTED_WORDS: 'requested-words'
@@ -59,16 +60,19 @@ exports.onWordsCreate = functions.firestore.document('/words/{word}').onCreate((
     })
 })
 
-exports.createPublicUserInfo = functions.auth.user().onCreate(user => {
-  console.log('Setting public user info on user creation')
+exports.onUsersCreate = functions.auth.user().onCreate(user => {
   // yea firebase doesn't include displayName for email signup, so you need to make a call to the db
   return admin.auth().getUser(user.uid)
     .then(fetchedUser => {
-      console.log(fetchedUser)
+      console.log('Setting public user info on user creation')
       adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).doc(user.uid).set({
         name: fetchedUser.displayName,
         photoURL: fetchedUser.photoURL || null
       })
+      console.log('Setting user roles on user create')
+      adminFirestore.collection(COLLECTIONS.USERS).doc(user.uid).set({
+        roles: []
+      }, {merge: true})
     })
 })
 

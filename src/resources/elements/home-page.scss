@@ -3,6 +3,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  &.app-body {
+     height: calc(100vh - 115px);
+  }
 
   h1 {
     font-size: 2em;

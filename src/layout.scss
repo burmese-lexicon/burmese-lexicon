@@ -11,6 +11,7 @@ body {
 .app-body {
   position: relative;
   padding: 1em;
+  overflow-x: hidden;
   overflow-y: auto;
   padding-bottom: 3em;
   &.ui.grid {
@@ -40,4 +41,13 @@ body {
 
 .ui input[type='text'], .ui.form input[type='text'] {
   line-height: 1em;
+}
+
+footer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  .license {
+    display: flex;
+  }
 }
