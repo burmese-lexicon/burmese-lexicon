@@ -51,11 +51,14 @@ export class WordsApi {
   }
 
   getWords () {
-    return this.dbService.getAll(COLLECTIONS.WORDS, 'text', 100)
+    return this.dbService.getAll(COLLECTIONS.WORDS, {
+      orderBy: 'text',
+      limit: 100
+    })
   }
 
   async getRequestedWords () {
-    const snap = await this.dbService.getAll(COLLECTIONS.REQUESTED_WORDS, '')
+    const snap = await this.dbService.getAll(COLLECTIONS.REQUESTED_WORDS)
     const words = []
     snap.forEach(s => words.push(s.id))
     return words

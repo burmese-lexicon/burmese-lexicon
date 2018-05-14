@@ -110,5 +110,9 @@ service cloud.firestore {
     match /stats/{stats} {
     	allow read: if true
     }
+    
+    match /contributions/{contribution} {
+    	allow read: if true
+    }
   }
 }

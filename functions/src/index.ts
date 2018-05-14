@@ -107,12 +107,18 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
           }, { merge: true })
         } else {
           console.log(`incrementing def contribution for user ${user} to ${score}`)
-          contributionsRef.doc(user).set({
-            words,
-            definitions,
-            score,
-            user
-          })
+          adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).get(user)
+            .then(publicSnap => {
+              const publicUserInfo = publicSnap.data()
+              contributionsRef.doc(user).set({
+                words,
+                definitions,
+                score,
+                user,
+                name: publicUserInfo.name,
+                photoURL: publicUserInfo.photoURL
+              })
+            })
         }
       })
   })
@@ -154,6 +160,17 @@ exports.incrementDefContributionOnDefVote = functions.firestore.document('/defin
     }
   })
 
+exports.onPublicUsersWrite = functions.firestore.document('/public-users/{user}')
+  .onWrite((change, context) => {
+    const user = context.params.user
+    const info = change.after.data()
+    return adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS).doc(user).set({
+      name: info.name,
+      photoURL: info.photoURL
+    }, {merge: true}
+    )
+  })
+
 exports.resetContributionScoreOnDefDelete = functions.firestore.document('/definitions/{definition}')
   .onDelete((change, context) => {
     const data = change.data()
@@ -182,18 +199,5 @@ exports.resetContributionScoreOnDefDelete = functions.firestore.document('/defin
   })
 
 app.use(cors)
-
-app.get('/getTopContributions', (req, res) => {
-  adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS)
-    .orderBy('score', 'desc')
-    .limit(100)
-    .get()
-    .then(snapshot => {
-      const contributions = []
-      snapshot.forEach(doc => contributions.push(doc.data()))
-      res.set('Cache-Control', 'max-age=100')
-        .send(contributions)
-    })
-})
 
 exports.api = functions.https.onRequest(app)

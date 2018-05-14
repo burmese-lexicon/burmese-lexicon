@@ -4,6 +4,7 @@ import '@firebase/firestore'
 import { DocumentData } from '@firebase/firestore-types'
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants'
 import { autoinject } from 'aurelia-framework'
+import { isArray } from 'util'
 
 @autoinject
 export class DbService {
@@ -63,14 +64,18 @@ export class DbService {
     }
   }
 
-  async getAll (collectionName: string, orderBy: string = '', limit: number = -1): Promise<any> {
+  async getAll (collectionName: string, params: any = {}): Promise<any> {
     try {
       let ref = this.db.collection(collectionName)
-      if (orderBy) {
-        ref = ref.orderBy(orderBy)
+      if (params.orderBy) {
+        if (isArray(params.orderBy)) {
+          ref = ref.orderBy.apply(ref, params.orderBy)
+        } else if (typeof params.orderBy === 'string') {
+          ref = ref.orderBy(params.orderBy)
+        }
       }
-      if (limit !== -1) {
-        ref = ref.limit(limit)
+      if (!isNaN(params.limit) && params.limit !== -1) {
+        ref = ref.limit(params.limit)
       }
       return await ref.get()
     } catch (e) {

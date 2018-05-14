@@ -10,23 +10,21 @@ export class ContributionsApi {
   constructor (private httpClient: HttpClient, private usersApi: UsersApi, private dbService: DbService) {}
 
   async getTopContributions () {
-    const response = await this.httpClient.fetch(APIS.GET_TOP_CONTRIBUTIONS)
-    const contributions = await response.json()
-    // TODO: firestore doesn't have query for id array
+    const snap = await this.dbService.getAll(COLLECTIONS.CONTRIBUTIONS, {
+      orderBy: ['score', 'desc'],
+      limit: 100
+    })
     const contributors = []
-    for (let contribution of contributions) {
-      const userSnap = await this.usersApi.getPublicUserInfo(contribution.user)
-      const userData = userSnap.data()
-      const name = userData.name
-      const photoURL = userData.photoURL
+    snap.forEach(async s => {
+      const contribution = s.data()
       contributors.push({
-        user: name,
-        photoURL,
+        user: contribution.name,
+        photoURL: contribution.photoURL,
         score: contribution.score,
         definitions: contribution.definitions,
         votes: contribution.votes
       })
-    }
+    })
     return contributors
   }
 
