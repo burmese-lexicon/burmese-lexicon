@@ -1,12 +1,14 @@
 <template>
   <require from='./home-page.scss'></require>
   <require from='./word-search'></require>
+  <require from='./word-of-day'></require>
 
+  <div class='centered'>
   <div class="ui info message" if.bind='!notiService.shownFirstTimeDialog'>
     <i class="close icon" click.delegate='notiService.shownFirstTimeDialog = true'></i>
     <p>First time on Burmese Lexicon? Check <a href='/#/about/'>here</a> for tips.</p>
   </div>
-  <h1>Burmese Lexicon</h1>
+  <word-of-day></word-of-day>
   <word-search></word-search>
   <div class="ui statistics">
     <div if.bind='loading' class="ui active inverted dimmer">
@@ -39,5 +41,6 @@
         Contributors
       </div>
     </div>
+  </div>
   </div>
 </template>
