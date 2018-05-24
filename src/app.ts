@@ -31,4 +31,9 @@ export class App {
     jQuery('.sidebar').sidebar('hide')
     return true
   }
+
+  handleProfileClick = () => {
+    jQuery('.sidebar').sidebar('hide')
+    this.router.navigateToRoute('profile')
+  }
 }

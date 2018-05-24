@@ -7,7 +7,7 @@
   <form class="ui form ${controller.errors.length ? 'error' : ''} ${formState}" submit.delegate='submit()'>
     <div class="field required disabled">
       <label>Email</label>
-      <input type="email" name="email" value.bind='user.email' placeholder="myemail@domain.com">
+      <input type="email" name="email" autocomplete='email' value.bind='user.email' placeholder="myemail@domain.com">
     </div>
     <div class='ui divider'></div>
     <h1>Public Info</h1>
@@ -25,7 +25,7 @@
     <em>Info under this section is publicly visible on your contributions.</em>
     <div class="field required">
       <label>Display Name</label>
-      <input type="text" name="name" value.bind='publicName & debounce & validate' placeholder="name">
+      <input type="text" name="name" value.bind='publicName & debounce & validate' placeholder="name" autocomplete='name'>
     </div>
     <div class="field">
       <label>Photo Url</label>
