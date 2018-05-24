@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Padauk&subset=myanmar');
 @import './_theme.scss';
 @import '~semantic-ui-css/semantic.min.css';
 
@@ -5,7 +6,10 @@ $body-height: calc(100vh - #{$menu-bar-height});
 
 body {
   height: $body-height;
-  font-family: 'Padauk', sans-serif;
+}
+
+.myanmar-font, body, h1, h2, h3, h4, h5, h6 {
+  font-family: 'Padauk', sans-serif;;
 }
 
 .app-body {
@@ -40,6 +44,10 @@ body {
 
 .ui input[type='text'], .ui.form input[type='text'] {
   line-height: 1em;
+}
+
+li, p {
+  line-height: 1.5em;
 }
 
 footer {
