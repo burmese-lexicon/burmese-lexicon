@@ -33,10 +33,10 @@ export class WordPage {
   }
 
   async activate (params) {
+    if (this.word === params.id) {
+      return
+    }
     this.word = params.id
-  }
-
-  async created () {
     try {
       const wordSnapshot = await this.wordsApi.getWord(this.word)
       this.doesWordExist = wordSnapshot.exists

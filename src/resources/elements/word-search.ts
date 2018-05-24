@@ -17,7 +17,10 @@ export class WordSearch {
       jQuery(this.element).find('.ui.search')
         .search({
           searchDelay: 500,
-          source: this.words
+          source: this.words,
+          onSelect: () => {
+            jQuery('.sidebar').sidebar('hide')
+          }
           // TODO: will need this when we do proper full text search
           // apiSettings: {
           //   responseAsync: async (settings, callback) => {
