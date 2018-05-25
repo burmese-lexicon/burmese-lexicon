@@ -127,7 +127,10 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
       } : undefined,
       metadata: {
         // available in index.ejs //
-        title, server, baseUrl
+        title,
+        server,
+        baseUrl,
+        useAnalytics: production
       }
     }),
     ...when(extractCss, new ExtractTextPlugin({
