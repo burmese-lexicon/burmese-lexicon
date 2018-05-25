@@ -5,7 +5,10 @@
     <div class="ui loader"></div>
   </div>
   <div class='ui centered fifteen wide column word-list-segment'>
-    <div class="ui message">
+    <ul class='letters'>
+      <li repeat.for='letter of letters' click.delegate='scrollToLetter($event)'>${letter}</li>
+    </ul>
+    <div class="ui request message">
       <p>Not found what you're looking for? Request the word <a href.bind='router.generate("request-word")'>here</a>.</p>
     </div>
     <div class="ui message">
@@ -15,9 +18,9 @@
     <div if.bind='error' class='ui error message'>
       ${error}
     </div>
-    <ul>
+    <ul class='words'>
       <li repeat.for='word of words'>
-        <a href='${router.generate("words")}/${word.id}'>${word.id}</a>
+        <a href='${router.generate("words")}/${word.id}' class='start-letter-${word.id[0]}'>${word.id}</a>
       </li>
     </ul>
   </div>

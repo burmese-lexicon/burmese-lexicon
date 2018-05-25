@@ -5,6 +5,7 @@ import { autoinject } from 'aurelia-dependency-injection'
 @autoinject
 export class WordsPage {
   private words: any[]
+  private letters: string[] = String.fromCharCode(...[...Array('ဪ'.charCodeAt(0) - 'က'.charCodeAt(0) + 1).keys()].map(i => i + '\u1000'.charCodeAt(0))).split('');
   private loading: boolean = true
   private error: string
 
@@ -27,6 +28,14 @@ export class WordsPage {
     } catch (e) {
       console.error(e)
       this.error = 'There was an error fetching the words. Please try again later.'
+    }
+  }
+
+  scrollToLetter (event: MouseEvent) {
+    const letter = (<HTMLElement>event.target).textContent
+    const element = document.querySelector(`.start-letter-${letter}`)
+    if (element) {
+      element.scrollIntoView()
     }
   }
 }
