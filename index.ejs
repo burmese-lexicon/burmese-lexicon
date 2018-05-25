@@ -10,7 +10,14 @@
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
-        gtag('config', 'UA-119905159-1');
+        gtag('config', 'UA-119905159-1', {'app_name': 'Burmese Lexicon'});
+
+        window.addEventListener('hashchange', function () {
+          gtag('config', 'UA-119905159-1', {
+            'page_title': document.title,
+            'page_path': location.hash.replace('#', '')
+          });
+        });
       </script>
     <% } %>
     <title><%- htmlWebpackPlugin.options.metadata.title %></title>
