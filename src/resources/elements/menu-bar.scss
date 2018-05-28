@@ -1,6 +1,9 @@
+@import '../../_theme';
+
 menu-bar {
   .menu.bars {
     display: none;
+    height: $menu-bar-height;
   }
   @media only screen and (max-width: 767px) {
     .menu.main {
