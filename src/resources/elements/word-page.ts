@@ -1,3 +1,4 @@
+import { SocialService } from './../../services/social-service'
 import { AuthRequestedMessage, AuthStateChanged } from './../events/auth-events'
 import { EventAggregator } from 'aurelia-event-aggregator'
 import { AuthService } from './../../services/auth-service'
@@ -27,7 +28,8 @@ export class WordPage {
     private wordsApi: WordsApi,
     private usersApi: UsersApi,
     private authService: AuthService,
-    private ea: EventAggregator
+    private ea: EventAggregator,
+    private ss: SocialService
   ) {
     this.ea.subscribe(AuthStateChanged, this.handleAuthStateChange)
   }
@@ -66,9 +68,15 @@ export class WordPage {
             uid: data.user
           }
         })
+        if (definitions.length === definitionsQuerySnapshot.size) {
+          this.definitions = definitions.sort((a, b) => b.totalVotes - a.totalVotes)
+          this.loading = false
+          this.ss.setSocialTags({
+            'title': this.word,
+            'description': this.definitions[0].text.replace(/<(?:.|\n)*?>/gm, '')
+          })
+        }
       })
-      this.definitions = definitions.sort((a, b) => b.totalVotes - a.totalVotes)
-      this.loading = false
     } catch (e) {
       console.error(e)
       this.error = 'There was an error fetching the defintions. Please try again later.'

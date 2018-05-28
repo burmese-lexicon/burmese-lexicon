@@ -32,7 +32,7 @@ export class AuthService {
         this._user = user
         const loginRedirectURL = this.getCachedLoginRedirectURL()
         this.usersApi.getUserRoles(user.uid).then(roles => { this._userRoles = roles })
-        if (this.router.currentInstruction.config.name === 'login') {
+        if (this.router.currentInstruction && this.router.currentInstruction.config.name === 'login') {
           if (loginRedirectURL) {
             this.router.navigate(loginRedirectURL)
             this.clearCachedLoginRedirectURL()
