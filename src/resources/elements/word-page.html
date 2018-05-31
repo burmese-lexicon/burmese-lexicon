@@ -14,7 +14,7 @@
       This word does not exist yet. Would you like to
       <a href='/#/words/new?word=${word}'>contribute</a>?
     </div>
-    <div class="ui comments" else>
+    <div class="ui comments" if.bind='!loading && doesWordExist'>
       <h3 class="ui dividing header">Definitions</h3>
       <div if.bind='error' class='ui error message'>
         ${error}
