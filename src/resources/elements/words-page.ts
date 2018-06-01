@@ -1,6 +1,7 @@
 import { WordsApi } from './../../api/words-api'
 import { Router } from 'aurelia-router'
 import { autoinject } from 'aurelia-dependency-injection'
+import { SocialService } from 'services/social-service';
 
 @autoinject
 export class WordsPage {
@@ -9,7 +10,12 @@ export class WordsPage {
   private loading: boolean = true
   private error: string
 
-  constructor (private element: Element, private router: Router, private wordsApi: WordsApi) {
+  constructor (
+    private element: Element,
+    private router: Router,
+    private wordsApi: WordsApi,
+    private ss: SocialService
+  ) {
     this.words = []
   }
 
@@ -29,6 +35,14 @@ export class WordsPage {
       console.error(e)
       this.error = 'There was an error fetching the words. Please try again later.'
     }
+  }
+
+  attached () {
+    this.ss.setSocialTags({
+      title: 'Words',
+      description: 'အနက်ဖွင့်ဆိုထားပြိးသော စာလုံးများ',
+      url: window.location.href
+    })
   }
 
   scrollToLetter (event: MouseEvent) {

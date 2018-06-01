@@ -9,5 +9,8 @@ export default {
     storageBucket: '',
     messagingSenderId: '194765477370',
     apiRootURL: 'https://us-central1-burmese-lexicon.cloudfunctions.net'
+  },
+  facebook: {
+    appId: '1670562946384305'
   }
 }

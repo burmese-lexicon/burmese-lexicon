@@ -6,7 +6,7 @@
   <require from='./text-editor'></require>
 
   <div class='ui centered fifteen wide column word-container'>
-    <h1 class='ui header'>${word}</h1>
+    <h1 class='ui header'>${word} <i class="facebook icon social" click.delegate='ss.shareOnFacebook()'></i></h1>
     <div if.bind='loading' class="ui active inverted dimmer">
       <div class="ui loader"></div>
     </div>

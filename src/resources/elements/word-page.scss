@@ -1,4 +1,12 @@
 .word-page {
+  h1 {
+    display: flex;
+    justify-content: space-between;
+  }
+  .social.icon {
+    cursor: pointer;
+    color: #3b5998;
+  }
   .word-container {
     width: 100vw;
     max-width: 50em;

@@ -1,3 +1,4 @@
+import { SocialService } from './services/social-service'
 import { DbService } from './services/db-service'
 import { AuthService } from './services/auth-service'
 import { autoinject } from 'aurelia-dependency-injection'
@@ -13,11 +14,12 @@ import routes from './routes'
 export class App {
   private router: Router
 
-  constructor (private authService: AuthService, private dbService: DbService) {}
+  constructor (private authService: AuthService, private dbService: DbService, private ss: SocialService) {}
 
   created () {
     this.authService.configure()
     this.dbService.configure()
+    this.ss.configure()
   }
 
   configureRouter (config: RouterConfiguration, router: Router): void {

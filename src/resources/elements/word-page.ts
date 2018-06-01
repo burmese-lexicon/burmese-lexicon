@@ -72,8 +72,9 @@ export class WordPage {
           this.definitions = definitions.sort((a, b) => b.totalVotes - a.totalVotes)
           this.loading = false
           this.ss.setSocialTags({
-            'title': this.word,
-            'description': this.definitions[0].text.replace(/<(?:.|\n)*?>/gm, '')
+            title: this.word,
+            description: this.definitions[0].text.replace(/<(?:.|\n)*?>/gm, ''),
+            url: window.location.href
           })
         }
       })
