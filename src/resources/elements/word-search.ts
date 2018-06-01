@@ -12,7 +12,7 @@ export class WordSearch {
       this.words = await this.wordsApi.getWordList()
       this.words = this.words.map(word => ({
         title: word,
-        url: `/#/words/${word}`
+        url: `/words/${word}`
       }))
       jQuery(this.element).find('.ui.search')
         .search({
@@ -27,7 +27,7 @@ export class WordSearch {
           //     let words = await this.wordsApi.searchSimilarWords(settings.urlData.query)
           //     words = words.map(word => ({
           //       title: word,
-          //       url: `/#/words/${word}`
+          //       url: `/words/${word}`
           //     }))
           //     const response = {
           //       results: words
