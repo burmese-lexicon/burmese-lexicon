@@ -28,6 +28,7 @@ export class App {
     config.addAuthorizeStep(AuthorizeStep)
     config.map(routes)
     config.options.pushState = true
+    config.mapUnknownRoutes('not-found')
   }
 
   handleNavClick = () => {
