@@ -26,9 +26,9 @@ export class App {
     this.router = router
     config.title = 'Burmese Lexicon'
     config.addAuthorizeStep(AuthorizeStep)
+    config.mapUnknownRoutes(({ route: 'not-found-page', redirect: '/not-found-page' }))
     config.map(routes)
     config.options.pushState = true
-    config.mapUnknownRoutes('not-found')
   }
 
   handleNavClick = () => {

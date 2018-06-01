@@ -93,6 +93,12 @@ const routes = [
     name: 'login',
     moduleId: PLATFORM.moduleName('./resources/elements/auth-container'),
     title: 'Login'
+  },
+  {
+    route: 'not-found-page',
+    name: 'not-found-page',
+    moduleId: PLATFORM.moduleName('./resources/elements/not-found-page'),
+    title: 'Page not found'
   }
 ]
 
