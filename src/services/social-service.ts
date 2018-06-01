@@ -5,6 +5,7 @@ declare const FB: any;
 export class SocialService {
   configure () {
     this.injectFacebookSdk()
+    this.setMetaTag('fb:app_id', environment.facebook.appId)
   }
 
   setSocialTags (config: object) {

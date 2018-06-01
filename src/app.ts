@@ -27,6 +27,7 @@ export class App {
     config.title = 'Burmese Lexicon'
     config.addAuthorizeStep(AuthorizeStep)
     config.map(routes)
+    config.options.pushState = true
   }
 
   handleNavClick = () => {
