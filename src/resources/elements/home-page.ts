@@ -27,7 +27,15 @@ export class HomePage {
     }
   }
 
+  activate () {
+    this.updateMetaTags()
+  }
+
   wotdChanged () {
+    this.updateMetaTags()
+  }
+
+  updateMetaTags () {
     this.ss.setSocialTags({
       title: 'Word of the day',
       description: this.wotd,
