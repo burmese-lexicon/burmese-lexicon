@@ -1,14 +1,15 @@
+import { WordsApi } from './../../api/words-api'
 import { Router } from 'aurelia-router'
 import { AuthService } from 'services/auth-service'
 import { autoinject } from 'aurelia-framework'
-import { ValidationControllerFactory, ValidationRules, ValidationController, ValidateEvent, validateTrigger, Validator} from 'aurelia-validation'
-import { WordsApi } from 'api/words-api'
+import { ValidationControllerFactory, ValidationRules, ValidationController, ValidateEvent, validateTrigger, Validator, ValidateResult} from 'aurelia-validation'
 
 @autoinject
 export class NewWordPage {
   private word: string
   private definition: string
   private agreedTOS: boolean
+  private serverValidateResult: ValidateResult
   private readonly MAX_DEFFINITION_LENGTH: number =3000
   private readonly MAX_WORD_LENGTH: number = 20
   private controller: ValidationController
@@ -54,7 +55,16 @@ export class NewWordPage {
 
   async submit () {
     this.formState = 'loading'
+    if (this.serverValidateResult) {
+      this.controller.removeError(this.serverValidateResult)
+    }
     try {
+      const wordSnap = await this.wordApi.getWord(this.word)
+      if (wordSnap.exists) {
+        this.serverValidateResult = this.controller.addError('This word already exists', this)
+        this.formState = ''
+        return
+      }
       await this.wordApi.addWord(this.word, this.definition, this.authService.user.uid)
       this.formState = 'success'
       window.setTimeout(() => this.router.navigate(`/words/${this.word}`), 3000)

@@ -64,6 +64,11 @@ export class WordsApi {
     return words
   }
 
+  async isRequestedWord (word: string) {
+    const snap = await this.dbService.get(COLLECTIONS.REQUESTED_WORDS, word)
+    return snap.exists
+  }
+
   async searchSimilarWords (word: string) {
     const snapshot = await this.dbService.searchText(COLLECTIONS.WORDS, word)
     const words = []

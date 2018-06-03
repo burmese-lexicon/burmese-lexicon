@@ -6,7 +6,6 @@
     <form
       class="ui form ${controller.errors.length ? 'error' : ''} ${formState}" submit.delegate='submit()'>
       <h1 class='ui header'>Add new word</h1>
-       <em>Please use the search box to make sure the word doesn't already exist</em>
       <ul if.bind="formState !== 'error' && controller.errors" class='ui error message'>
         <li repeat.for="error of controller.errors">
           ${error.message}
