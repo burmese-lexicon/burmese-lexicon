@@ -21,7 +21,7 @@ const DEFINITION_SCORE = 3;
 const VOTE_SCORE = 1;
 // TODO: rewrite these with await
 const adminFirestore = admin.firestore();
-exports.updateStatsOnContributionsWrite = functions.firestore.document('/contributions/{contribution}').onWrite((snap, context) => {
+exports.onContributionsWrite = functions.firestore.document('/contributions/{contribution}').onWrite((snap, context) => {
     return adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS).get()
         .then(contriSnap => {
         let words = 0;
@@ -29,8 +29,8 @@ exports.updateStatsOnContributionsWrite = functions.firestore.document('/contrib
         let definitions = 0;
         contriSnap.forEach(cSnap => {
             const data = cSnap.data();
-            words += data.words;
-            definitions += data.definitions;
+            words += data.words || 0;
+            definitions += data.definitions || 0;
             contributors++;
         });
         adminFirestore.collection(COLLECTIONS.STATS).doc('stats').set({
@@ -52,6 +52,19 @@ exports.onWordsCreate = functions.firestore.document('/words/{word}').onCreate((
         console.log(`Updated words list on word create: ${word}`);
         adminFirestore.collection(COLLECTIONS.REQUESTED_WORDS).doc(word).delete()
             .then(() => console.log(`Deleted requested word on word create: ${word}`));
+    });
+});
+exports.onWordsDelete = functions.firestore.document('/words/{word}').onDelete((change, context) => {
+    const word = context.params.word;
+    return adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').get()
+        .then(listSnap => {
+        const words = listSnap.data().words;
+        words.splice(words.indexOf(word), 1);
+        adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').update({
+            words
+        });
+        console.log(`Updated words list on word delete: ${word}`);
+        // TODO: delete stats, word, and its definitions as well
     });
 });
 exports.onUsersCreate = functions.auth.user().onCreate(user => {
@@ -77,7 +90,7 @@ exports.anonymizePublicUserinfo = functions.auth.user().onDelete(user => {
         photoURL: null
     });
 });
-exports.incrementDefContributionOnDefCreate = functions.firestore.document('/definitions/{definition}')
+exports.onDefsCreate = functions.firestore.document('/definitions/{definition}')
     .onCreate((snap, context) => {
     const user = snap.data().user;
     const contributionsRef = adminFirestore.collection(COLLECTIONS.CONTRIBUTIONS);
@@ -88,9 +101,9 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
         .then(contriSnap => {
         if (contriSnap.exists) {
             const contributionData = contriSnap.data();
-            words = contributionData.words + 1;
-            definitions = contributionData.definitions + 1;
-            score = contributionData.score + DEFINITION_SCORE;
+            words = (contributionData.words || 0) + 1;
+            definitions = (contributionData.definitions || 0) + 1;
+            score = (contributionData.score || 0) + DEFINITION_SCORE;
             console.log(`incrementing def contribution for user ${user} to ${score}`);
             contributionsRef.doc(user).set({
                 words,
@@ -100,7 +113,7 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
         }
         else {
             console.log(`incrementing def contribution for user ${user} to ${score}`);
-            adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).get(user)
+            adminFirestore.collection(COLLECTIONS.PUBLIC_USERS).doc(user).get()
                 .then(publicSnap => {
                 const publicUserInfo = publicSnap.data();
                 contributionsRef.doc(user).set({
@@ -115,7 +128,7 @@ exports.incrementDefContributionOnDefCreate = functions.firestore.document('/def
         }
     });
 });
-exports.incrementDefContributionOnDefVote = functions.firestore.document('/definitions/{definition}')
+exports.onDefsUpdate = functions.firestore.document('/definitions/{definition}')
     .onUpdate((change, context) => {
     const newData = change.after.data();
     const oldData = change.before.data();
@@ -160,7 +173,7 @@ exports.onPublicUsersWrite = functions.firestore.document('/public-users/{user}'
         photoURL: info.photoURL
     }, { merge: true });
 });
-exports.resetContributionScoreOnDefDelete = functions.firestore.document('/definitions/{definition}')
+exports.onDefsDelete = functions.firestore.document('/definitions/{definition}')
     .onDelete((change, context) => {
     const data = change.data();
     let voteScores = 0;
