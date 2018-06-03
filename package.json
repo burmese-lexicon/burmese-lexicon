@@ -131,7 +131,9 @@
     "deploy": "firebase deploy -P prod",
     "deploy:test": "firebase deploy",
     "copy-assets": "cp -r static/* dist/",
-    "rampage": "yarn build && yarn deploy:test && yarn deploy"
+    "rampage": "yarn build && yarn deploy:test && yarn deploy",
+    "backup": "firestore-backup-restore --accountCredentials ~/burmese-lexicon-private-key.json --backupPath ~/burmese-lexicon-db-backup",
+    "restore": "firestore-backup-restore --backupPath ~/burmese-lexicon-db-backup --restoreAccountCredentials ~/burmese-lexicon-private-key.json"
   },
   "main": "dist/app.bundle.js"
 }
