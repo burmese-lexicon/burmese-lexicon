@@ -1,6 +1,8 @@
 <template>
   <require from='firebaseui/dist/firebaseui.css'></require>
+  <require from='./email-verification'></require>
 
   <div class='ui modal' ref='modalRef'>
+    <email-verification if.bind='authService.user && !authService.verified'></email-verification>
   </div>
 </template>

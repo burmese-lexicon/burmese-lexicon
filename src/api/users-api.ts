@@ -15,7 +15,16 @@ export class UsersApi {
   }
 
   async getUserRoles (userId: string) {
-    const userSnap = await this.dbService.get(COLLECTIONS.USERS, userId)
+    let userSnap
+    try {
+      userSnap = await this.dbService.get(COLLECTIONS.USERS, userId)
+    } catch (e) {
+      console.warn('error fetching user roles for first user creation, returned []')
+      return []
+    }
+    if (!userSnap.exists) {
+      return []
+    }
     const userData = userSnap.data()
     return userData.roles ? userData.roles : []
   }

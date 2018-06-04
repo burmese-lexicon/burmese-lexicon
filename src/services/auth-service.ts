@@ -16,6 +16,7 @@ export class AuthService {
   private _userRoles: string[] = []
   private ui: any
   private _loginRedirectURL: string
+  private authResult: any
 
   constructor (private router: Router, private ea: EventAggregator, private usersApi: UsersApi) {}
 
@@ -63,6 +64,31 @@ export class AuthService {
     window.localStorage.removeItem('loginRedirectURL')
   }
 
+  get verified () {
+    if (!this._user) {
+      return false
+    }
+    // only have email verification for now
+    if (this._user.providerData[0].providerId !== 'password') {
+      return true
+    }
+    return this._user.emailVerified
+  }
+
+  sendVerificationEmail () {
+    this._user.sendEmailVerification()
+    window.alert('Verification email sent')
+  }
+
+  private sendVerificationEmailForNewUser (authResult) {
+    if (authResult.additionalUserInfo.providerId === 'password' &&
+      authResult.additionalUserInfo.isNewUser &&
+      authResult.user.emailVerified === false
+    ) {
+      authResult.user.sendEmailVerification()
+    }
+  }
+
   async renderProvidersToContainer (container: Element, successCallback: Function) {
     if (this.ui) {
       await this.ui.delete()
@@ -80,13 +106,14 @@ export class AuthService {
       tosUrl: '<your-tos-url>',
       credentialHelper: firebaseui.auth.CredentialHelper.NONE,
       callbacks: {
-        signInSuccessWithAuthResult: () => false
+        signInSuccessWithAuthResult: this.sendVerificationEmailForNewUser
       }
     }
 
     if (successCallback) {
       uiConfig.callbacks = {
-        signInSuccessWithAuthResult: () => {
+        signInSuccessWithAuthResult: (authResult) => {
+          this.sendVerificationEmailForNewUser(authResult)
           successCallback()
           return false
         }

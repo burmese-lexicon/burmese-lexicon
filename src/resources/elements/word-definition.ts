@@ -30,7 +30,7 @@ export class WordDefinition {
   }
 
   async vote (type: 'up' | 'down') {
-    if (!this.authService.user) {
+    if (!this.authService.verified) {
       this.ea.publish(new AuthRequestedMessage())
     } else {
       let vote = this.votes && this.authService.userId in this.votes ? this.votes[this.authService.userId] : 0

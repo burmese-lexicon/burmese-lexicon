@@ -12,6 +12,8 @@ export class AuthModal {
 
   showModal () {
     jQuery(this.modalRef).modal('show')
-    this.authService.renderProvidersToContainer(this.modalRef, () => jQuery(this.modalRef).modal('hide'))
+    if (!this.authService.user) {
+      this.authService.renderProvidersToContainer(this.modalRef, () => jQuery(this.modalRef).modal('hide'))
+    }
   }
 }

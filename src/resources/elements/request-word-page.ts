@@ -43,7 +43,7 @@ export class RequestWordPage {
   }
 
   async submit () {
-    if (!this.authService.user) {
+    if (!this.authService.verified) {
       this.ea.publish(new AuthRequestedMessage())
       return
     }

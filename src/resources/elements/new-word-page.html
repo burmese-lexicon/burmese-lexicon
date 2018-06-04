@@ -1,10 +1,15 @@
 <template>
   <require from='./new-word-page.scss'></require>
   <require from='./text-editor'></require>
+  <require from='./email-verification'></require>
 
   <div class='centered wide column'>
+    <email-verification if.bind='!authService.verified'></email-verification>
     <form
-      class="ui form ${controller.errors.length ? 'error' : ''} ${formState}" submit.delegate='submit()'>
+      class="ui form ${controller.errors.length ? 'error' : ''} ${formState}"
+      submit.delegate='submit()'
+      else
+    >
       <h1 class='ui header'>Add new word</h1>
       <ul if.bind="formState !== 'error' && controller.errors" class='ui error message'>
         <li repeat.for="error of controller.errors">
