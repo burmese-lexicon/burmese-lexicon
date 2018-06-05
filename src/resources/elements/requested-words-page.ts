@@ -1,3 +1,4 @@
+import { PrerenderService } from 'services/prerender-service'
 import { SocialService } from 'services/social-service'
 import { WordsApi } from './../../api/words-api'
 import { Router } from 'aurelia-router'
@@ -13,7 +14,8 @@ export class RequestedWordsPage {
     private element: Element,
     private router: Router,
     private wordsApi: WordsApi,
-    private ss: SocialService
+    private ss: SocialService,
+    private ps: PrerenderService
   ) {
     this.words = []
   }
@@ -27,6 +29,7 @@ export class RequestedWordsPage {
         description: this.words.join('၊'),
         url: window.location.href
       })
+      this.ps.setPrerenderReady()
     } catch (e) {
       console.error(e)
       this.error = 'There was an error fetching the words. Please try again later.'

@@ -1,3 +1,4 @@
+import { PrerenderService } from './../../services/prerender-service'
 import { SocialService } from './../../services/social-service'
 import { AuthRequestedMessage, AuthStateChanged } from './../events/auth-events'
 import { EventAggregator } from 'aurelia-event-aggregator'
@@ -29,7 +30,8 @@ export class WordPage {
     private usersApi: UsersApi,
     private authService: AuthService,
     private ea: EventAggregator,
-    private ss: SocialService
+    private ss: SocialService,
+    private ps: PrerenderService
   ) {
     this.ea.subscribe(AuthStateChanged, this.handleAuthStateChange)
   }
@@ -76,6 +78,7 @@ export class WordPage {
             description: this.definitions[0].text.replace(/<(?:.|\n)*?>/gm, ''),
             url: window.location.href
           })
+          this.ps.setPrerenderReady()
         }
       })
     } catch (e) {

@@ -18,6 +18,8 @@
             'page_path': location.hash.replace('#', '')
           });
         });
+
+        window.prerenderReady = false;
       </script>
     <% } %>
     <title><%- htmlWebpackPlugin.options.metadata.title %></title>

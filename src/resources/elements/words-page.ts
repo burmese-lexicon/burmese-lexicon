@@ -2,6 +2,7 @@ import { WordsApi } from './../../api/words-api'
 import { Router } from 'aurelia-router'
 import { autoinject } from 'aurelia-dependency-injection'
 import { SocialService } from 'services/social-service';
+import { PrerenderService } from 'services/prerender-service';
 
 @autoinject
 export class WordsPage {
@@ -14,7 +15,8 @@ export class WordsPage {
     private element: Element,
     private router: Router,
     private wordsApi: WordsApi,
-    private ss: SocialService
+    private ss: SocialService,
+    private ps: PrerenderService
   ) {
     this.words = []
   }
@@ -31,18 +33,16 @@ export class WordsPage {
       })
       this.words = words
       this.loading = false
+      this.ss.setSocialTags({
+        title: 'အနက်ဖွင့်ဆိုထားပြိးသော စာလုံးများ',
+        description: this.words.slice(0, 50).join('၊ '),
+        url: window.location.href
+      })
+      this.ps.setPrerenderReady()
     } catch (e) {
       console.error(e)
       this.error = 'There was an error fetching the words. Please try again later.'
     }
-  }
-
-  attached () {
-    this.ss.setSocialTags({
-      title: 'Words',
-      description: 'အနက်ဖွင့်ဆိုထားပြိးသော စာလုံးများ',
-      url: window.location.href
-    })
   }
 
   scrollToLetter (event: MouseEvent) {
