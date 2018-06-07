@@ -15,7 +15,7 @@
       <i class='${nav.settings.icon} icon' css='color: ${nav.settings.iconColor}'></i> ${nav.title}
     </a>
     <a class="ui item" if.bind="!authService.user">
-      <div class='ui primary button' click.delegate="router.navigateToRoute('login')">Sign in</div>
+      <div class='ui primary button' click.delegate="router.navigateToRoute('login')">Sign in/up</div>
     </a>
     <a class="ui item sidebar-logout" else>
       <img class="ui avatar image" src='${authService.user.photoURL}' if.bind='authService.user.photoURL' />

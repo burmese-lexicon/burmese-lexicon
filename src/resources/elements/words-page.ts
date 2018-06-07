@@ -35,7 +35,7 @@ export class WordsPage {
       this.loading = false
       this.ss.setSocialTags({
         title: 'အနက်ဖွင့်ဆိုထားပြိးသော စာလုံးများ',
-        description: this.words.slice(0, 50).join('၊ '),
+        description: this.words.slice(0, 50).map(word => word.id).join('၊ '),
         url: window.location.href
       })
       this.ps.setPrerenderReady()

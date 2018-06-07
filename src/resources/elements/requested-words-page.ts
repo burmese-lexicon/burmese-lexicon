@@ -25,8 +25,8 @@ export class RequestedWordsPage {
       this.words = await this.wordsApi.getRequestedWords()
       this.loading = false
       this.ss.setSocialTags({
-        title: 'Requested Words | Do you know the meaning of these words?',
-        description: this.words.join('၊'),
+        title: 'Requested Words | Do you know the meaning of these words? Contribute here!',
+        description: this.words.join('၊ '),
         url: window.location.href
       })
       this.ps.setPrerenderReady()
