@@ -130,7 +130,8 @@ module.exports = ({production, server, extractCss, coverage, analyze} = {}) => (
         title,
         server,
         baseUrl,
-        useAnalytics: production
+        useAnalytics: production,
+        useServiceWorker: production
       }
     }),
     ...when(extractCss, new ExtractTextPlugin({

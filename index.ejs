@@ -20,12 +20,15 @@
         });
       </script>
     <% } %>
+    <% if (htmlWebpackPlugin.options.metadata.useServiceWorker) { %>
+      <script>
+        if (navigator && navigator.serviceWorker && !navigator.serviceWorker.controller) {
+          navigator.serviceWorker.register('/service-worker.js', { scope: './' });
+        }
+      </script>
+      <% } %>
     <script>
       window.prerenderReady = false;
-
-      if (navigator && navigator.serviceWorker && !navigator.serviceWorker.controller) {
-        navigator.serviceWorker.register('/service-worker.js', { scope: './' });
-      }
     </script>
     <title><%- htmlWebpackPlugin.options.metadata.title %></title>
     <meta name='fragment' content='!'>
