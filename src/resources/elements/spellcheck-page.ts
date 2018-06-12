@@ -1,3 +1,4 @@
+import { SocialService } from 'services/social-service'
 import { WordsApi } from 'api/words-api'
 import { autoinject, bindable } from 'aurelia-framework'
 
@@ -9,7 +10,7 @@ export class SpellcheckPage {
   private showWordList: boolean
   @bindable private searchRef: Element
 
-  constructor (private wordsApi: WordsApi) {}
+  constructor (private wordsApi: WordsApi, private ss: SocialService) {}
 
   async created () {
     try {
@@ -21,11 +22,21 @@ export class SpellcheckPage {
     }
   }
 
+  attached () {
+    this.ss.setSocialTags({
+      title: 'Spellchecker',
+      description: 'Check word spellings and learn how to type them'
+    })
+  }
+
   searchRefChanged () {
     const searchOptions: any = {
-      source: this.words.map(word => ({ title: word })),
+      source: this.words.map(word => ({
+        title: word,
+        description: word.split('').join(' + ')
+      })),
       fullTextSearch: true,
-      maxResults: 20
+      maxResults: 10
     }
     jQuery(this.searchRef).search(searchOptions)
   }
