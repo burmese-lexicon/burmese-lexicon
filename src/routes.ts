@@ -64,6 +64,17 @@ const routes = [
     }
   },
   {
+    route: 'spellcheck',
+    name: 'spellcheck',
+    moduleId: PLATFORM.moduleName('./resources/elements/spellcheck-page', 'spellcheck'),
+    title: 'Spellcheck',
+    nav: true,
+    settings: {
+      icon: 'compass outline',
+      iconColor: 'deeppink'
+    }
+  },
+  {
     route: 'about',
     name: 'about',
     moduleId: PLATFORM.moduleName('./resources/elements/about-page', 'about'),

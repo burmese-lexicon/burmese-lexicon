@@ -1,0 +1,28 @@
+<template>
+  <require from='./spellcheck-page.scss'></require>
+
+  <div if.bind='loading' class="ui active inverted dimmer">
+    <div class="ui loader"></div>
+  </div>
+  <div class='content' else>
+    <div if.bind='error' class='ui error message'>
+      ${error}
+    </div>
+    <div class="ui search" ref='searchRef'>
+      <input class="prompt" type="text" placeholder="Spellcheck...">
+      <div class="results"></div>
+    </div>
+    <div>
+      <span class='ui button' click.delegate='toggleShowWordList()'>
+        ${!showWordList ? 'Show' : 'Hide'}
+      </span>
+      <span>full list of word spellings.</span>
+      <div if.bind='!showWordList'><em>It might take a while to load...</em></div>
+    </div>
+    <ul if.bind='showWordList'>
+      <li repeat.for="word of words">
+        <a href='/words/${word}'>${word}</a>
+      </li>
+    </ul>
+  </div>
+</template>

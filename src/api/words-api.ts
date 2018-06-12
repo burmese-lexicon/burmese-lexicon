@@ -1,10 +1,11 @@
+import { HttpClient } from 'aurelia-fetch-client'
 import { COLLECTIONS } from './collections'
 import { DbService } from './../services/db-service'
 import { autoinject } from 'aurelia-dependency-injection'
 
 @autoinject
 export class WordsApi {
-  constructor (private dbService: DbService) {}
+  constructor (private dbService: DbService, private httpClient: HttpClient) {}
 
   async addWord (word, definition, user) {
     await this.dbService.set(COLLECTIONS.WORDS, word,
@@ -106,6 +107,12 @@ export class WordsApi {
         }
       }
     )
+  }
+
+  async getSpellcheckWordList () {
+    const data = await this.httpClient.fetch('/documents/spellcheck-words.txt')
+    const wordsString = await data.text()
+    return wordsString.split('\n')
   }
 
   generateDefinitionId (user, word) {
