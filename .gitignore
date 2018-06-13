@@ -34,3 +34,7 @@ functions/lib/
 
 # logs
 *.log
+
+# data files
+bin/*.json
+bin/*.xml
