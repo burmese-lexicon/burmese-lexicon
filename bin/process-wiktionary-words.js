@@ -4,11 +4,14 @@ const Firebase = require('firebase-admin')
 const fs = require('fs')
 const jsonFile = './mywiktionary.json'
 const processedFile = './processed-words.json'
-const credentialsPath = process.env.CREDENTIALS || `${process.env.HOME}/burmese-lexicon-dev-private-key.json`
-const maxWords = process.env.MAX_WORDS || 30000
+const isProd = process.env.NODE_ENV === 'prod'
+const credentialsPath = `${process.env.HOME}/burmese-lexicon${isProd ? '' : '-dev'}-private-key.json`
+const maxWords = process.env.MAX_WORDS || 50
+const wordsOffset = process.env.WORDS_OFFSET || 0
 const encoding = 'utf8'
 const processWords = process.env.PROCESS_WORDS || false
-const uploaderId = process.env.NODE_ENV === 'prod' ? 'otn0uuuwrbXW7fvxniFSoNgkK592' : 'itHiaMMkt4NLf81J6gEfVXAD6cj1'
+const uploaderId = isProd ? 'otn0uuuwrbXW7fvxniFSoNgkK592' : 'itHiaMMkt4NLf81J6gEfVXAD6cj1'
+let startTime = Date.now()
 
 const COLLECTIONS = {
   WORDS: 'words',
@@ -59,9 +62,18 @@ async function uploadWords (words) {
   const adminFirestore = getFirebaseApp().firestore()
   const createdAt = Date.now()
   const numWords = Math.min(maxWords, words.length)
-  console.log('uploading words to firestore...')
-  for (let i = 0; i < numWords; i++) {
-    const word = words[i]
+  console.log(`uploading words to ${isProd ? 'prod' : 'dev'} firestore...`)
+  const uploadPromises = []
+  for (let i = wordsOffset; i < numWords; i++) {
+    uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
+  }
+  await Promise.all(uploadPromises)
+  console.log(`uploaded ${numWords} words to firestore`)
+  console.log(`done in ${(Date.now() - startTime) / 1000}s`)
+}
+
+async function uploadWord (word, adminFirestore, createdAt) {
+  return new Promise(async () => {
     try {
       const wordSnap = await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).get()
       if (!wordSnap.exists) {
@@ -77,13 +89,11 @@ async function uploadWords (words) {
         text: word.def,
         word: word.word
       })
-      if (i === numWords) {
-        console.log(`uploaded ${numWords} words to firestore`)
-      }
+      console.log(`uploaded ${word.word}`)
     } catch (e) {
       console.error(e)
     }
-  }
+  })
 }
 
 function getFirebaseApp () {

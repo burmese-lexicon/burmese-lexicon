@@ -54,7 +54,7 @@ export class WordsApi {
   getWords () {
     return this.dbService.getAll(COLLECTIONS.WORDS, {
       orderBy: 'text',
-      limit: 100
+      limit: -1
     })
   }
 
