@@ -86,7 +86,7 @@ export class WordsApi {
       The list is updated via cloud function trigger on word creation
     */
     const snapshot = await this.dbService.get(COLLECTIONS.WORD_LIST, 'static')
-    return snapshot.data().words
+    return snapshot.data().words.sort()
   }
 
   requestWord (word: string, user: string) {
