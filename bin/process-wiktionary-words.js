@@ -1,13 +1,23 @@
 #! /usr/bin/node
 
+/*
+ Usage:
+  auto increment import:
+    WORDS_OFFSET=250 WORDS_INCREMENT=50 AUTO_IMPORT=true NODE_ENV=prod ./process-wiktionary-words.js
+  process raw words into word+def objects
+    PROCESS_WORDS=true ./process-wiktionary-words.js
+*/
+
 const Firebase = require('firebase-admin')
 const fs = require('fs')
 const jsonFile = './mywiktionary.json'
 const processedFile = './processed-words.json'
 const isProd = process.env.NODE_ENV === 'prod'
 const credentialsPath = `${process.env.HOME}/burmese-lexicon${isProd ? '' : '-dev'}-private-key.json`
-const maxWords = process.env.MAX_WORDS || 50
-const wordsOffset = process.env.WORDS_OFFSET || 0
+const autoIncrementalImport = process.env.AUTO_IMPORT
+const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 50
+let wordsOffset = Number.parseInt(process.env.WORDS_OFFSET) || 0
+const offsetFile = './offset'
 const encoding = 'utf8'
 const processWords = process.env.PROCESS_WORDS || false
 const uploaderId = isProd ? 'otn0uuuwrbXW7fvxniFSoNgkK592' : 'itHiaMMkt4NLf81J6gEfVXAD6cj1'
@@ -61,39 +71,51 @@ function readProcessedWords () {
 async function uploadWords (words) {
   const adminFirestore = getFirebaseApp().firestore()
   const createdAt = Date.now()
-  const numWords = Math.min(maxWords, words.length)
+  const numWords = Math.min(wordsIncrement, words.length)
+  const sleepTime = 300000
+  let shouldIncrement = false
   console.log(`uploading words to ${isProd ? 'prod' : 'dev'} firestore...`)
-  const uploadPromises = []
-  for (let i = wordsOffset; i < numWords; i++) {
-    uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
-  }
-  await Promise.all(uploadPromises)
-  console.log(`uploaded ${numWords} words to firestore`)
-  console.log(`done in ${(Date.now() - startTime) / 1000}s`)
+  do {
+    console.log('--------------------------------------------------------')
+    console.log(`words increment: ${wordsIncrement} - offset: ${wordsOffset}`)
+    const uploadPromises = []
+    for (let i = wordsOffset, count = 0; i < words.length && count <= numWords; i++, count++) {
+      uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
+    }
+    await Promise.all(uploadPromises)
+    console.log(`uploaded ${numWords} words to firestore`)
+    console.log(`done in ${(Date.now() - startTime) / 1000}s`)
+    wordsOffset += wordsIncrement
+    if (autoIncrementalImport) {
+      console.log(`sleeping for ${sleepTime / 1000}s`)
+      shouldIncrement = autoIncrementalImport
+      console.log(`next start offset is ${wordsOffset}`)
+      fs.writeFileSync(offsetFile, wordsOffset, encoding)
+      await sleep(sleepTime) // avoid overwhelming firestore rate limit
+    }
+  } while (shouldIncrement && wordsOffset < words.length)
 }
 
 async function uploadWord (word, adminFirestore, createdAt) {
-  return new Promise(async () => {
-    try {
-      const wordSnap = await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).get()
-      if (!wordSnap.exists) {
-        await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).set({
-          createdAt,
-          text: word.word,
-          user: uploaderId
-        })
-      }
-      adminFirestore.collection(COLLECTIONS.DEFINITIONS).doc(`${uploaderId}-${word.word}`).set({
-        user: uploaderId,
+  try {
+    const wordSnap = await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).get()
+    if (!wordSnap.exists) {
+      await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).set({
         createdAt,
-        text: word.def,
-        word: word.word
+        text: word.word,
+        user: uploaderId
       })
-      console.log(`uploaded ${word.word}`)
-    } catch (e) {
-      console.error(e)
     }
-  })
+    adminFirestore.collection(COLLECTIONS.DEFINITIONS).doc(`${uploaderId}-${word.word}`).set({
+      user: uploaderId,
+      createdAt,
+      text: word.def,
+      word: word.word
+    })
+    console.log(`uploaded ${word.word}`)
+  } catch (e) {
+    console.error(e)
+  }
 }
 
 function getFirebaseApp () {
@@ -149,4 +171,10 @@ function extractDefsFromPage (page) {
     word: title,
     def: defString.replace(/#:?\s?/g, '')
   }
+}
+
+function sleep (ms) {
+  return new Promise(resolve => {
+    setTimeout(resolve, ms)
+  })
 }

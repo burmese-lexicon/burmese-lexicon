@@ -38,3 +38,5 @@ functions/lib/*
 # data files
 bin/*.json
 bin/*.xml
+# just to remember next import word offset
+bin/offset
