@@ -57,6 +57,7 @@ exports.onWordsCreate = functions.firestore.document('/words/{word}').onCreate((
 
       adminFirestore.collection(COLLECTIONS.REQUESTED_WORDS).doc(word).delete()
         .then(() => console.log(`Deleted requested word on word create: ${word}`))
+        .catch(e => console.log('no need to remove from requested words'))
     })
 })
 
@@ -171,6 +172,8 @@ exports.onDefsUpdate = functions.firestore.document('/definitions/{definition}')
             votes
           }, {merge: true})
         })
+    } else {
+      return null
     }
   })
 
