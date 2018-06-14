@@ -23,15 +23,7 @@ export class WordsPage {
 
   async created () {
     try {
-      const wordsQuerySnapshot = await this.wordsApi.getWords()
-      const words = []
-      wordsQuerySnapshot.forEach(word => {
-        words.push({
-          id: word.id,
-          ...word.data()
-        })
-      })
-      this.words = words
+      this.words = await this.wordsApi.getWordList()
       this.loading = false
       this.ss.setSocialTags({
         title: 'အနက်ဖွင့်ဆိုထားပြိးသော စာလုံးများ',

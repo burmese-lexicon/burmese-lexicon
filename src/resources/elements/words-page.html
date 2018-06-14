@@ -20,7 +20,7 @@
     </div>
     <ul class='words'>
       <li repeat.for='word of words'>
-        <a href='${router.generate("words")}/${word.id}' class='start-letter-${word.id[0]}'>${word.id}</a>
+        <a href='${router.generate("words")}/${word}' class='start-letter-${word[0]}'>${word}</a>
       </li>
     </ul>
   </div>

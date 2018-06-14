@@ -72,7 +72,7 @@ async function uploadWords (words) {
   const adminFirestore = getFirebaseApp().firestore()
   const createdAt = Date.now()
   const numWords = Math.min(wordsIncrement, words.length)
-  const sleepTime = 300000
+  const sleepTime = 120000 // g cloud functions rate limit
   let shouldIncrement = false
   console.log(`uploading words to ${isProd ? 'prod' : 'dev'} firestore...`)
   do {
