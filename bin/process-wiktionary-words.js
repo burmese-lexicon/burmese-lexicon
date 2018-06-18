@@ -3,7 +3,7 @@
 /*
  Usage:
   auto increment import:
-    WORDS_OFFSET=250 WORDS_INCREMENT=50 AUTO_IMPORT=true NODE_ENV=prod ./process-wiktionary-words.js
+    WORDS_OFFSET=$(cat offset) WORDS_INCREMENT=50 MAX_WORDS=1000 AUTO_IMPORT=true NODE_ENV=prod ./process-wiktionary-words.js
   process raw words into word+def objects
     PROCESS_WORDS=true ./process-wiktionary-words.js
 */
@@ -16,6 +16,7 @@ const isProd = process.env.NODE_ENV === 'prod'
 const credentialsPath = `${process.env.HOME}/burmese-lexicon${isProd ? '' : '-dev'}-private-key.json`
 const autoIncrementalImport = process.env.AUTO_IMPORT
 const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 50
+const maxWords = Number.parseInt(process.env.MAX_WORDS) || 1000
 let wordsOffset = Number.parseInt(process.env.WORDS_OFFSET) || 0
 const offsetFile = './offset'
 const encoding = 'utf8'
@@ -34,8 +35,7 @@ fs.readFile(jsonFile, encoding, (err, data) => {
   if (err) {
     throw err
   }
-  let words
-  words = processWords ? processData(data) : readProcessedWords()
+  let words = processWords ? processData(data) : readProcessedWords()
   uploadWords(words)
 })
 
@@ -72,12 +72,12 @@ async function uploadWords (words) {
   const adminFirestore = getFirebaseApp().firestore()
   const createdAt = Date.now()
   const numWords = Math.min(wordsIncrement, words.length)
-  const sleepTime = 120000 // g cloud functions rate limit
-  let shouldIncrement = false
+  const sleepTime = 300000 // g cloud functions rate limit
+  let totalWords = 0
   console.log(`uploading words to ${isProd ? 'prod' : 'dev'} firestore...`)
   do {
     console.log('--------------------------------------------------------')
-    console.log(`words increment: ${wordsIncrement} - offset: ${wordsOffset}`)
+    console.log(`words increment: ${wordsIncrement},  offset: ${wordsOffset}, max: ${maxWords}`)
     const uploadPromises = []
     for (let i = wordsOffset, count = 0; i < words.length && count <= numWords; i++, count++) {
       uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
@@ -86,14 +86,14 @@ async function uploadWords (words) {
     console.log(`uploaded ${numWords} words to firestore`)
     console.log(`done in ${(Date.now() - startTime) / 1000}s`)
     wordsOffset += wordsIncrement
+    totalWords += wordsIncrement
     if (autoIncrementalImport) {
       console.log(`sleeping for ${sleepTime / 1000}s`)
-      shouldIncrement = autoIncrementalImport
-      console.log(`next start offset is ${wordsOffset}`)
+      console.log(`uploaded ${totalWords} words! next start offset is ${wordsOffset}`)
       fs.writeFileSync(offsetFile, wordsOffset, encoding)
       await sleep(sleepTime) // avoid overwhelming firestore rate limit
     }
-  } while (shouldIncrement && wordsOffset < words.length)
+  } while (autoIncrementalImport && totalWords < maxWords && wordsOffset < words.length)
 }
 
 async function uploadWord (word, adminFirestore, createdAt) {

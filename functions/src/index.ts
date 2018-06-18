@@ -49,11 +49,13 @@ exports.onWordsCreate = functions.firestore.document('/words/{word}').onCreate((
   return adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').get()
     .then(listSnap => {
       const words = listSnap.data().words
-      words.push(word)
-      adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').update({
-        words
-      })
-      console.log(`Updated words list on word create: ${word}`)
+      if (words.indexOf(word) < 0) {
+        words.push(word)
+        adminFirestore.collection(COLLECTIONS.WORD_LIST).doc('static').update({
+          words
+        })
+        console.log(`Updated words list on word create: ${word}`)
+      }
 
       adminFirestore.collection(COLLECTIONS.REQUESTED_WORDS).doc(word).delete()
         .then(() => console.log(`Deleted requested word on word create: ${word}`))
