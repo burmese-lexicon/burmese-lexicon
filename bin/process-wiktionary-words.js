@@ -15,7 +15,7 @@ const processedFile = './processed-words.json'
 const isProd = process.env.NODE_ENV === 'prod'
 const credentialsPath = `${process.env.HOME}/burmese-lexicon${isProd ? '' : '-dev'}-private-key.json`
 const autoIncrementalImport = process.env.AUTO_IMPORT
-const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 50
+const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 25 
 const maxWords = Number.parseInt(process.env.MAX_WORDS) || 1000
 let wordsOffset = Number.parseInt(process.env.WORDS_OFFSET) || 0
 const offsetFile = './offset'
@@ -82,7 +82,13 @@ async function uploadWords (words) {
     for (let i = wordsOffset, count = 0; i < words.length && count <= numWords; i++, count++) {
       uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
     }
-    await Promise.all(uploadPromises)
+		try {
+	    await Promise.all(uploadPromises)
+		} catch (e) {
+			console.error(e)
+			console.error('uploading failed exiting...')
+			return
+		}
     console.log(`uploaded ${numWords} words to firestore`)
     console.log(`done in ${(Date.now() - startTime) / 1000}s`)
     wordsOffset += wordsIncrement

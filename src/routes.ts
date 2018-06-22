@@ -106,6 +106,12 @@ const routes = [
     title: 'Login'
   },
   {
+    route: 'privacy',
+    name: 'privacy',
+    moduleId: PLATFORM.moduleName('./resources/elements/privacy-page'),
+    title: 'Privacy Policy'
+  },
+  {
     route: 'not-found-page',
     name: 'not-found-page',
     moduleId: PLATFORM.moduleName('./resources/elements/not-found-page'),
