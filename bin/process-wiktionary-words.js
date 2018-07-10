@@ -15,12 +15,15 @@ const processedFile = './processed-words.json'
 const isProd = process.env.NODE_ENV === 'prod'
 const credentialsPath = `${process.env.HOME}/burmese-lexicon${isProd ? '' : '-dev'}-private-key.json`
 const autoIncrementalImport = process.env.AUTO_IMPORT
-const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 25 
+const wordsIncrement = Number.parseInt(process.env.WORDS_INCREMENT) || 25
 const maxWords = Number.parseInt(process.env.MAX_WORDS) || 1000
+const sleepTime = Number.parseInt(process.env.SLEEP_TIME) || 300000 // g cloud functions rate limit
 let wordsOffset = Number.parseInt(process.env.WORDS_OFFSET) || 0
 const offsetFile = './offset'
 const encoding = 'utf8'
 const processWords = process.env.PROCESS_WORDS || false
+const stopOnError = process.env.STOP_ON_ERROR || true
+const mergeDefs = process.env.MERGE_DEF || false
 const uploaderId = isProd ? 'otn0uuuwrbXW7fvxniFSoNgkK592' : 'itHiaMMkt4NLf81J6gEfVXAD6cj1'
 let startTime = Date.now()
 
@@ -72,7 +75,6 @@ async function uploadWords (words) {
   const adminFirestore = getFirebaseApp().firestore()
   const createdAt = Date.now()
   const numWords = Math.min(wordsIncrement, words.length)
-  const sleepTime = 300000 // g cloud functions rate limit
   let totalWords = 0
   console.log(`uploading words to ${isProd ? 'prod' : 'dev'} firestore...`)
   do {
@@ -82,13 +84,13 @@ async function uploadWords (words) {
     for (let i = wordsOffset, count = 0; i < words.length && count <= numWords; i++, count++) {
       uploadPromises.push(uploadWord(words[i], adminFirestore, createdAt))
     }
-		try {
+    try {
 	    await Promise.all(uploadPromises)
-		} catch (e) {
-			console.error(e)
-			console.error('uploading failed exiting...')
-			return
-		}
+    } catch (e) {
+      console.error(e)
+      console.error('uploading failed exiting...')
+      return
+    }
     console.log(`uploaded ${numWords} words to firestore`)
     console.log(`done in ${(Date.now() - startTime) / 1000}s`)
     wordsOffset += wordsIncrement
@@ -105,6 +107,9 @@ async function uploadWords (words) {
 async function uploadWord (word, adminFirestore, createdAt) {
   try {
     const wordSnap = await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).get()
+    if (wordSnap.exists && !mergeDefs) {
+      return
+    }
     if (!wordSnap.exists) {
       await adminFirestore.collection(COLLECTIONS.WORDS).doc(word.word).set({
         createdAt,
@@ -121,6 +126,9 @@ async function uploadWord (word, adminFirestore, createdAt) {
     console.log(`uploaded ${word.word}`)
   } catch (e) {
     console.error(e)
+    if (stopOnError) {
+      throw new Error(`failed on upload word: ${word}`)
+    }
   }
 }
 
