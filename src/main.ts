@@ -36,6 +36,6 @@ export function configure (aurelia: Aurelia) {
   // give time for the loading icon to loop at least a couple times
   setTimeout(
     () => aurelia.start().then(() => aurelia.setRoot(PLATFORM.moduleName('app'))),
-    1200
+    300
   )
 }
