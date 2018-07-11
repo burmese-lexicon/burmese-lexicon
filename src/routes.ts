@@ -67,11 +67,22 @@ const routes = [
     route: 'spellcheck',
     name: 'spellcheck',
     moduleId: PLATFORM.moduleName('./resources/elements/spellcheck-page', 'spellcheck'),
-    title: 'Spellcheck',
+    title: 'သတ်ပုံကျမ်း',
     nav: true,
     settings: {
       icon: 'compass outline',
       iconColor: 'deeppink'
+    }
+  },
+  {
+    route: 'misspelled-words',
+    name: 'misspelled-words',
+    moduleId: PLATFORM.moduleName('./resources/elements/misspelled-words-page', 'misspelled-words'),
+    title: 'သံတူကြောင်းကွဲများ',
+    nav: true,
+    settings: {
+      icon: 'bug',
+      iconColor: 'cyan'
     }
   },
   {
