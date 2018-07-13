@@ -3,7 +3,7 @@
   <h1>မြန်မာစာမြန်မာစကား</h1>
   <div class='ui active centered inline loader' if.bind='loadingPdf'></div>
   <div class='error' if.bind='pdfLoadError'>${pdfLoadError}</div>
-  <div class='ui styled fluid accordion' ref='accordion' else>
+  <div class='ui styled fluid accordion' ref='accordion' show.bind='!loadingPdf && !pdfLoadError'>
     <template repeat.for='page of pages'>
       <div class='title top-level'>
         <i class='dropdown icon'></i>

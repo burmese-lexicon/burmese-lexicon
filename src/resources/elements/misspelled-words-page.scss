@@ -16,6 +16,7 @@
   .pdf-container {
     canvas {
       width: 100%;
+      max-width: 50em;
     }
   }
 }
