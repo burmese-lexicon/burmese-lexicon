@@ -79,14 +79,16 @@ export class MisspelledWordsPage {
   constructor (private ss: SocialService, private ps: PrerenderService) {}
 
   created () {
-    const url = '/documents/misspelled-words-compressed.pdf#page-width'
+    const url = '/documents/misspelled-words-compressed.pdf'
     pdfjs.GlobalWorkerOptions.workerSrc = '/pdf.worker.min.js'
     const loadingTask = pdfjs.getDocument(url)
     loadingTask.promise.then(pdf => {
       this.pdf = pdf
       this.loadingPdf = false
     }, reason => {
-      this.pdfLoadError = reason
+      console.error(reason)
+      this.pdfLoadError = 'Failed to load document. Please try again later or contact us.'
+      this.loadingPdf = false
     })
   }
 
@@ -145,7 +147,7 @@ export class MisspelledWordsPage {
 
   async renderPage (pageNumber: number, container: HTMLElement) {
     const page = await this.pdf.getPage(pageNumber)
-    const scale = 1.5
+    const scale = 2
     const viewport = page.getViewport(scale)
     // Prepare canvas using PDF page dimensions
     const canvas = document.createElement('canvas')

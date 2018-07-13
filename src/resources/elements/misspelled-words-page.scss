@@ -1,4 +1,7 @@
 .misspelled-words-page {
+  .loader, .error {
+    flex-basis: 100%;
+  }
   .title.top-level {
     text-align: left;
   }
