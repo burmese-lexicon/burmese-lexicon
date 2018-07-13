@@ -11,9 +11,9 @@
           ${page.section}
         </div>
         <div class='content'>
-          <div class='accordion transition visible'>
+          <div class='accordion transition visible subsection'>
             <template repeat.for='entry of getPageEntries(page)'>
-              <div class='title'>
+              <div class='title' id='${entry.split(" ").join("-")}'>
                 <i class='dropdown icon'></i>
                 ${entry}
               </div>
@@ -29,5 +29,8 @@
   <button class='ui icon button reset' click.delegate='closeAll()'>
     <i class='arrow up icon'></i>
   </button>
-  <p class='credits'>မြန်မာစာနှင့် ဘာသာစကားပညာရေးဦးစီးဌာန၏ မြန်မာစာမြန်မာစကား(၁၉၉၃)မှ ရယူသည်။ <a href='/documents/misspelled-words.pdf' download>pdf</a></p>
+  <p class='credits'>
+    မြန်မာစာနှင့် ဘာသာစကားပညာရေးဦးစီးဌာန၏ မြန်မာစာမြန်မာစကား(၁၉၉၃)မှ ရယူသည်။ <a href='/documents/misspelled-words.pdf' download>pdf</a>။
+    စာမျက်နှာများကို တိုက်ရုိက်လင့်ခ်ချိတ်လို့ ရပါတယ်။ ဥပမာ <a href.bind='exampleUrl'>${exampleUrl}</a>
+  </p>
 </template>

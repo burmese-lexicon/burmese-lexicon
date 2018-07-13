@@ -1,12 +1,15 @@
+import { Router } from 'aurelia-router'
 import { SocialService } from 'services/social-service'
 import { PrerenderService } from 'services/prerender-service'
 import pdfjs from 'pdfjs-dist/build/pdf'
 import trimCanvas from 'trim-canvas'
-import { autoinject } from 'aurelia-framework'
+import { autoinject, bindable } from 'aurelia-framework'
 
 @autoinject
 export class MisspelledWordsPage {
-  private loadingPdf = true
+  private section: string
+  @bindable private loadingPdf = true
+  private exampleUrl = `${window.location.pathname}?section=ဉကလေး-နှင့်-ညကြီး`
   private pageOffset = 7
   private pages = [
     {
@@ -76,7 +79,7 @@ export class MisspelledWordsPage {
   private pdfLoadError: string = ''
   private pdf
 
-  constructor (private ss: SocialService, private ps: PrerenderService) {}
+  constructor (private ss: SocialService, private ps: PrerenderService, private router: Router) {}
 
   created () {
     const url = '/documents/misspelled-words-compressed.pdf'
@@ -92,6 +95,10 @@ export class MisspelledWordsPage {
     })
   }
 
+  activate (params) {
+    this.section = params.section
+  }
+
   attached () {
     const element = this
     jQuery(this.accordion).accordion({
@@ -105,6 +112,12 @@ export class MisspelledWordsPage {
         }
         element.renderPages(container)
         jQuery(this)[0].scrollIntoView()
+        const sectionId = jQuery(this).prev()[0].id
+        if (!sectionId) {
+          return
+        }
+        const targetUrl = `${window.location.pathname}?section=${sectionId}`
+        window.history.replaceState(null, document.title, targetUrl)
       }
     })
     this.ss.setSocialTags({
@@ -113,6 +126,20 @@ export class MisspelledWordsPage {
         .join('၊ ')
     })
     this.ps.setPrerenderReady()
+  }
+
+  loadingPdfChanged () {
+    if (this.section) {
+      // just manually trigger because the api isn't that straightforward
+      const section: HTMLElement = document.querySelector(`#${this.section}`)
+      if (!section) {
+        return
+      }
+      // open parent first
+      const parentTitle = section.parentNode.parentNode.previousSibling.previousSibling as HTMLElement
+      parentTitle.click()
+      section.click()
+    }
   }
 
   getPageEntries (page) {
@@ -125,6 +152,9 @@ export class MisspelledWordsPage {
   }
 
   renderPages (pdfContainer: HTMLElement) {
+    while (pdfContainer.firstChild) {
+      pdfContainer.removeChild(pdfContainer.firstChild)
+    }
     const startPage: number = Number(pdfContainer.dataset.page)
     const endPage: number = this.findEndPageFromStart(startPage)
     for (let i = startPage; i <= endPage; i++) {
@@ -152,6 +182,7 @@ export class MisspelledWordsPage {
     // Prepare canvas using PDF page dimensions
     const canvas = document.createElement('canvas')
     const context = canvas.getContext('2d')
+    canvas.dataset.pageNum = pageNumber.toString()
     canvas.height = viewport.height
     canvas.width = viewport.width
     container.appendChild(canvas)
