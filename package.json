@@ -22,7 +22,9 @@
     "bluebird": "^3.5.1",
     "fetch": "^1.1.0",
     "firebaseui": "^2.7.0",
+    "pdfjs-dist": "^2.0.489",
     "semantic-ui-css": "^2.3.1",
+    "trim-canvas": "^0.1.2",
     "trumbowyg": "^2.10.0"
   },
   "peerDependencies": {},

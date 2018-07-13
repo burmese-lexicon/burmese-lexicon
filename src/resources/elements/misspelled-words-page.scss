@@ -10,4 +10,9 @@
     bottom: 5em;
     right: 1em;
   }
+  .pdf-container {
+    canvas {
+      width: 100%;
+    }
+  }
 }

@@ -9,24 +9,15 @@
       </div>
       <div class='content'>
         <div class='accordion transition visible'>
-          <div class='title'>
-            <i class='dropdown icon'></i>
-            ${page.section}
-          </div>
-          <div class='content'>
-            <object data='/documents/misspelled-words.pdf#page=${page.pageNum + pageOffset}' type='application/pdf' width='100%' height='600'>
-              <p>Your web browser doesn't have a PDF plugin.</p>
-            </object>
-          </div>
           <template repeat.for='entry of getPageEntries(page)'>
             <div class='title'>
               <i class='dropdown icon'></i>
               ${entry}
             </div>
             <div class='content'>
-              <object data='/documents/misspelled-words.pdf#page=${page.entries[entry] + pageOffset}' type='application/pdf' width='100%' height='600'>
-                <p>Your web browser doesn't have a PDF plugin.</p>
-              </object>
+              <div class="ui active centered inline loader" if.bind='loadingPdf && !pdfLoadError'></div>
+              <div if.bind='pdfLoadError'>${pdfLoadError}</div>
+              <div class='pdf-container' data-page='${page.entries[entry]}' else></div>
             </div>
           </template>
         </div>
