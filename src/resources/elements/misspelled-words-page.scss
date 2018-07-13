@@ -2,11 +2,25 @@
   .loader, .error {
     flex-basis: 100%;
   }
+  .list-container {
+    display: flex;
+    justify-content: center;
+    flex-basis: 100%;
+  }
   .accordion {
     padding: 0;
-  }
-  .title.top-level {
-    text-align: left;
+    .title.top-level {
+      font-weight: bold;
+      &:not(.ui) {
+        font-size: 1.3em;
+      }
+      .icon {
+        color: red;
+      }
+    }
+    .title {
+      text-align: left;
+    }
   }
   .credits {
     margin-top: 1em;

@@ -3,26 +3,28 @@
   <h1>မြန်မာစာမြန်မာစကား</h1>
   <div class='ui active centered inline loader' if.bind='loadingPdf'></div>
   <div class='error' if.bind='pdfLoadError'>${pdfLoadError}</div>
-  <div class='ui fluid accordion' ref='accordion' show.bind='!loadingPdf && !pdfLoadError'>
-    <template repeat.for='page of pages'>
-      <div class='title top-level'>
-        <i class='dropdown icon'></i>
-        ${page.section}
-      </div>
-      <div class='content'>
-        <div class='accordion transition visible'>
-          <template repeat.for='entry of getPageEntries(page)'>
-            <div class='title'>
-              <i class='dropdown icon'></i>
-              ${entry}
-            </div>
-            <div class='content'>
-              <div class='pdf-container' data-page='${page.entries[entry]}'></div>
-            </div>
-          </template>
+  <div class='list-container'>
+    <div class='ui accordion' ref='accordion' show.bind='!loadingPdf && !pdfLoadError'>
+      <template repeat.for='page of pages'>
+        <div class='title top-level'>
+          <i class='dropdown icon'></i>
+          ${page.section}
         </div>
-      </div>
-    </template>
+        <div class='content'>
+          <div class='accordion transition visible'>
+            <template repeat.for='entry of getPageEntries(page)'>
+              <div class='title'>
+                <i class='dropdown icon'></i>
+                ${entry}
+              </div>
+              <div class='content'>
+                <div class='pdf-container' data-page='${page.entries[entry]}'></div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
   </div>
   <button class='ui icon button reset' click.delegate='closeAll()'>
     <i class='arrow up icon'></i>
