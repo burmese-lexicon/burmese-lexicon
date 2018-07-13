@@ -121,7 +121,7 @@ export class MisspelledWordsPage {
       }
     })
     this.ss.setSocialTags({
-      title: 'သံတူကြောင်းကွဲများ | Burmese Lexicon',
+      title: this.section ? `${this.section} | Burmese Lexicon` : 'သံတူကြောင်းကွဲများ | Burmese Lexicon',
       description: this.pages.reduce((entries, page) => entries.concat(Object.keys(page.entries)), [])
         .join('၊ ')
     })
