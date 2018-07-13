@@ -1,6 +1,10 @@
+import { SocialService } from 'services/social-service'
+import { PrerenderService } from 'services/prerender-service'
 import pdfjs from 'pdfjs-dist/build/pdf'
 import trimCanvas from 'trim-canvas'
+import { autoinject } from 'aurelia-framework'
 
+@autoinject
 export class MisspelledWordsPage {
   private loadingPdf = true
   private pageOffset = 7
@@ -51,7 +55,7 @@ export class MisspelledWordsPage {
         'ရောထွေးတတ်သော မှ နှင့် က': 58,
         'အသုံးမမှား ကို နှင့် အား': 61,
         'သတိပြုလေ တို့၊ များ၊ တွေ': 64,
-        'အတိတ်ကို ရည်ညွှန်းလိုတိုင်းခဲ့သုံးရန်မလို': 67,
+        'အတိတ်ကို ရည်ညွှန်းလိုတိုင်း ခဲ့ သုံးရန်မလို': 67,
         'နှင့်ပို ဖြင့်ပို': 70,
         'တစ်မျိုးသာသုံးပါ': 72,
         'ခွဲခြားသိစရာ သည် နှင့် မှာ': 76,
@@ -71,6 +75,8 @@ export class MisspelledWordsPage {
   private accordion: Element
   private pdfLoadError: string = ''
   private pdf
+
+  constructor (private ss: SocialService, private ps: PrerenderService) {}
 
   created () {
     const url = '/documents/misspelled-words-compressed.pdf#page-width'
@@ -99,6 +105,12 @@ export class MisspelledWordsPage {
         jQuery(this)[0].scrollIntoView()
       }
     })
+    this.ss.setSocialTags({
+      title: 'သံတူကြောင်းကွဲများ | Burmese Lexicon',
+      description: this.pages.reduce((entries, page) => entries.concat(Object.keys(page.entries)), [])
+        .join('၊ ')
+    })
+    this.ps.setPrerenderReady()
   }
 
   getPageEntries (page) {
