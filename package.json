@@ -23,6 +23,7 @@
     "fetch": "^1.1.0",
     "firebaseui": "^2.7.0",
     "pdfjs-dist": "^2.0.489",
+    "seedrandom": "^2.4.3",
     "semantic-ui-css": "^2.3.1",
     "trim-canvas": "^0.1.2",
     "trumbowyg": "^2.10.0"
