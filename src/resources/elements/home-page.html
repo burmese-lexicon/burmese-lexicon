@@ -4,7 +4,7 @@
   <require from='./word-of-day'></require>
 
   <div class='centered'>
-  <div class="ui info message" if.bind='!notiService.shownFirstTimeDialog'>
+  <div class="ui info message first-time" if.bind='!notiService.shownFirstTimeDialog'>
     <i class="close icon" click.delegate='notiService.shownFirstTimeDialog = true'></i>
     <p>Only unicode is used. Check <a href='/about/'>here</a> for tips.</p>
   </div>
