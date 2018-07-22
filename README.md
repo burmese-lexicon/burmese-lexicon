@@ -1,5 +1,7 @@
 # Burmese Lexicon https://burmese-lexicon.com
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/burmese-lexicon/burmese-lexicon.svg)](https://greenkeeper.io/)
+
 ## Background
 
 I haven't found any open-sourced and up-to-date dictionary for Burmese language.
