@@ -131,6 +131,7 @@
   "scripts": {
     "start": "au run --watch",
     "test": "nps test",
+    "test:e2e": "codeceptjs run",
     "build": "au build --env prod",
     "serve": "yarn start serve",
     "deploy": "firebase deploy -P prod",

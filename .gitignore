@@ -41,3 +41,6 @@ bin/*.json
 bin/*.xml
 # just to remember next import word offset
 bin/offset
+
+# specs
+specs/output
