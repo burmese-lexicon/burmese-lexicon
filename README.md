@@ -1,33 +1,30 @@
-# `burmese-lexicon-2`
+# Burmese Lexicon https://burmese-lexicon.com
 
-This project is bootstrapped by [aurelia-cli](https://github.com/aurelia/cli).
+An app aimed to build a community of active contributors from different backgrounds
+such as politics, religion, ethnics, professions to come together and contribute any and all words found in the Burmese corpus.
 
-For more information, go to https://aurelia.io/docs/cli/webpack
+[![BrowserStack Status](https://www.browserstack.com/automate/badge.svg?badge_key=dyswQmhpbFhETUhOTjV1aXdPR2lQUWZRTklFRVZGZnlPOUl6cVo0ZmRZVT0tLXVVVXJydnNERzBOS1A3RUZ3bVB4Smc9PQ==--e0251e2e6081d5b062b758847681dad2d661fcf2)](https://www.browserstack.com/automate/public-build/dyswQmhpbFhETUhOTjV1aXdPR2lQUWZRTklFRVZGZnlPOUl6cVo0ZmRZVT0tLXVVVXJydnNERzBOS1A3RUZ3bVB4Smc9PQ==--e0251e2e6081d5b062b758847681dad2d661fcf2)
 
-## Run dev app
+## Development
 
-Run `npm start`, then open `http://localhost:8080`
+Install dependencies for the first time
+```
+yarn
+```
 
-You can change the standard webpack configurations from CLI easily with something like this: `npm start -- --open --port 8888`. However, it is better to change the respective npm scripts or `webpack.config.js` with these options, as per your need.
+Run 
+```
+yarn start
+```
+and visit https://localhost:8080 when the server is ready.
 
-To enable Webpack Bundle Analyzer, do `npm run analyze` (production build).
+## How can you help?
+* UI/UX improvements
+* Testing
+* Adding definitions
+* Ideas
 
-To enable hot module reload, do `npm start -- --hmr`.
+## CI
 
-To change dev server port, do `npm start -- --port 8888`.
-
-To change dev server host, do `npm start -- --host 127.0.0.1`
-
-**PS:** You could mix all the flags as well, `npm start -- --host 127.0.0.1 --port 7070 --open --hmr`
-
-For long time aurelia-cli user, you can still use `au run` with those arguments like `au run --env prod --open --hmr`. But `au run` now simply executes `npm start` command.
-
-## Build for production
-
-Run `npm run build`, or the old way `au build --env prod`.
-
-## Unit tests
-
-Run `au test` (or `au jest`).
-
-To run in watch mode, `au test --watch` or `au jest --watch`.
+[BrowserStack](https://browserstack.com) is used for automated and live testing.
+![BrowserStack](https://raw.githubusercontent.com/burmese-lexicon/burmese-lexicon/browserstack/browserstack-logo-600x315.png)
