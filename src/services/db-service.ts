@@ -1,6 +1,6 @@
 import { AuthService } from 'services/auth-service'
-import firebase from '@firebase/app'
-import '@firebase/firestore'
+import * as firebase from "firebase/app";
+import 'firebase/firestore'
 import { DocumentData } from '@firebase/firestore-types'
 import { SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION } from 'constants'
 import { autoinject } from 'aurelia-framework'

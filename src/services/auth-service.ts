@@ -5,7 +5,7 @@ import { Router, NavigationInstruction } from 'aurelia-router'
 import { autoinject } from 'aurelia-framework'
 import firebase from '@firebase/app'
 import '@firebase/auth'
-import firebaseui from 'firebaseui'
+import * as firebaseui from 'firebaseui'
 import { User } from '@firebase/auth-types'
 import { ROLES } from 'api/roles'
 

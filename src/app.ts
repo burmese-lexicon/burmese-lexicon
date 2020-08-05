@@ -6,7 +6,6 @@ import { PLATFORM } from 'aurelia-pal'
 import {Router, RouterConfiguration} from 'aurelia-router'
 import { viewResources } from 'aurelia-framework'
 import { AuthorizeStep } from './resources/steps/authorize-step'
-import firebase from '@firebase/app'
 import routes from './routes'
 
 @autoinject
@@ -14,11 +13,12 @@ import routes from './routes'
 export class App {
   private router: Router
 
-  constructor (private authService: AuthService, private dbService: DbService, private ss: SocialService) {}
+  constructor (private authService: AuthService, private dbService: DbService, private ss: SocialService) {
+    this.dbService.configure()
+  }
 
   created () {
     this.authService.configure()
-    this.dbService.configure()
     this.ss.configure()
   }
 
