@@ -4,10 +4,12 @@ import { autoinject } from 'aurelia-dependency-injection'
 import { SocialService } from 'services/social-service';
 import { PrerenderService } from 'services/prerender-service';
 
+const numOfBurmeseLetters = Array.from(Array('ဪ'.charCodeAt(0) - 'က'.charCodeAt(0) + 1).keys());
+
 @autoinject
 export class WordsPage {
   private words: any[]
-  private letters: string[] = String.fromCharCode(...[...Array('ဪ'.charCodeAt(0) - 'က'.charCodeAt(0) + 1).keys()].map(i => i + '\u1000'.charCodeAt(0))).split('');
+  private letters: string[] = Array.from(numOfBurmeseLetters).map(i => String.fromCharCode(i + '\u1000'.charCodeAt(0)));
   private loading: boolean = true
   private error: string
 
