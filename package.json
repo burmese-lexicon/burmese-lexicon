@@ -1,12 +1,12 @@
 {
-  "name": "burmese-lexicon-2",
-  "description": "An Aurelia client application.",
-  "version": "0.1.0",
+  "name": "burmese-lexicon",
+  "description": "A crowdsourced burmese dictionary",
+  "version": "1.0.0",
   "repository": {
-    "type": "???",
-    "url": "???"
+    "type": "git",
+    "url": "git@github.com:burmese-lexicon/burmese-lexicon.git"
   },
-  "license": "MIT",
+  "license": "Unlicense",
   "dependencies": {
     "@firebase/app": "^0.6.9",
     "@firebase/auth-types": "^0.10.1",

@@ -1,5 +1,5 @@
 {
-  "name": "burmese-lexicon-2",
+  "name": "burmese-lexicon",
   "type": "project:application",
   "paths": {
     "root": "src",
